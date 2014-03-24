@@ -82,6 +82,10 @@ SDL_Point Transformation::getTransaltion() {
 	return translation_;
 }
 
+double Transformation::getScale(){
+	return scale_;
+}
+
 void Transformation::applyTranslation(SDL_Point &p) {
 	p.x += translation_.x;
 	p.y += translation_.y;

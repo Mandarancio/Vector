@@ -29,6 +29,7 @@ public:
 	void scale(double f);
 
 	SDL_Point getTransaltion();
+	double getScale();
 private:
 	void applyTranslation(SDL_Point &p);
 	void applyScale(SDL_Point &p);

@@ -42,17 +42,26 @@ SDL_Surface * Font::toSurface(std::string text, SDL_Color color) {
 	return surf;
 }
 
-SDL_Rect Font::textBounds(std::string text){
+SDL_Rect Font::textBounds(std::string text) {
 	Color c;
-	SDL_Surface *surf = TTF_RenderText_Blended(font, text.c_str(),c.getSDLColor());
+	SDL_Surface *surf = TTF_RenderText_Blended(font, text.c_str(),
+			c.getSDLColor());
 	if (surf == 0) {
 		logSDLError(std::cout, "TTF_RenderText");
 		SDL_Rect r;
-		r.x=0;
-		r.y=0;
-		r.w=0;
-		r.h=0;
+		r.x = 0;
+		r.y = 0;
+		r.w = 0;
+		r.h = 0;
 		return r;
 	}
 	return surf->clip_rect;
+}
+
+std::string Font::getName() {
+	return ttf_file;
+}
+
+int Font::getSize() {
+	return size;
 }

@@ -28,7 +28,8 @@ void Painter::setFill(Color c) {
 
 void Painter::setFont(Font *f) {
 	delete font;
-	font = f;
+	font = new Font(f->getName(),f->getSize()*transformation->getScale());
+
 }
 
 void Painter::paintRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h) {
@@ -75,7 +76,6 @@ void Painter::paintText(std::string text, int x, int y) {
 	r.x = x;
 	r.y = y;
 	transformation->applyTransformation(r.x, r.y);
-	transformation->applySizeTransformation(r.w, r.h);
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
 	if (texture == 0) {
 		logSDLError(std::cout, "CreateTexture");
@@ -96,4 +96,5 @@ void Painter::translate(int x, int y) {
 
 void Painter::scale(double s) {
 	transformation->scale(s);
+	font=new Font(font->getName(),font->getSize()*s);
 }

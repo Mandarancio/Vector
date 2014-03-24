@@ -21,6 +21,9 @@ public:
 	SDL_Surface * toSurface(std::string text,SDL_Color color);
 	SDL_Rect textBounds(std::string text);
 
+	std::string getName();
+	int getSize();
+
 private:
 	TTF_Font *font;
 	std::string ttf_file;
