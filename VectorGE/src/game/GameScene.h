@@ -21,9 +21,13 @@
 class GameScene: public Entity {
 public:
 	GameScene(Camera * camera, b2World *world=0);
+	GameScene(Camera * camera, float gx,float gy);
+
 	virtual ~GameScene();
 	void gameLoop(int dt=0);
 	void addEntity(GameEntity *ge);
+
+	b2World * getWorld();
 
 private:
 	std::string sceneName;
@@ -31,6 +35,9 @@ private:
 
 	Camera * camera;
 	b2World * world;
+
+	int positionIterations;
+	int velocityIterations;
 };
 
 #endif /* GAMESCENE_H_ */

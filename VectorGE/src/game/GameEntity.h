@@ -8,6 +8,8 @@
 #ifndef GAMEENTITY_H_
 #define GAMEENTITY_H_
 
+#include <Box2D/Box2D.h>
+
 #include "../core/Entity.h"
 #include "Painter.h"
 
@@ -17,6 +19,7 @@ public:
 	virtual ~GameEntity();
 	virtual void render(Painter * p)=0;
 	virtual void step(double dt,SDL_Event event);
+	virtual b2Body * getBody();
 };
 
 #endif /* GAMEENTITY_H_ */

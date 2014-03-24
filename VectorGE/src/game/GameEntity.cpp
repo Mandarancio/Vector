@@ -20,3 +20,7 @@ void GameEntity::step(double dt,SDL_Event event){
 	//by default nothing to do
 	//needed for animation and other stuff..
 }
+
+b2Body * GameEntity::getBody(){
+	return 0;
+}
