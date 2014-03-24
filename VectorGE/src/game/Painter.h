@@ -31,6 +31,7 @@ public:
 
 	void clearWindow();
 	void renderToScreen();
+
 private:
 	SDL_Renderer * renderer;
 	Color fill;

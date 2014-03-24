@@ -17,11 +17,7 @@ int main(int argc, char **argv) {
 	Camera *c = new Camera(p);
 	GameScene *scene=new GameScene(c,0);
 	scene->addEntity(new BackgroundLayer());
-	while(1){
-		scene->render();
-		SDL_Delay(200);
-	}
-
+	scene->gameLoop();
 
 	delete c;
 	delete gw;

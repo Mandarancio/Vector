@@ -16,6 +16,7 @@ public:
 	GameEntity();
 	virtual ~GameEntity();
 	virtual void render(Painter * p)=0;
+	virtual void step(double dt,SDL_Event event);
 };
 
 #endif /* GAMEENTITY_H_ */

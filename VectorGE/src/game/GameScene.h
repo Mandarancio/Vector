@@ -22,7 +22,7 @@ class GameScene: public Entity {
 public:
 	GameScene(Camera * camera, b2World *world=0);
 	virtual ~GameScene();
-	void render();
+	void gameLoop(int dt=0);
 	void addEntity(GameEntity *ge);
 
 private:
