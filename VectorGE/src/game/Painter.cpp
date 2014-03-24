@@ -9,21 +9,10 @@
 #include "../support/Logging.h"
 #include <iostream>
 
-#ifdef WINDOWS
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
-
 Painter::Painter(SDL_Renderer * rend) :
 		renderer(rend), fill(255, 255, 255, 255), pen(0, 0, 0, 255) {
 	transformation = new Transformation();
-	font = TTF_OpenFont("./resources/DejaVuSans.ttf", 20);
-	if (font == 0) {
-		logSDLError(std::cout, "TTF_OpenFont");
-	}
+	font = new Font();
 }
 
 Painter::~Painter() {
@@ -37,7 +26,8 @@ void Painter::setFill(Color c) {
 	fill = c;
 }
 
-void Painter::setFont(TTF_Font *f) {
+void Painter::setFont(Font *f) {
+	delete font;
 	font = f;
 }
 
@@ -80,24 +70,17 @@ void Painter::paintPoint(int x, int y) {
 }
 
 void Painter::paintText(std::string text, int x, int y) {
-	SDL_Surface *text_surface = TTF_RenderText_Solid(font, text.c_str(),
-			pen.getSDLColor());
-	if (text_surface != 0) {
-		SDL_Rect r;
-		r.x = x;
-		r.y = y;
-		r.w = text_surface->w;
-		r.h = text_surface->h;
-		transformation->applyTransformation(r.x, r.y);
-		transformation->applySizeTransformation(r.w, r.h);
-		SDL_Texture*texture = SDL_CreateTextureFromSurface(renderer,
-				text_surface);
-		SDL_RenderCopy(renderer, texture, NULL, &r);
+	SDL_Surface * surface = font->toSurface(text, pen.getSDLColor());
+	SDL_Rect r = font->textBounds(text);
+	r.x = x;
+	r.y = y;
+	transformation->applyTransformation(r.x, r.y);
+	transformation->applySizeTransformation(r.w, r.h);
+	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+	if (texture == 0) {
+		logSDLError(std::cout, "CreateTexture");
 	}
-	else
-	{
-		logSDLError(std::cout, "TTF_RenderText_Solid");
-	}
+	SDL_RenderCopy(renderer, texture, NULL, &r);
 }
 
 void Painter::clearWindow() {

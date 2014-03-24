@@ -8,7 +8,9 @@
 #ifndef COLOR_H_
 #define COLOR_H_
 #include <SDL2/SDL.h>
-class Color {
+#include "../../core/Entity.h"
+
+class Color: public Entity {
 public:
 	Color(Uint8 r,Uint8 g,Uint8 b,Uint8 a);
 	virtual ~Color();
