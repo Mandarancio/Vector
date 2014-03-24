@@ -8,7 +8,6 @@
 #ifndef GAMEWINDOW_H_
 #define GAMEWINDOW_H_
 
-#include <SDL2/SDL_surface.h>
 #include <SDL2/SDL.h>
 #include <string>
 

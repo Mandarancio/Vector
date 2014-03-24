@@ -18,5 +18,6 @@ BackgroundLayer::~BackgroundLayer() {
 
 void BackgroundLayer::render(Painter * p){
 	p->paintRect(0,0,800,600);
-
+	p->paintLine(0,0,800,600);
+	p->paintLine(0,600,800,0);
 }

@@ -17,7 +17,10 @@ Color::~Color() {
 }
 
 Uint32 Color::getARGB(){
-	return alpha_|red_>8|green_>16|blue_>24;
+	return (alpha_)|(red_>8)|(green_>16)|(blue_>24);
+}
+Uint32 Color::getRGBA(){
+	return (red_)|(green_>8)|(blue_>16)|(alpha_>24);
 }
 Uint8 Color::red(){
 	return red_;

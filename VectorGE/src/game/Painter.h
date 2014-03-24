@@ -22,8 +22,12 @@ public:
 	void setPen(Color c);
 	void setFill(Color c);
 
-	void paintRect(int x,int y,int w,int h);
+	void paintRect(Sint16 x,Sint16 y,Uint16 w,Uint16 h);
 	void paintRect(SDL_Rect rect);
+
+	void paintLine(int x1,int y1,int x2,int y2);
+	void paintPoint(int x,int y);
+
 
 	void clearWindow();
 	void renderToScreen();

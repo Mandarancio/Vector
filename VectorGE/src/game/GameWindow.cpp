@@ -7,13 +7,17 @@
 
 #include "GameWindow.h"
 
-#include <SDL2/SDL2_gfxPrimitives.h>
+
 GameWindow::GameWindow(std::string title) {
 	if (SDL_Init( SDL_INIT_VIDEO) < 0) {
 		//Error: The video can not be enabled... abort program...
 	} else {
 		window_ = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+		//ANTI ALIASING
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+//		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+
 		if (window_ == NULL) {
 			//Error: you shall don't pass <img src="http://dadf.altervista.org/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" class="wp-smiley">  abort program
 		} else {
