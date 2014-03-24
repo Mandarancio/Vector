@@ -98,3 +98,13 @@ void Painter::scale(double s) {
 	transformation->scale(s);
 	font=new Font(font->getName(),font->getSize()*s);
 }
+
+void Painter::save(){
+	history.push_back(transformation->clone());
+}
+void Painter::restore(){
+	if (history.size()>0){
+		transformation=history.back()->clone();
+		history.pop_back();
+	}
+}

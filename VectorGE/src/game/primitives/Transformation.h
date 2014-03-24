@@ -14,6 +14,7 @@
 class Transformation: public Entity {
 public:
 	Transformation();
+	Transformation(SDL_Point translation,double rotation,double scale);
 	virtual ~Transformation();
 
 	void applyTransformation(SDL_Point &p);
@@ -30,6 +31,8 @@ public:
 
 	SDL_Point getTransaltion();
 	double getScale();
+
+	Transformation * clone();
 private:
 	void applyTranslation(SDL_Point &p);
 	void applyScale(SDL_Point &p);

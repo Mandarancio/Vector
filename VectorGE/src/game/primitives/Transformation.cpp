@@ -14,6 +14,12 @@ Transformation::Transformation() {
 	scale_ = 1.0;
 }
 
+Transformation::Transformation(SDL_Point translation, double rotation, double scale) :
+		translation_(translation), rotation_(rotation), scale_(scale)
+{
+
+}
+
 Transformation::~Transformation() {
 }
 
@@ -73,16 +79,16 @@ void Transformation::translate(SDL_Point p) {
 	translation_.y += p.y;
 }
 
-void Transformation::scale(double f){
-	if (f>0)
-		scale_=f;
+void Transformation::scale(double f) {
+	if (f > 0)
+		scale_ = f;
 }
 
 SDL_Point Transformation::getTransaltion() {
 	return translation_;
 }
 
-double Transformation::getScale(){
+double Transformation::getScale() {
 	return scale_;
 }
 
@@ -92,6 +98,10 @@ void Transformation::applyTranslation(SDL_Point &p) {
 }
 
 void Transformation::applyScale(SDL_Point &p) {
-	p.x*=scale_;
-	p.y*=scale_;
+	p.x *= scale_;
+	p.y *= scale_;
+}
+
+Transformation * Transformation::clone(){
+	return new Transformation(translation_,rotation_,scale_);
 }

@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
 	GameWindow *gw = new GameWindow();
 	Painter *p= new Painter(gw->renderer());
 	Camera *c = new Camera(p);
-	GameScene *scene=new GameScene(c,0,9.8);
+	GameScene *scene=new GameScene(c,0,0.0);//9.8);
 //	p->translate(400,300);
 //	p->scale(1.5);
 

@@ -8,6 +8,7 @@
 #ifndef PAINTER_H_
 #define PAINTER_H_
 #include <SDL2/SDL_render.h>
+#include <vector>
 #include <string>
 
 #include "../core/Entity.h"
@@ -37,7 +38,11 @@ public:
 	void translate(int x,int y);
 	void scale(double s);
 
+	void save();
+	void restore();
+
 private:
+	std::vector<Transformation*> history;
 	Transformation * transformation;
 	SDL_Renderer * renderer;
 	Color fill;

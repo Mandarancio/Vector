@@ -20,7 +20,7 @@ SimpleSquare::SimpleSquare(b2World * world) :
 
 	b2FixtureDef fDef;
 	fDef.density = 1.0;
-	fDef.friction = 1.0;
+	fDef.friction = 0.0;
 	b2PolygonShape * shape = new b2PolygonShape();
 	shape->SetAsBox(0.1, 0.1);
 	fDef.shape = shape;
@@ -40,7 +40,7 @@ void SimpleSquare::render(Painter * p) {
 void SimpleSquare::step(double dt, SDL_Event event) {
 	pos.x = body->GetPosition().x * 100;
 	pos.y = body->GetPosition().y * 100;
-
+	body->ApplyForceToCenter(b2Vec2(0,10),true);
 	switch (event.type) {
 	case SDL_KEYDOWN:
 		switch (event.key.keysym.sym) {
@@ -51,7 +51,7 @@ void SimpleSquare::step(double dt, SDL_Event event) {
 //			body->ApplyForceToCenter(b2Vec2(1, 0), true);
 //			break;
 		case SDLK_UP:
-			body->ApplyForceToCenter(b2Vec2(0, -1), true);
+			body->ApplyForceToCenter(b2Vec2(0, -15), true);
 			break;
 //		case SDLK_DOWN:
 //			body->ApplyForceToCenter(b2Vec2(0,1), true);
