@@ -30,7 +30,7 @@ void GameScene::gameLoop(int dt) {
 		gettimeofday(&present, NULL);
 		delta = (present.tv_usec - past.tv_usec) / 1000.0;
 		camera->getPainter()->clearWindow();
-		SDL_WaitEvent(&event);
+		SDL_PollEvent(&event);
 
 		for (int i = 0; i < gameEntities.size(); i++) {
 			gameEntities[i]->step(delta,event);

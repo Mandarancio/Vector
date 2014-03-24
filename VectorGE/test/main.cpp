@@ -10,16 +10,19 @@
 #include "../src/game/GameScene.h"
 #include "../src/game/BackgroundLayer.h"
 
+#include "SimpleSquare.h"
 
 int main(int argc, char **argv) {
 	GameWindow *gw = new GameWindow();
 	Painter *p= new Painter(gw->renderer());
 	Camera *c = new Camera(p);
 	GameScene *scene=new GameScene(c,0);
-	p->translate(400,300);
-	p->scale(0.5);
+//	p->translate(400,300);
+//	p->scale(0.5);
 
 	scene->addEntity(new BackgroundLayer());
+	scene->addEntity(new SimpleSquare());
+
 	scene->gameLoop();
 
 	delete c;
