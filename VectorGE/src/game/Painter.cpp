@@ -83,6 +83,12 @@ void Painter::paintText(std::string text, int x, int y) {
 	SDL_RenderCopy(renderer, texture, NULL, &r);
 }
 
+void Painter::paintTexture(SDL_Texture *texture,SDL_Rect bounds){
+	transformation->applyTransformation(bounds.x,bounds.y);
+	transformation->applySizeTransformation(bounds.w,bounds.h);
+	SDL_RenderCopy(renderer,texture,NULL,&bounds);
+}
+
 void Painter::clearWindow() {
 	SDL_RenderClear(renderer);
 }
@@ -100,11 +106,11 @@ void Painter::scale(double s) {
 }
 
 void Painter::save(){
-	history.push_back(transformation->clone());
+	transformationHistory.push_back(transformation->clone());
 }
 void Painter::restore(){
-	if (history.size()>0){
-		transformation=history.back()->clone();
-		history.pop_back();
+	if (transformationHistory.size()>0){
+		transformation=transformationHistory.back()->clone();
+		transformationHistory.pop_back();
 	}
 }

@@ -19,7 +19,6 @@ public:
 	virtual ~GameEntity();
 	virtual void render(Painter * p)=0;
 	virtual void step(double dt,SDL_Event event);
-	virtual b2Body * getBody();
 };
 
 #endif /* GAMEENTITY_H_ */

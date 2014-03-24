@@ -32,6 +32,8 @@ public:
 
 	void paintText(std::string text,int x,int y);
 
+	void paintTexture(SDL_Texture *texture,SDL_Rect bounds);
+
 	void clearWindow();
 	void renderToScreen();
 
@@ -42,12 +44,12 @@ public:
 	void restore();
 
 private:
-	std::vector<Transformation*> history;
-	Transformation * transformation;
-	SDL_Renderer * renderer;
-	Color fill;
-	Color pen;
-	Font *font;
+	std::vector<Transformation*> 	transformationHistory;
+	Transformation * 				transformation;
+	SDL_Renderer * 					renderer;
+	Color 							fill;
+	Color 							pen;
+	Font *							font;
 };
 
 #endif /* PAINTER_H_ */

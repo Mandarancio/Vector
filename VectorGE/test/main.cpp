@@ -23,6 +23,7 @@ int main(int argc, char **argv) {
 	scene->addEntity(new BackgroundLayer());
 	scene->addEntity(new SimpleSquare(scene->getWorld()));
 
+	SDL_Delay(1000);
 	scene->gameLoop(1);
 
 	delete c;
