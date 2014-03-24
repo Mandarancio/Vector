@@ -11,20 +11,55 @@ Transformation::Transformation() {
 	translation_.x = 0;
 	translation_.y = 0;
 	rotation_ = 0.0;
+	scale_ = 1.0;
 }
 
 Transformation::~Transformation() {
 }
 
-SDL_Point Transformation::applyTransformation(SDL_Point p) {
-	return applyTranslation(p);
+void Transformation::applyTransformation(SDL_Point &p) {
+	applyTranslation(p);
+	applyScale(p);
 }
-SDL_Point Transformation::applyTransformation(int x, int y) {
+
+void Transformation::applyTransformation(int &x, int &y) {
 	SDL_Point p;
 	p.x = x;
 	p.y = y;
 
-	return applyTransformation(p);
+	applyTransformation(p);
+
+	x = p.x;
+	y = p.y;
+}
+
+void Transformation::applyTransformation(Sint16 &x, Sint16 &y) {
+	SDL_Point p;
+	p.x = x;
+	p.y = y;
+
+	applyTransformation(p);
+
+	x = p.x;
+	y = p.y;
+}
+
+void Transformation::applySizeTransformation(int &w, int &h) {
+	SDL_Point p;
+	p.x = w;
+	p.y = h;
+	applyScale(p);
+	w = p.x;
+	h = p.y;
+}
+
+void Transformation::applySizeTransformation(Uint16 &w, Uint16 &h) {
+	SDL_Point p;
+	p.x = w;
+	p.y = h;
+	applyScale(p);
+	w = p.x;
+	h = p.y;
 }
 
 void Transformation::translate(int x, int y) {
@@ -38,14 +73,21 @@ void Transformation::translate(SDL_Point p) {
 	translation_.y += p.y;
 }
 
+void Transformation::scale(double f){
+	if (f>0)
+		scale_=f;
+}
+
 SDL_Point Transformation::getTransaltion() {
 	return translation_;
 }
 
+void Transformation::applyTranslation(SDL_Point &p) {
+	p.x += translation_.x;
+	p.y += translation_.y;
+}
 
-SDL_Point Transformation::applyTranslation(SDL_Point p){
-	SDL_Point tp;
-	tp.x=p.x+translation_.x;
-	tp.y=p.y+translation_.y;
-	return tp;
+void Transformation::applyScale(SDL_Point &p) {
+	p.x*=scale_;
+	p.y*=scale_;
 }

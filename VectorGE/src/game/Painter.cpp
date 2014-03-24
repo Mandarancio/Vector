@@ -11,6 +11,7 @@
 
 Painter::Painter(SDL_Renderer * rend) :
 		renderer(rend), fill(255, 255, 255, 255), pen(0, 0, 0, 255) {
+	transformation=new Transformation();
 }
 
 Painter::~Painter() {
@@ -35,6 +36,11 @@ void Painter::paintRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h) {
 }
 
 void Painter::paintRect(SDL_Rect rect) {
+
+	transformation->applyTransformation(rect.x,rect.y);
+	transformation->applySizeTransformation(rect.w,rect.h);
+
+
 	SDL_SetRenderDrawColor(renderer, fill.red(), fill.green(), fill.blue(),
 			fill.alpha());
 	SDL_RenderFillRect(renderer, &rect);
@@ -44,6 +50,8 @@ void Painter::paintRect(SDL_Rect rect) {
 }
 
 void Painter::paintLine(int x1, int y1, int x2, int y2) {
+	transformation->applyTransformation(x1,y1);
+	transformation->applyTransformation(x2,y2);
 	SDL_SetRenderDrawColor(renderer, pen.red(), pen.green(), pen.blue(),
 			pen.alpha());
 	SDL_RenderDrawLine(renderer,x1,y1,x2,y2);
@@ -51,6 +59,7 @@ void Painter::paintLine(int x1, int y1, int x2, int y2) {
 
 
 void Painter::paintPoint(int x, int y) {
+	transformation->applyTransformation(x,y);
 	SDL_SetRenderDrawColor(renderer, pen.red(), pen.green(), pen.blue(),
 			pen.alpha());
 	SDL_RenderDrawPoint(renderer,x,y);
@@ -61,4 +70,12 @@ void Painter::clearWindow() {
 }
 void Painter::renderToScreen() {
 	SDL_RenderPresent(renderer);
+}
+
+void Painter::translate(int x,int y){
+	transformation->translate(x,y);
+}
+
+void Painter::scale(double s){
+	transformation->scale(s);
 }

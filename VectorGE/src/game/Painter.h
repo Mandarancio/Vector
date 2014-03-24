@@ -11,8 +11,7 @@
 
 #include "../core/Entity.h"
 #include "primitives/Color.h"
-
-
+#include "primitives/Transformation.h"
 
 
 class Painter: public Entity {
@@ -28,11 +27,13 @@ public:
 	void paintLine(int x1,int y1,int x2,int y2);
 	void paintPoint(int x,int y);
 
-
 	void clearWindow();
 	void renderToScreen();
 
+	void translate(int x,int y);
+	void scale(double s);
 private:
+	Transformation * transformation;
 	SDL_Renderer * renderer;
 	Color fill;
 	Color pen;

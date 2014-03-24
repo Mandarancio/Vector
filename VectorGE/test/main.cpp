@@ -16,6 +16,9 @@ int main(int argc, char **argv) {
 	Painter *p= new Painter(gw->renderer());
 	Camera *c = new Camera(p);
 	GameScene *scene=new GameScene(c,0);
+	p->translate(400,300);
+	p->scale(0.5);
+
 	scene->addEntity(new BackgroundLayer());
 	scene->gameLoop();
 
