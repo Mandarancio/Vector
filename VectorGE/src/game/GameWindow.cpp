@@ -8,12 +8,14 @@
 #include "GameWindow.h"
 #include <SDL2/SDL_ttf.h>
 
-GameWindow::GameWindow(std::string title) {
+GameWindow::GameWindow(std::string title,Uint32 w,Uint32 h) {
+	size_.width=w;
+	size_.height=h;
 	if (SDL_Init( SDL_INIT_VIDEO) < 0) {
 		//Error: The video can not be enabled... abort program...
 	} else {
 		window_ = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+		SDL_WINDOWPOS_UNDEFINED, w,h, SDL_WINDOW_SHOWN);
 		//ANTI ALIASING
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 
@@ -30,7 +32,7 @@ GameWindow::GameWindow(std::string title) {
 			}
 		}
 	}
-
+	painter_= new Painter(renderer_,size_);
 }
 
 GameWindow::~GameWindow() {
@@ -41,6 +43,11 @@ GameWindow::~GameWindow() {
 
 }
 
-SDL_Renderer * GameWindow::renderer() {
-	return renderer_;
+
+SDL_Size GameWindow::getSize(){
+	return size_;
+}
+
+Painter * GameWindow::painter(){
+	return painter_;
 }

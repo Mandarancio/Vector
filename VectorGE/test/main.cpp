@@ -14,14 +14,13 @@
 
 int main(int argc, char **argv) {
 	GameWindow *gw = new GameWindow();
-	Painter *p= new Painter(gw->renderer());
-	Camera *c = new Camera(p);
+	Camera *c = new Camera(gw->painter());
 	GameScene *scene=new GameScene(c,0,0.0);//9.8);
 //	p->translate(400,300);
 //	p->scale(1.5);
 
 	scene->addEntity(new BackgroundLayer());
-	scene->addEntity(new SimpleSquare(scene->getWorld()));
+	scene->addEntity(new SimpleSquare(scene->getWorld(),c));
 
 	SDL_Delay(1000);
 	scene->gameLoop(1);

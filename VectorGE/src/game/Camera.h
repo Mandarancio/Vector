@@ -15,9 +15,9 @@ public:
 	Camera(Painter *p);
 	virtual ~Camera();
 	Painter * getPainter();
+	void translate(int x,int y);
 private:
 	Painter * painter;
-
-};
+	};
 
 #endif /* CAMERA_H_ */

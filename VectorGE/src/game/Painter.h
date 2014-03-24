@@ -15,10 +15,11 @@
 #include "primitives/Color.h"
 #include "primitives/Transformation.h"
 #include "primitives/Font.h"
+#include "primitives/SDLSize.h"
 
 class Painter: public Entity {
 public:
-	Painter(SDL_Renderer * rend);
+	Painter(SDL_Renderer * rend,SDL_Size size);
 	virtual ~Painter();
 	void setPen(Color c);
 	void setFill(Color c);
@@ -43,6 +44,8 @@ public:
 	void save();
 	void restore();
 
+	SDL_Size getDisplaySize();
+
 private:
 	std::vector<Transformation*> 	transformationHistory;
 	Transformation * 				transformation;
@@ -50,6 +53,7 @@ private:
 	Color 							fill;
 	Color 							pen;
 	Font *							font;
+	SDL_Size						displaySize;
 };
 
 #endif /* PAINTER_H_ */

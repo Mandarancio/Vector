@@ -8,7 +8,6 @@
 #include "Camera.h"
 
 Camera::Camera(Painter *p) : Entity(), painter(p){
-
 }
 
 Camera::~Camera() {
@@ -17,4 +16,8 @@ Camera::~Camera() {
 
 Painter * Camera::getPainter(){
 	return painter;
+}
+
+void Camera::translate(int x,int y){
+	painter->translate(x,y);
 }

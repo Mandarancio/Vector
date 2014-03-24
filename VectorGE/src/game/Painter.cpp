@@ -9,8 +9,8 @@
 #include "../support/Logging.h"
 #include <iostream>
 
-Painter::Painter(SDL_Renderer * rend) :
-		renderer(rend), fill(255, 255, 255, 255), pen(0, 0, 0, 255) {
+Painter::Painter(SDL_Renderer * rend,SDL_Size size) :
+		renderer(rend), fill(255, 255, 255, 255), pen(0, 0, 0, 255), displaySize(size) {
 	transformation = new Transformation();
 	font = new Font();
 }
@@ -113,4 +113,8 @@ void Painter::restore(){
 		transformation=transformationHistory.back()->clone();
 		transformationHistory.pop_back();
 	}
+}
+
+SDL_Size Painter::getDisplaySize(){
+	return displaySize;
 }
