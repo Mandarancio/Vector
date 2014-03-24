@@ -9,12 +9,13 @@
 #define GAMEENTITY_H_
 
 #include "../core/Entity.h"
+#include "Painter.h"
 
 class GameEntity: public Entity {
 public:
 	GameEntity();
 	virtual ~GameEntity();
-	virtual void render()=0;
+	virtual void render(Painter * p)=0;
 };
 
 #endif /* GAMEENTITY_H_ */

@@ -22,6 +22,8 @@ class GameScene: public Entity {
 public:
 	GameScene(Camera * camera, b2World *world=0);
 	virtual ~GameScene();
+	void render();
+	void addEntity(GameEntity *ge);
 
 private:
 	std::string sceneName;

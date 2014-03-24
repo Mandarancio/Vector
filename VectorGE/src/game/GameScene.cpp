@@ -15,3 +15,15 @@ GameScene::GameScene(Camera * camera, b2World *world) :Entity() {
 GameScene::~GameScene() {
 }
 
+void GameScene::render(){
+	camera->getPainter()->clearWindow();
+
+	for (int i=0;i<gameEntities.size();i++){
+		gameEntities[i]->render(camera->getPainter());
+	}
+
+	camera->getPainter()->renderToScreen();
+}
+void GameScene::addEntity(GameEntity *ge){
+	gameEntities.push_back(ge);
+}

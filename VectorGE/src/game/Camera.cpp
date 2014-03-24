@@ -7,11 +7,14 @@
 
 #include "Camera.h"
 
-Camera::Camera(SDL_Renderer *renderer) : Entity(){
-	this->renderer=renderer;
+Camera::Camera(Painter *p) : Entity(), painter(p){
+
 }
 
 Camera::~Camera() {
 	// TODO Auto-generated destructor stub
 }
 
+Painter * Camera::getPainter(){
+	return painter;
+}

@@ -8,16 +8,15 @@
 #ifndef CAMERA_H_
 #define CAMERA_H_
 #include "../core/Entity.h"
-
-#include <SDL2/SDL.h>
+#include "Painter.h"
 
 class Camera : public Entity {
 public:
-	Camera(SDL_Renderer *renderer);
+	Camera(Painter *p);
 	virtual ~Camera();
-
+	Painter * getPainter();
 private:
-	SDL_Renderer * renderer;
+	Painter * painter;
 
 };
 
