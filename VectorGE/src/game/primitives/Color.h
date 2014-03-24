@@ -14,15 +14,13 @@ public:
 	virtual ~Color();
 	Uint32 getARGB();
 	Uint32 getRGBA();
+	SDL_Color getSDLColor();
 	Uint8 red();
 	Uint8 green();
 	Uint8 blue();
 	Uint8 alpha();
 private:
-	Uint8 red_;
-	Uint8 green_;
-	Uint8 blue_;
-	Uint8 alpha_;
+	SDL_Color color;
 };
 
 #endif /* COLOR_H_ */

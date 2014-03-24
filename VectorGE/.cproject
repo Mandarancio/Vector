@@ -41,8 +41,9 @@
 								<option defaultValue="false" id="llvm.c.link.option.nativeCBackEnd.2072376262" name="Create native binary (with C backend code generator)" superClass="llvm.c.link.option.nativeCBackEnd" valueType="boolean"/>
 								<option id="llvm.c.link.option.libs.1430329474" name="Libraries (-l)" superClass="llvm.c.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="stdc++"/>
-									<listOptionValue builtIn="false" value="Box2D"/>
 									<listOptionValue builtIn="false" value="SDL2"/>
+									<listOptionValue builtIn="false" value="SDL2_ttf"/>
+									<listOptionValue builtIn="false" value="Box2D"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.llvm.c.linker.input.1164769622" superClass="cdt.managedbuild.tool.llvm.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

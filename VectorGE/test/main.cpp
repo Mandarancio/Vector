@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 	scene->addEntity(new BackgroundLayer());
 	scene->addEntity(new SimpleSquare());
 
-	scene->gameLoop();
+	scene->gameLoop(1);
 
 	delete c;
 	delete gw;

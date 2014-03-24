@@ -8,11 +8,13 @@
 #ifndef PAINTER_H_
 #define PAINTER_H_
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_ttf.h>
+
+#include <string>
 
 #include "../core/Entity.h"
 #include "primitives/Color.h"
 #include "primitives/Transformation.h"
-
 
 class Painter: public Entity {
 public:
@@ -20,6 +22,7 @@ public:
 	virtual ~Painter();
 	void setPen(Color c);
 	void setFill(Color c);
+	void setFont(TTF_Font * f);
 
 	void paintRect(Sint16 x,Sint16 y,Uint16 w,Uint16 h);
 	void paintRect(SDL_Rect rect);
@@ -27,16 +30,20 @@ public:
 	void paintLine(int x1,int y1,int x2,int y2);
 	void paintPoint(int x,int y);
 
+	void paintText(std::string text,int x,int y);
+
 	void clearWindow();
 	void renderToScreen();
 
 	void translate(int x,int y);
 	void scale(double s);
+
 private:
 	Transformation * transformation;
 	SDL_Renderer * renderer;
 	Color fill;
 	Color pen;
+	TTF_Font *font;
 };
 
 #endif /* PAINTER_H_ */

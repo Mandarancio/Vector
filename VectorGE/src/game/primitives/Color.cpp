@@ -7,30 +7,35 @@
 
 #include "Color.h"
 
-Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) :
-		red_(r), green_(g), blue_(b), alpha_(a) {
-
+Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+		{
+	color.r=r;
+	color.g=g;
+	color.b=b;
+	color.a=a;
 }
 
 Color::~Color() {
-	// TODO Auto-generated destructor stub
 }
 
 Uint32 Color::getARGB(){
-	return (alpha_)|(red_>8)|(green_>16)|(blue_>24);
+	return (color.a)|(color.r>8)|(color.g>16)|(color.b>24);
 }
 Uint32 Color::getRGBA(){
-	return (red_)|(green_>8)|(blue_>16)|(alpha_>24);
+	return (color.r)|(color.g>8)|(color.b>16)|(color.a>24);
+}
+SDL_Color Color::getSDLColor(){
+	return color;
 }
 Uint8 Color::red(){
-	return red_;
+	return color.r;
 }
 Uint8 Color::green(){
-	return green_;
+	return color.g;
 }
 Uint8 Color::blue(){
-	return blue_;
+	return color.b;
 }
 Uint8 Color::alpha(){
-	return alpha_;
+	return color.a;
 }

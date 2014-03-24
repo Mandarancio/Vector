@@ -6,7 +6,7 @@
  */
 
 #include "GameWindow.h"
-
+#include <SDL2/SDL_ttf.h>
 
 GameWindow::GameWindow(std::string title) {
 	if (SDL_Init( SDL_INIT_VIDEO) < 0) {
@@ -16,8 +16,8 @@ GameWindow::GameWindow(std::string title) {
 		SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
 		//ANTI ALIASING
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-//		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
 
+		TTF_Init();
 		if (window_ == NULL) {
 			//Error: you shall don't pass <img src="http://dadf.altervista.org/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" class="wp-smiley">  abort program
 		} else {
@@ -36,7 +36,9 @@ GameWindow::GameWindow(std::string title) {
 GameWindow::~GameWindow() {
 	SDL_DestroyRenderer(renderer_);
 	SDL_DestroyWindow(window_);
+	TTF_Quit();
 	SDL_Quit();
+
 }
 
 SDL_Renderer * GameWindow::renderer() {
