@@ -10,6 +10,7 @@
 
 #include "../src/game/GameEntity.h"
 #include "../src/game/Camera.h"
+#include <Box2D/Box2D.h>
 
 class SimpleSquare: public GameEntity {
 public:
