@@ -7,12 +7,18 @@
 
 #include "Painter.h"
 #include "../support/Logging.h"
+#include "primitives/SolidColorMethod.h"
+
 #include <iostream>
 
+
 Painter::Painter(SDL_Renderer * rend,SDL_Size size) :
-		renderer(rend), fill(255, 255, 255, 255), pen(0, 0, 0, 255), displaySize(size) {
+		renderer(rend), displaySize(size)
+{
 	transformation = new Transformation();
 	font = new Font();
+	fill=new SolidColorMethod(Color(255,255,255));
+	pen=new SolidColorMethod(Color(0,0,0));
 	displayCenter.x=size.width/2;
 	displayCenter.y=size.height/2;
 }
@@ -22,22 +28,32 @@ Painter::~Painter() {
 }
 
 void Painter::setPen(Color c) {
-	pen = c;
+	pen =  new SolidColorMethod(c);
 }
+
+void Painter::setPen(ColorMethod * cm){
+	pen=cm;
+}
+
 void Painter::setFill(Color c) {
-	fill = c;
+	fill = new SolidColorMethod(c);
 }
+
+
+void Painter::setFill(ColorMethod * cm){
+	fill=cm;
+}
+
 
 void Painter::setFont(Font *f) {
 	delete font;
 	font = new Font(f->getName(),f->getSize()*transformation->getScale());
-
 }
 
-Color Painter::getFill(){
+ColorMethod* Painter::getFill(){
 	return fill;
 }
-Color Painter::getPen(){
+ColorMethod* Painter::getPen(){
 	return pen;
 }
 
@@ -55,33 +71,33 @@ void Painter::paintRect(SDL_Rect rect) {
 
 	transformation->applyTransformation(rect.x, rect.y);
 	transformation->applySizeTransformation(rect.w, rect.h);
-
-	SDL_SetRenderDrawColor(renderer, fill.red(), fill.green(), fill.blue(),
-			fill.alpha());
+	Color f=fill->colorAt(0,0);
+	SDL_SetRenderDrawColor(renderer, f.red(), f.green(), f.blue(),
+			f.alpha());
 	SDL_RenderFillRect(renderer, &rect);
-	SDL_SetRenderDrawColor(renderer, pen.red(), pen.green(), pen.blue(),
-			pen.alpha());
+	Color p=pen->colorAt(0,0);
+	SDL_SetRenderDrawColor(renderer, p.red(), p.green(), p.blue(), p.alpha());
 	SDL_RenderDrawRect(renderer, &rect);
 }
 
 void Painter::paintLine(int x1, int y1, int x2, int y2) {
 	transformation->applyTransformation(x1, y1);
 	transformation->applyTransformation(x2, y2);
-	SDL_SetRenderDrawColor(renderer, pen.red(), pen.green(), pen.blue(),
-			pen.alpha());
+	Color p=pen->colorAt(0,0);
+	SDL_SetRenderDrawColor(renderer,  p.red(), p.green(), p.blue(), p.alpha());
 	SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
 void Painter::paintPoint(int x, int y) {
 	transformation->applyTransformation(x, y);
-	SDL_SetRenderDrawColor(renderer, pen.red(), pen.green(), pen.blue(),
-			pen.alpha());
+	Color p=pen->colorAt(0,0);
+	SDL_SetRenderDrawColor(renderer,  p.red(), p.green(), p.blue(), p.alpha());
 	SDL_RenderDrawPoint(renderer, x, y);
 }
 
 void Painter::paintText(std::string text, int x, int y) {
 	font->scale(transformation->getScale());
-	SDL_Surface * surface = font->toSurface(text, pen.getSDLColor());
+	SDL_Surface * surface = font->toSurface(text, pen->colorAt(0,0).getSDLColor());
 	SDL_Rect r = font->textBounds(text);
 	r.x = x;
 	r.y = y;
