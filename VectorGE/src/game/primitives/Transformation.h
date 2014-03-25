@@ -36,6 +36,8 @@ public:
 	double getScale();
 
 	Transformation * clone();
+
+	void reset();
 private:
 	void applyTranslation(SDL_Point &p);
 	void applyScale(SDL_Point &p);

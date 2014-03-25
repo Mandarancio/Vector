@@ -114,3 +114,10 @@ void Transformation::applyScale(SDL_Point &p) {
 Transformation * Transformation::clone(){
 	return new Transformation(translation_,rotation_,scale_);
 }
+
+void Transformation::reset(){
+	translation_.x=0;
+	translation_.y=0;
+	scale_=1.0;
+	rotation_=0.0;
+}

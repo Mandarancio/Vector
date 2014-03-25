@@ -60,8 +60,13 @@ void GameScene::gameLoop(int dt) {
 			if (fps < 0)
 				fps = 0;
 			ss << "FPS: " << fps;
+			camera->getPainter()->save();
+			camera->getPainter()->clearTransaltion();
+
+			camera->getPainter()->setPen(Color(0,0,0,255));
 			camera->getPainter()->paintText(ss.str(), 5, 10);
 			ss.str("");
+			camera->getPainter()->restore();
 		}
 		camera->getPainter()->renderToScreen();
 

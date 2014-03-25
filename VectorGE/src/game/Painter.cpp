@@ -13,6 +13,8 @@ Painter::Painter(SDL_Renderer * rend,SDL_Size size) :
 		renderer(rend), fill(255, 255, 255, 255), pen(0, 0, 0, 255), displaySize(size) {
 	transformation = new Transformation();
 	font = new Font();
+	displayCenter.x=size.width/2;
+	displayCenter.y=size.height/2;
 }
 
 Painter::~Painter() {
@@ -30,6 +32,13 @@ void Painter::setFont(Font *f) {
 	delete font;
 	font = new Font(f->getName(),f->getSize()*transformation->getScale());
 
+}
+
+Color Painter::getFill(){
+	return fill;
+}
+Color Painter::getPen(){
+	return pen;
 }
 
 void Painter::paintRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h) {
@@ -91,8 +100,8 @@ void Painter::paintImage(Image img,SDL_Point pos){
 	SDL_Rect r;
 	r.x=pos.x;
 	r.y=pos.y;
-	r.w=img.getImage()->w;
-	r.h=img.getImage()->h;
+	r.w=img.getSize().width;
+	r.h=img.getSize().height;
 	paintImage(img,r);
 }
 
@@ -100,8 +109,8 @@ void Painter::paintImage(Image img,int x,int y){
 	SDL_Rect r;
 	r.x=x;
 	r.y=y;
-	r.w=img.getImage()->w;
-	r.h=img.getImage()->h;
+	r.w=img.getSize().width;
+	r.h=img.getSize().height;
 	paintImage(img,r);
 }
 
@@ -137,6 +146,15 @@ void Painter::restore(){
 	}
 }
 
+void Painter::clearTransaltion(){
+	transformation->reset();
+}
+
+
 SDL_Size Painter::getDisplaySize(){
 	return displaySize;
+}
+
+SDL_Point Painter::getDisplayCenter(){
+	return displayCenter;
 }

@@ -10,19 +10,18 @@
 #include "../src/game/GameScene.h"
 #include "../src/game/BackgroundLayer.h"
 
+#include "TestAnimation.h"
 #include "SimpleSquare.h"
 
 int main(int argc, char **argv) {
 	GameWindow *gw = new GameWindow();
 	Camera *c = new Camera(gw->painter());
 	GameScene *scene=new GameScene(c,0,0.0);//9.8);
-//	p->translate(400,300);
-//	p->scale(1.5);
 
 	scene->addEntity(new BackgroundLayer());
-	scene->addEntity(new SimpleSquare(scene->getWorld(),c));
+//	scene->addEntity(new SimpleSquare(scene->getWorld(),c));
+	scene->addEntity(new TestAnimation());
 
-	SDL_Delay(1000);
 	scene->gameLoop(1);
 
 	delete c;

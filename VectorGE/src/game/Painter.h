@@ -26,6 +26,9 @@ public:
 	void setFill(Color c);
 	void setFont(Font * f);
 
+	Color getFill();
+	Color getPen();
+
 	void paintRect(Sint16 x,Sint16 y,Uint16 w,Uint16 h);
 	void paintRect(SDL_Rect rect);
 
@@ -50,7 +53,10 @@ public:
 	void save();
 	void restore();
 
+	void clearTransaltion();
+
 	SDL_Size getDisplaySize();
+	SDL_Point getDisplayCenter();
 
 private:
 	std::vector<Transformation*> 	transformationHistory;
@@ -60,6 +66,7 @@ private:
 	Color 							pen;
 	Font *							font;
 	SDL_Size						displaySize;
+	SDL_Point						displayCenter;
 };
 
 #endif /* PAINTER_H_ */
