@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sys/time.h>
 #include <sstream>
+#include <cmath>
 
 #define FPS_DEBUG true
 
@@ -65,17 +66,15 @@ void GameScene::gameLoop(int dt) {
 
 		gettimeofday(&past, NULL);
 
-		if (dt > 0 && FPS_DEBUG) {
-			delta = (present.tv_usec - past.tv_usec) / 1000.0;
+		if (FPS_DEBUG) {
+			delta = -(present.tv_usec - past.tv_usec) / 1000.0;
+			fps = abs(1000.0 / delta);
 
-			fps = 1000.0 / delta;
-			if (fps < 0)
-				fps = 0;
 			ss << "FPS: " << fps;
 			camera->getPainter()->save();
 			camera->getPainter()->clearTransaltion();
 
-			camera->getPainter()->setPen(Color(0, 0, 0, 255));
+			camera->getPainter()->setPen(Color(125, 125, 125, 255));
 			camera->getPainter()->paintText(ss.str(), 5, 10);
 			ss.str("");
 			camera->getPainter()->restore();
