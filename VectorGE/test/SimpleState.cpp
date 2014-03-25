@@ -23,7 +23,7 @@ SimpleState::~SimpleState() {
 	// TODO Auto-generated destructor stub
 }
 
-State* SimpleState::run() {
+State* SimpleState::run(int dt) {
 	std::cout << question_ << "\n";
 	if (answers_.size()==0)
 		return 0;

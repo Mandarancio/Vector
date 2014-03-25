@@ -17,7 +17,7 @@ public:
 	SimpleState(std::string question,std::map<std::string,SimpleState*> answers,State * parent=0);
 	SimpleState(std::string affirmation,State * parent=0);
 	virtual ~SimpleState();
-	virtual State* run();
+	virtual State* run(int dt=0);
 private:
 	std::string question_;
 	std::map<std::string,SimpleState*> answers_;

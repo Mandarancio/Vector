@@ -14,7 +14,8 @@ class State: public Entity {
 public:
 	State(State * parent=0);
 	virtual ~State();
-	virtual State* run()=0;
+	virtual State* run(int dt=0)=0;
+
 	State * next();
 	State * prevous();
 	State * transitionStart();
