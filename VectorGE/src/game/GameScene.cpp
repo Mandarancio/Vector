@@ -16,15 +16,16 @@ GameScene::GameScene(Camera * camera, b2World *world) :
 		Entity() {
 	this->camera = camera;
 	this->world = world;
-	positionIterations=8;
-	velocityIterations=10;
+	positionIterations = 8;
+	velocityIterations = 10;
 }
 
-GameScene::GameScene(Camera * camera,float gx,float gy):Entity(){
+GameScene::GameScene(Camera * camera, float gx, float gy) :
+		Entity() {
 	this->camera = camera;
-	this->world=new b2World(b2Vec2(gx,gy));
-	positionIterations=8;
-	velocityIterations=10;
+	this->world = new b2World(b2Vec2(gx, gy));
+	positionIterations = 8;
+	velocityIterations = 10;
 }
 
 GameScene::~GameScene() {
@@ -44,18 +45,29 @@ void GameScene::gameLoop(int dt) {
 		delta = (present.tv_usec - past.tv_usec) / 1000.0;
 		camera->getPainter()->clearWindow();
 
-		if (world!=0){
-			float dt=delta/1000.0;
-			world->Step(dt,velocityIterations,positionIterations);
+		if (world != 0) {
+			float dt = delta / 1000.0;
+			world->Step(dt, velocityIterations, positionIterations);
 		}
 
 		SDL_PollEvent(&event);
+		switch (event.type) {
+		case SDL_QUIT:
+			std::cout << "here";
+			quit = true;
+			break;
+		}
 
 		for (int i = 0; i < gameEntities.size(); i++) {
 			gameEntities[i]->step(delta, event);
 			gameEntities[i]->render(camera->getPainter());
 		}
+
+		gettimeofday(&past, NULL);
+
 		if (dt > 0 && FPS_DEBUG) {
+			delta = (present.tv_usec - past.tv_usec) / 1000.0;
+
 			fps = 1000.0 / delta;
 			if (fps < 0)
 				fps = 0;
@@ -63,20 +75,13 @@ void GameScene::gameLoop(int dt) {
 			camera->getPainter()->save();
 			camera->getPainter()->clearTransaltion();
 
-			camera->getPainter()->setPen(Color(0,0,0,255));
+			camera->getPainter()->setPen(Color(0, 0, 0, 255));
 			camera->getPainter()->paintText(ss.str(), 5, 10);
 			ss.str("");
 			camera->getPainter()->restore();
 		}
 		camera->getPainter()->renderToScreen();
 
-		switch (event.type) {
-		case SDL_QUIT:
-			quit = true;
-			break;
-		}
-
-		gettimeofday(&past, NULL);
 		if (dt > 0)
 			SDL_Delay(dt);
 
@@ -87,7 +92,7 @@ void GameScene::addEntity(GameEntity *ge) {
 	gameEntities.push_back(ge);
 }
 
-b2World * GameScene::getWorld(){
+b2World * GameScene::getWorld() {
 	return world;
 }
 

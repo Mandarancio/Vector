@@ -8,9 +8,10 @@
 #include "Painter.h"
 #include "../support/Logging.h"
 #include "primitives/SolidColorMethod.h"
-
+#include <SDL2/SDL_surface.h>
 #include <math.h>
 #include <iostream>
+
 
 Painter::Painter(SDL_Renderer * rend,SDL_Size size) :
 renderer(rend), displaySize(size)
@@ -71,13 +72,14 @@ void Painter::paintRect(SDL_Rect rect) {
 
 	transformation->applyTransformation(rect.x, rect.y);
 	transformation->applySizeTransformation(rect.w, rect.h);
-	Color f=fill->colorAt(0,0);
-	SDL_SetRenderDrawColor(renderer, f.red(), f.green(), f.blue(),
-			f.alpha());
-	SDL_RenderFillRect(renderer, &rect);
-	Color p=pen->colorAt(0,0);
-	SDL_SetRenderDrawColor(renderer, p.red(), p.green(), p.blue(), p.alpha());
-	SDL_RenderDrawRect(renderer, &rect);
+	for (int x=rect.x;x<=rect.x+rect.w;x++){
+		for (int y=rect.y;y<=rect.y+rect.h;y++){
+			if (x==rect.x || x==rect.x+rect.w||y==rect.y || y==rect.y+rect.h)
+				paintPoint(x,y,pen);
+			else
+				paintPoint(x,y,fill);
+		}
+	}
 }
 
 void Painter::paintLine(int x1, int y1, int x2, int y2) {
@@ -179,6 +181,7 @@ void Painter::paintPolygon(Polygon p){
 
 void Painter::clearWindow() {
 	SDL_RenderClear(renderer);
+
 }
 void Painter::renderToScreen() {
 	SDL_RenderPresent(renderer);
@@ -218,6 +221,7 @@ SDL_Point Painter::getDisplayCenter(){
 void Painter::paintPoint(int x,int y, ColorMethod *cm){
 
 	Color p=cm->colorAt(x,y);
+
 	SDL_SetRenderDrawColor(renderer,  p.red(), p.green(), p.blue(), p.alpha());
 	SDL_RenderDrawPoint(renderer, x, y);
 }
