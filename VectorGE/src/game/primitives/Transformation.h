@@ -9,7 +9,9 @@
 #define TRANSFORMATION_H_
 
 #include <SDL2/SDL.h>
+
 #include "../../core/Entity.h"
+#include "SDLSize.h"
 
 class Transformation: public Entity {
 public:
@@ -23,6 +25,7 @@ public:
 
 	void applySizeTransformation(int &w,int &h);
 	void applySizeTransformation(Uint16 &w,Uint16 &h);
+	void applySizeTransformation(SDL_Size size);
 
 	void translate(int x,int y);
 	void translate(SDL_Point p);

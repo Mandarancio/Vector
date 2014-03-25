@@ -83,6 +83,28 @@ void Painter::paintText(std::string text, int x, int y) {
 	SDL_RenderCopy(renderer, texture, NULL, &r);
 }
 
+void Painter::paintImage(Image img,SDL_Rect bounds){
+	paintTexture(img.getTexture(renderer),bounds);
+}
+
+void Painter::paintImage(Image img,SDL_Point pos){
+	SDL_Rect r;
+	r.x=pos.x;
+	r.y=pos.y;
+	r.w=img.getImage()->w;
+	r.h=img.getImage()->h;
+	paintImage(img,r);
+}
+
+void Painter::paintImage(Image img,int x,int y){
+	SDL_Rect r;
+	r.x=x;
+	r.y=y;
+	r.w=img.getImage()->w;
+	r.h=img.getImage()->h;
+	paintImage(img,r);
+}
+
 void Painter::paintTexture(SDL_Texture *texture,SDL_Rect bounds){
 	transformation->applyTransformation(bounds.x,bounds.y);
 	transformation->applySizeTransformation(bounds.w,bounds.h);

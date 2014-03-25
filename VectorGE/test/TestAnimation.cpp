@@ -16,5 +16,7 @@ TestAnimation::~TestAnimation() {
 	// TODO Auto-generated destructor stub
 }
 
-void TestAnimation::render(Painter * p){}
+void TestAnimation::render(Painter * p){
+
+}
 void TestAnimation::step(double dt,SDL_Event event){}

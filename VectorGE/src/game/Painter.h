@@ -16,6 +16,7 @@
 #include "primitives/Transformation.h"
 #include "primitives/Font.h"
 #include "primitives/SDLSize.h"
+#include "primitives/Image.h"
 
 class Painter: public Entity {
 public:
@@ -33,7 +34,12 @@ public:
 
 	void paintText(std::string text,int x,int y);
 
+	void paintImage(Image img,SDL_Rect bounds);
+	void paintImage(Image img,SDL_Point pos);
+	void paintImage(Image img,int x,int y);
+
 	void paintTexture(SDL_Texture *texture,SDL_Rect bounds);
+
 
 	void clearWindow();
 	void renderToScreen();

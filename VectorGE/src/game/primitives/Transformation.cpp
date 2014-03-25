@@ -68,6 +68,15 @@ void Transformation::applySizeTransformation(Uint16 &w, Uint16 &h) {
 	h = p.y;
 }
 
+void Transformation::applySizeTransformation(SDL_Size size){
+	SDL_Point p;
+	p.x = size.width;
+	p.y = size.height;
+	applyScale(p);
+	size.width=p.x;
+	size.height=p.y;
+}
+
 void Transformation::translate(int x, int y) {
 	SDL_Point p;
 	p.x = x;
