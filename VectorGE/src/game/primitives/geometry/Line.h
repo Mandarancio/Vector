@@ -17,7 +17,7 @@ public:
 	Line(int x1,int y1,int x2,int y2);
 	virtual ~Line();
 
-	bool pointOnLine(SDL_Point p);
+	bool contains(SDL_Point p);
 	bool intersectLine(Line l);
 
 	SDL_Rect getBoundingBox();
