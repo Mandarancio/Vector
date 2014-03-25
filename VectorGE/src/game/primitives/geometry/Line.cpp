@@ -8,6 +8,8 @@
 #include "Line.h"
 #include "../../../support/Geometric.h"
 
+#include <math.h>
+
 Line::Line(SDL_Point p1, SDL_Point p2) :
 		p1_(p1), p2_(p2) {
 	computeBox();
@@ -28,8 +30,13 @@ bool Line::contains(SDL_Point p) {
 	if (!rectContains(boundingBox_,p))
 		return false;
 
+	int dx=boundingBox_.w;
+	int k=boundingBox_.h/dx;
+	int y=boundingBox_.y+k*(p.x-boundingBox_.x);
+	if (abs(y-p.y)<0.1)
+		return true;
 
-	return true;
+	return false;
 }
 
 bool Line::intersectLine(Line l) {
