@@ -11,30 +11,32 @@
 #include <iostream>
 
 Font::Font() {
-	ttf_file = "./resources/DejaVuSans.ttf";
-	size = 20;
-	font = TTF_OpenFont(ttf_file.c_str(), size);
+	ttf_file_ = "./resources/DejaVuSans.ttf";
+	size_ = 20;
+	font_ = TTF_OpenFont(ttf_file_.c_str(), size_);
 
-	if (font == 0) {
+	if (font_ == 0) {
 		logSDLError(std::cout, "TTF_OpenFont");
 	}
+	scale_=1.0;
 }
 
 Font::Font(std::string font, int size) {
-	ttf_file = font;
-	this->size = size;
-	this->font = TTF_OpenFont(ttf_file.c_str(), size);
+	ttf_file_ = font;
+	this->size_ = size;
+	this->font_ = TTF_OpenFont(ttf_file_.c_str(), size);
 
-	if (this->font == 0) {
+	if (this->font_ == 0) {
 		logSDLError(std::cout, "TTF_OpenFont");
 	}
+	scale_=1.0;
 }
 
 Font::~Font() {
 }
 
 SDL_Surface * Font::toSurface(std::string text, SDL_Color color) {
-	SDL_Surface *surf = TTF_RenderText_Blended(font, text.c_str(), color);
+	SDL_Surface *surf = TTF_RenderText_Blended(font_, text.c_str(), color);
 	if (surf == 0) {
 		logSDLError(std::cout, "TTF_RenderText");
 		return 0;
@@ -44,7 +46,7 @@ SDL_Surface * Font::toSurface(std::string text, SDL_Color color) {
 
 SDL_Rect Font::textBounds(std::string text) {
 	Color c;
-	SDL_Surface *surf = TTF_RenderText_Blended(font, text.c_str(),
+	SDL_Surface *surf = TTF_RenderText_Blended(font_, text.c_str(),
 			c.getSDLColor());
 	if (surf == 0) {
 		logSDLError(std::cout, "TTF_RenderText");
@@ -59,9 +61,19 @@ SDL_Rect Font::textBounds(std::string text) {
 }
 
 std::string Font::getName() {
-	return ttf_file;
+	return ttf_file_;
 }
 
 int Font::getSize() {
-	return size;
+	return size_;
 }
+
+void Font::scale(double s){
+	scale_=s;
+	font_ = TTF_OpenFont(ttf_file_.c_str(),scale_*size_);
+
+		if (font_ == 0) {
+			logSDLError(std::cout, "TTF_OpenFont");
+		}
+}
+

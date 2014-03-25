@@ -24,11 +24,13 @@ public:
 	std::string getName();
 	int getSize();
 
-private:
-	TTF_Font *font;
-	std::string ttf_file;
-	int size;
+	void scale(double s);
 
+private:
+	TTF_Font *font_;
+	std::string ttf_file_;
+	int size_;
+	double scale_;
 };
 
 #endif /* FONT_H_ */

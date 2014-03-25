@@ -80,6 +80,7 @@ void Painter::paintPoint(int x, int y) {
 }
 
 void Painter::paintText(std::string text, int x, int y) {
+	font->scale(transformation->getScale());
 	SDL_Surface * surface = font->toSurface(text, pen.getSDLColor());
 	SDL_Rect r = font->textBounds(text);
 	r.x = x;
@@ -133,7 +134,6 @@ void Painter::translate(int x, int y) {
 
 void Painter::scale(double s) {
 	transformation->scale(s);
-	font=new Font(font->getName(),font->getSize()*s);
 }
 
 void Painter::save(){
