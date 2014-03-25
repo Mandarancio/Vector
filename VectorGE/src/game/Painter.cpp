@@ -90,7 +90,7 @@ void Painter::paintLine(int x1, int y1, int x2, int y2) {
 
 void Painter::paintPoint(int x, int y) {
 	transformation->applyTransformation(x, y);
-	Color p=pen->colorAt(0,0);
+	Color p=pen->colorAt(x,y);
 	SDL_SetRenderDrawColor(renderer,  p.red(), p.green(), p.blue(), p.alpha());
 	SDL_RenderDrawPoint(renderer, x, y);
 }
