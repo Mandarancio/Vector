@@ -18,6 +18,9 @@
 #include "primitives/Font.h"
 #include "primitives/SDLSize.h"
 #include "primitives/Image.h"
+#include "primitives/geometry/Shape.h"
+#include "primitives/geometry/Line.h"
+#include "primitives/geometry/Polygon.h"
 
 class Painter: public Entity {
 public:
@@ -37,6 +40,7 @@ public:
 	void paintRect(SDL_Rect rect);
 
 	void paintLine(int x1,int y1,int x2,int y2);
+	void paintLine(Line  l);
 	void paintPoint(int x,int y);
 
 	void paintText(std::string text,int x,int y);
@@ -47,6 +51,8 @@ public:
 
 	void paintTexture(SDL_Texture *texture,SDL_Rect bounds);
 
+	void paintShape(Shape * shape);
+	void paintPolygon(Polygon p);
 
 	void clearWindow();
 	void renderToScreen();
@@ -63,6 +69,8 @@ public:
 	SDL_Point getDisplayCenter();
 
 private:
+	void paintPoint(int x,int y, ColorMethod *cm);
+
 	std::vector<Transformation*> 	transformationHistory;
 	Transformation * 				transformation;
 	SDL_Renderer * 					renderer;

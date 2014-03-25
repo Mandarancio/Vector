@@ -8,22 +8,35 @@
 #ifndef POLYGON_H_
 #define POLYGON_H_
 
-#include "../../../core/Entity.h"
+#include "Shape.h"
+#include "Line.h"
 #include <vector>
-#include <SDL2/SDL.h>
 
-class Polygon: public Entity {
+class Polygon: public Shape {
 public:
 	Polygon();
 	Polygon(SDL_Point * vertex);
 	Polygon(std::vector<SDL_Point> vertex);
 
+
 	virtual ~Polygon();
 
 	void addVertex(SDL_Point vertex);
+	void addVertex(int x,int y);
 
+	virtual bool contains(SDL_Point p);
+	virtual bool contains(int x,int y);
+
+	virtual Shape * transform(Transformation t);
+
+	std::vector<Line> lines();
+	std::vector<SDL_Point> vertex();
 private:
+	void computeBox();
+
 	std::vector<SDL_Point> vertex_;
+	std::vector<Line> lines_;
+
 };
 
 #endif /* POLYGON_H_ */

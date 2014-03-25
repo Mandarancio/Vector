@@ -7,27 +7,32 @@
 
 #ifndef LINE_H_
 #define LINE_H_
+#include "Shape.h"
 
-#include "../../../core/Entity.h"
-#include <SDL2/SDL.h>
 
-class Line: public Entity {
+
+class Line: public Shape {
 public:
 	Line(SDL_Point p1,SDL_Point p2);
 	Line(int x1,int y1,int x2,int y2);
 	virtual ~Line();
 
-	bool contains(SDL_Point p);
+	virtual bool contains(SDL_Point p);
+	virtual bool contains(int x,int y);
 	bool intersectLine(Line l);
 
-	SDL_Rect getBoundingBox();
+	float lenght();
+	SDL_Point p1();
+	SDL_Point p2();
+
+	virtual Shape * transform(Transformation t);
+	Line * transformLine(Transformation t);
+
 private:
 	void computeBox();
 
 	SDL_Point p1_;
 	SDL_Point p2_;
-
-	SDL_Rect boundingBox_;
 };
 
 #endif /* LINE_H_ */

@@ -19,6 +19,8 @@ public:
 	Transformation(SDL_Point translation,double rotation,double scale);
 	virtual ~Transformation();
 
+	SDL_Point transform(SDL_Point p);
+
 	void applyTransformation(SDL_Point &p);
 	void applyTransformation(int &x,int &y);
 	void applyTransformation(Sint16 &x,Sint16 &y);

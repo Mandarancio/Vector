@@ -11,6 +11,7 @@
 #include "../src/game/GameEntity.h"
 #include "../src/core/stateMachine/StateMachine.h"
 #include "../src/game/primitives/Image.h"
+#include "../src/game/primitives/geometry/Polygon.h"
 
 class TestAnimation : public GameEntity{
 public:
@@ -20,6 +21,7 @@ public:
 	virtual void step(double dt,SDL_Event event);
 private:
 	Image * image;
+	Polygon * polygon;
 
 };
 

@@ -23,6 +23,12 @@ Transformation::Transformation(SDL_Point translation, double rotation, double sc
 Transformation::~Transformation() {
 }
 
+SDL_Point Transformation::transform(SDL_Point p){
+	applyTransformation(p);
+	return p;
+}
+
+
 void Transformation::applyTransformation(SDL_Point &p) {
 	applyTranslation(p);
 	applyScale(p);
