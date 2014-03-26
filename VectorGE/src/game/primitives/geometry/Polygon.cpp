@@ -90,15 +90,7 @@ bool Polygon::contains(int x, int y) {
 		}
 		if (li % 2 == 0)
 			return false;
-		Line l2(x, y, boundingBox_.x + boundingBox_.w, y);
-		int ri = 0;
-		for (int i = 0; i < lines_.size(); i++) {
-			if (lines_[i].intersectLine(l1))
-				ri++;
-		}
 
-		if (ri % 2 == 0)
-			return false;
 		Line l3(x, boundingBox_.y, x, y);
 		int ti = 0;
 		for (int i = 0; i < lines_.size(); i++) {
@@ -108,33 +100,25 @@ bool Polygon::contains(int x, int y) {
 
 		if (ti % 2 == 0)
 			return false;
-		Line l4(x, y, x, boundingBox_.y + boundingBox_.h);
-		int bi = 0;
-		for (int i = 0; i < lines_.size(); i++) {
-			if (lines_[i].intersectLine(l1))
-				bi++;
-		}
 
-		if (bi % 2 == 0)
-			return false;
 		return true;
 	}
 
 	return false;
 }
 
-Shape * Polygon::transform(Transformation t){
-	Polygon *p=new Polygon();
-	for (int i=0;i<vertex_.size();i++){
+Shape * Polygon::transform(Transformation t) {
+	Polygon *p = new Polygon();
+	for (int i = 0; i < vertex_.size(); i++) {
 		p->addVertex(t.transform(vertex_[i]));
 	}
 
 	return p;
 }
 
-std::vector<Line> Polygon::lines(){
+std::vector<Line> Polygon::lines() {
 	return lines_;
 }
-std::vector<SDL_Point> Polygon::vertex(){
+std::vector<SDL_Point> Polygon::vertex() {
 	return vertex_;
 }
