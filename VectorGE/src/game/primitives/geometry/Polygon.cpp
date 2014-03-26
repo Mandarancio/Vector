@@ -108,6 +108,10 @@ bool Polygon::contains(int x, int y) {
 }
 
 Shape * Polygon::transform(Transformation t) {
+	return transformPolygon(t);
+}
+
+Polygon *Polygon::transformPolygon(Transformation t) {
 	Polygon *p = new Polygon();
 	for (int i = 0; i < vertex_.size(); i++) {
 		p->addVertex(t.transform(vertex_[i]));
@@ -121,4 +125,21 @@ std::vector<Line> Polygon::lines() {
 }
 std::vector<SDL_Point> Polygon::vertex() {
 	return vertex_;
+}
+
+Sint16 * Polygon::vx() {
+	Sint16 * vx = new Sint16[vertex_.size()];
+	for (int i = 0; i < vertex_.size(); i++) {
+		vx[i] = vertex_[i].x;
+	}
+	return vx;
+}
+
+Sint16 * Polygon::vy() {
+	Sint16 *vy = new Sint16[vertex_.size()];
+	for (int i = 0; i < vertex_.size(); i++) {
+		vy[i] = vertex_[i].y;
+	}
+	return vy;
+
 }

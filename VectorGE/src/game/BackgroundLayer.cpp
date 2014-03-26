@@ -17,8 +17,8 @@ BackgroundLayer::~BackgroundLayer() {
 }
 
 void BackgroundLayer::render(Painter * p){
-	p->setFill(Color(255,255,255,255));
-	p->setPen(Color(255,255,255,255));
+	p->setFill(Color(190,205,255));
+	p->setPen(Color(190,205,255));
 	p->paintRect(0,0,p->getDisplaySize().width,p->getDisplaySize().height);
 
 }

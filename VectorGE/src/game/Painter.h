@@ -69,7 +69,6 @@ public:
 	SDL_Point getDisplayCenter();
 
 private:
-	void paintPoint(int x,int y, ColorMethod *cm);
 
 	std::vector<Transformation*> 	transformationHistory;
 	Transformation * 				transformation;

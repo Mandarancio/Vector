@@ -9,19 +9,18 @@
 #include "../support/Logging.h"
 #include "primitives/SolidColorMethod.h"
 #include <SDL2/SDL_surface.h>
+#include <SDL2/SDL2_gfxPrimitives.h>
 #include <math.h>
 #include <iostream>
 
-
-Painter::Painter(SDL_Renderer * rend,SDL_Size size) :
-renderer(rend), displaySize(size)
-{
+Painter::Painter(SDL_Renderer * rend, SDL_Size size) :
+		renderer(rend), displaySize(size) {
 	transformation = new Transformation();
 	font = new Font();
-	fill=new SolidColorMethod(Color(255,255,255));
-	pen=new SolidColorMethod(Color(0,0,0));
-	displayCenter.x=size.width/2;
-	displayCenter.y=size.height/2;
+	fill = new SolidColorMethod(Color(255, 255, 255));
+	pen = new SolidColorMethod(Color(0, 0, 0));
+	displayCenter.x = size.width / 2;
+	displayCenter.y = size.height / 2;
 }
 
 Painter::~Painter() {
@@ -29,32 +28,30 @@ Painter::~Painter() {
 }
 
 void Painter::setPen(Color c) {
-	pen =  new SolidColorMethod(c);
+	pen = new SolidColorMethod(c);
 }
 
-void Painter::setPen(ColorMethod * cm){
-	pen=cm;
+void Painter::setPen(ColorMethod * cm) {
+	pen = cm;
 }
 
 void Painter::setFill(Color c) {
 	fill = new SolidColorMethod(c);
 }
 
-
-void Painter::setFill(ColorMethod * cm){
-	fill=cm;
+void Painter::setFill(ColorMethod * cm) {
+	fill = cm;
 }
-
 
 void Painter::setFont(Font *f) {
 	delete font;
-	font = new Font(f->getName(),f->getSize()*transformation->getScale());
+	font = new Font(f->getName(), f->getSize() * transformation->getScale());
 }
 
-ColorMethod* Painter::getFill(){
+ColorMethod* Painter::getFill() {
 	return fill;
 }
-ColorMethod* Painter::getPen(){
+ColorMethod* Painter::getPen() {
 	return pen;
 }
 
@@ -72,45 +69,37 @@ void Painter::paintRect(SDL_Rect rect) {
 
 	transformation->applyTransformation(rect.x, rect.y);
 	transformation->applySizeTransformation(rect.w, rect.h);
-	for (int x=rect.x;x<=rect.x+rect.w;x++){
-		for (int y=rect.y;y<=rect.y+rect.h;y++){
-			if (x==rect.x || x==rect.x+rect.w||y==rect.y || y==rect.y+rect.h)
-				paintPoint(x,y,pen);
-			else
-				paintPoint(x,y,fill);
-		}
-	}
+	Color p = fill->colorAt(0, 0);
+	SDL_SetRenderDrawColor(renderer, p.red(), p.green(), p.blue(), p.alpha());
+	SDL_RenderFillRect(renderer, &rect);
+	p = pen->colorAt(0, 0);
+	SDL_SetRenderDrawColor(renderer, p.red(), p.green(), p.blue(), p.alpha());
+	SDL_RenderDrawRect(renderer, &rect);
+
 }
 
 void Painter::paintLine(int x1, int y1, int x2, int y2) {
-	paintLine(Line(x1,y1,x2,y2));
+	paintLine(Line(x1, y1, x2, y2));
 }
 
-void Painter::paintLine(Line  l){
-	Line *l1=l.transformLine(*transformation);
-	float d=l1->lenght();
-	if (d==0)
-		return;
-	float kx=(l1->p2().x-l1->p1().x)/d;
-	float ky=(l1->p2().y-l1->p1().y)/d;
-	int x,y;
-	for (float t=0;t<=d;t+=0.5){
-		x=round(kx*t)+l1->p1().x;
-		y=round(ky*t)+l1->p1().y;
-		paintPoint(x,y,pen);
-	}
+void Painter::paintLine(Line l) {
+	Line *l1 = l.transformLine(*transformation);
+	Color p = pen->colorAt(0, 0);
+	SDL_SetRenderDrawColor(renderer, p.red(), p.green(), p.blue(), p.alpha());
+	SDL_RenderDrawLine(renderer,l1->p1().x,l1->p1().y,l1->p2().x,l1->p2().y);
 }
 
 void Painter::paintPoint(int x, int y) {
 	transformation->applyTransformation(x, y);
-	Color p=pen->colorAt(x,y);
-	SDL_SetRenderDrawColor(renderer,  p.red(), p.green(), p.blue(), p.alpha());
+	Color p = pen->colorAt(x, y);
+	SDL_SetRenderDrawColor(renderer, p.red(), p.green(), p.blue(), p.alpha());
 	SDL_RenderDrawPoint(renderer, x, y);
 }
 
 void Painter::paintText(std::string text, int x, int y) {
 	font->scale(transformation->getScale());
-	SDL_Surface * surface = font->toSurface(text, pen->colorAt(0,0).getSDLColor());
+	SDL_Surface * surface = font->toSurface(text,
+			pen->colorAt(0, 0).getSDLColor());
 	SDL_Rect r = font->textBounds(text);
 	r.x = x;
 	r.y = y;
@@ -122,66 +111,69 @@ void Painter::paintText(std::string text, int x, int y) {
 	SDL_RenderCopy(renderer, texture, NULL, &r);
 }
 
-void Painter::paintImage(Image img,SDL_Rect bounds){
-	paintTexture(img.getTexture(renderer),bounds);
+void Painter::paintImage(Image img, SDL_Rect bounds) {
+	paintTexture(img.getTexture(renderer), bounds);
 }
 
-void Painter::paintImage(Image img,SDL_Point pos){
+void Painter::paintImage(Image img, SDL_Point pos) {
 	SDL_Rect r;
-	r.x=pos.x;
-	r.y=pos.y;
-	r.w=img.getSize().width;
-	r.h=img.getSize().height;
-	paintImage(img,r);
+	r.x = pos.x;
+	r.y = pos.y;
+	r.w = img.getSize().width;
+	r.h = img.getSize().height;
+	paintImage(img, r);
 }
 
-void Painter::paintImage(Image img,int x,int y){
+void Painter::paintImage(Image img, int x, int y) {
 	SDL_Rect r;
-	r.x=x;
-	r.y=y;
-	r.w=img.getSize().width;
-	r.h=img.getSize().height;
-	paintImage(img,r);
+	r.x = x;
+	r.y = y;
+	r.w = img.getSize().width;
+	r.h = img.getSize().height;
+	paintImage(img, r);
 }
 
-void Painter::paintTexture(SDL_Texture *texture,SDL_Rect bounds){
-	transformation->applyTransformation(bounds.x,bounds.y);
-	transformation->applySizeTransformation(bounds.w,bounds.h);
-	SDL_RenderCopy(renderer,texture,NULL,&bounds);
+void Painter::paintTexture(SDL_Texture *texture, SDL_Rect bounds) {
+	transformation->applyTransformation(bounds.x, bounds.y);
+	transformation->applySizeTransformation(bounds.w, bounds.h);
+	SDL_RenderCopy(renderer, texture, NULL, &bounds);
 }
 
-void Painter::paintShape(Shape * shape){
-	Shape * s=shape->transform(*transformation);
-	for (int y=s->getBoundingBox().y;y<=s->getBoundingBox().y+s->getBoundingBox().h;y++){
-		for (int x=s->getBoundingBox().x;x<=s->getBoundingBox().x+s->getBoundingBox().w;x++){
-			if (s->contains(x,y)){
-				if (!s->contains(x-1,y)||!s->contains(x,y-1)|| !s->contains(x+1,y) || !s->contains(x,y+1))
-					paintPoint(x,y,pen);
-				else
-					paintPoint(x,y,fill);
+void Painter::paintShape(Shape * shape) {
+	Shape * s = shape->transform(*transformation);
+	Color p=pen->colorAt(0,0);
+	Color f=fill->colorAt(0,0);
+	for (int y = s->getBoundingBox().y;
+			y <= s->getBoundingBox().y + s->getBoundingBox().h; y++) {
+		for (int x = s->getBoundingBox().x;
+				x <= s->getBoundingBox().x + s->getBoundingBox().w; x++) {
+			if (s->contains(x, y)) {
+				if (!s->contains(x - 1, y) || !s->contains(x, y - 1)
+						|| !s->contains(x + 1, y) || !s->contains(x, y + 1)){
+					SDL_SetRenderDrawColor(renderer, p.red(), p.green(), p.blue(), p.alpha());
+				}
+				else{
+					SDL_SetRenderDrawColor(renderer, f.red(), f.green(), f.blue(), f.alpha());
+				}
+				SDL_RenderDrawPoint(renderer, x, y);
+
 			}
 		}
 	}
 
 }
 
+void Painter::paintPolygon(Polygon p) {
+	Polygon * s = p.transformPolygon(*transformation);
+	filledPolygonColor(renderer,s->vx(),s->vy(),s->vertex().size(),fill->colorAt(0,0).getRGBA());
 
-void Painter::paintPolygon(Polygon p){
-	Shape * s=p.transform(*transformation);
-	for (int y=s->getBoundingBox().y;y<=s->getBoundingBox().y+s->getBoundingBox().h;y++){
-		for (int x=s->getBoundingBox().x;x<=s->getBoundingBox().x+s->getBoundingBox().w;x++){
-			if (s->contains(x,y))
-				paintPoint(x,y,fill);
-		}
-	}
-	for (int i=0;i<p.lines().size();i++){
+	for (int i = 0; i < p.lines().size(); i++) {
 		paintLine(p.lines()[i]);
 	}
 }
 
 void Painter::clearWindow() {
 	SDL_RenderClear(renderer);
-
 }
 void Painter::renderToScreen() {
 	SDL_RenderPresent(renderer);
@@ -195,33 +187,25 @@ void Painter::scale(double s) {
 	transformation->scale(s);
 }
 
-void Painter::save(){
+void Painter::save() {
 	transformationHistory.push_back(transformation->clone());
 }
-void Painter::restore(){
-	if (transformationHistory.size()>0){
-		transformation=transformationHistory.back()->clone();
+void Painter::restore() {
+	if (transformationHistory.size() > 0) {
+		transformation = transformationHistory.back()->clone();
 		transformationHistory.pop_back();
 	}
 }
 
-void Painter::clearTransaltion(){
+void Painter::clearTransaltion() {
 	transformation->reset();
 }
 
-
-SDL_Size Painter::getDisplaySize(){
+SDL_Size Painter::getDisplaySize() {
 	return displaySize;
 }
 
-SDL_Point Painter::getDisplayCenter(){
+SDL_Point Painter::getDisplayCenter() {
 	return displayCenter;
 }
 
-void Painter::paintPoint(int x,int y, ColorMethod *cm){
-
-	Color p=cm->colorAt(x,y);
-
-	SDL_SetRenderDrawColor(renderer,  p.red(), p.green(), p.blue(), p.alpha());
-	SDL_RenderDrawPoint(renderer, x, y);
-}

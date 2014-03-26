@@ -21,7 +21,6 @@ public:
 	virtual void step(double dt,SDL_Event event);
 private:
 	Image * image;
-	Polygon * polygon;
 
 };
 

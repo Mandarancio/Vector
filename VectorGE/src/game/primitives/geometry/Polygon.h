@@ -28,9 +28,13 @@ public:
 	virtual bool contains(int x,int y);
 
 	virtual Shape * transform(Transformation t);
+	Polygon *transformPolygon(Transformation t);
 
 	std::vector<Line> lines();
 	std::vector<SDL_Point> vertex();
+
+	Sint16 * vx();
+	Sint16 * vy();
 private:
 	void computeBox();
 

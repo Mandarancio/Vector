@@ -42,6 +42,7 @@ void GameScene::gameLoop(int dt) {
 	int fps;
 	std::stringstream ss;
 	while (!quit) {
+		past=present;
 		gettimeofday(&present, NULL);
 		delta = (present.tv_usec - past.tv_usec) / 1000.0;
 		camera->getPainter()->clearWindow();
@@ -63,11 +64,8 @@ void GameScene::gameLoop(int dt) {
 			gameEntities[i]->step(delta, event);
 			gameEntities[i]->render(camera->getPainter());
 		}
-
-		gettimeofday(&past, NULL);
-
 		if (FPS_DEBUG) {
-			delta = -(present.tv_usec - past.tv_usec) / 1000.0;
+			delta = (present.tv_usec - past.tv_usec) / 1000.0;
 			fps = abs(1000.0 / delta);
 
 			ss << "FPS: " << fps;
