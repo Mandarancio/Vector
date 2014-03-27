@@ -13,7 +13,6 @@
 
 #include "../core/Entity.h"
 #include "primitives/Color.h"
-#include "primitives/ColorMethod.h"
 #include "primitives/Transformation.h"
 #include "primitives/Font.h"
 #include "primitives/SDLSize.h"
@@ -27,14 +26,12 @@ public:
 	Painter(SDL_Renderer * rend,SDL_Size size);
 	virtual ~Painter();
 	void setPen(Color c);
-	void setPen(ColorMethod *cm);
 	void setFill(Color c);
-	void setFill(ColorMethod * cm);
 
 	void setFont(Font * f);
 
-	ColorMethod* getFill();
-	ColorMethod*  getPen();
+	Color getFill();
+	Color getPen();
 
 	void paintRect(Sint16 x,Sint16 y,Uint16 w,Uint16 h);
 	void paintRect(SDL_Rect rect);
@@ -73,8 +70,8 @@ private:
 	std::vector<Transformation*> 	transformationHistory;
 	Transformation * 				transformation;
 	SDL_Renderer * 					renderer;
-	ColorMethod *					fill;
-	ColorMethod *					pen;
+	Color 							fill;
+	Color							pen;
 	Font *							font;
 	SDL_Size						displaySize;
 	SDL_Point						displayCenter;

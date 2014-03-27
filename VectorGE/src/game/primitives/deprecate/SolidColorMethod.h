@@ -8,7 +8,7 @@
 #ifndef SOLIDCOLORMETHOD_H_
 #define SOLIDCOLORMETHOD_H_
 
-#include "Color.h"
+#include "../Color.h"
 #include  "ColorMethod.h"
 
 class SolidColorMethod : public ColorMethod{

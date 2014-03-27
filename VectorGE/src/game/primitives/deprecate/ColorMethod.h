@@ -8,8 +8,8 @@
 #ifndef COLORMETHOD_H_
 #define COLORMETHOD_H_
 
-#include "../../core/Entity.h"
-#include "Color.h"
+#include "../../../core/Entity.h"
+#include "../Color.h"
 
 class ColorMethod: public Entity {
 public:
