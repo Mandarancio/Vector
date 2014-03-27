@@ -27,7 +27,7 @@ public:
 	}
 
 	virtual void actionPerfoormed(Action * a){
-		label->setText("Hello World!");
+		label->setVisibile(!label->isVisible());
 	}
 
 private:
@@ -41,7 +41,8 @@ int main(int argc, char **argv) {
 
 	MainContainer * mc=new MainContainer();
 	mc->setBounds(0,0,gw->getSize().width,gw->getSize().height);
-	Label * l=new Label("");
+	Label * l=new Label("Hello World!");
+	l->setVisibile(false);
 	l->setBounds(10,285,120,30);
 	mc->addComponent(l);
 	Button *b=new Button("button");

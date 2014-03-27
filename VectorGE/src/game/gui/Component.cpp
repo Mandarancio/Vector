@@ -10,6 +10,7 @@
 Component::Component() {
 	hasFocus_ = false;
 	enabled_ = true;
+	isVisible_=true;
 	isMouseIn_=true;
 	foreGround_ = Color(230, 230, 230);
 	backGround_ = Color(54, 61, 63);
@@ -153,4 +154,11 @@ void Component::mouseIn(){
 }
 void Component::mouseOut(){
 	isMouseIn_=false;
+}
+
+bool Component::isVisible(){
+	return isVisible_;
+}
+void Component::setVisibile(bool visible){
+	isVisible_=visible;
 }

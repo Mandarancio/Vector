@@ -125,6 +125,8 @@ void Painter::paintPoint(int x, int y) {
 }
 
 void Painter::paintText(std::string text, int x, int y) {
+	if (text.length()==0) return;
+
 	SDL_Surface * surface = status.font->toSurface(text,
 			status.pen.getSDLColor());
 	SDL_Rect r = status.font->textBounds(text);

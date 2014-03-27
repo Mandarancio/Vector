@@ -63,6 +63,9 @@ public:
 
 	virtual void mouseIn();
 	virtual void mouseOut();
+
+	bool isVisible();
+	void setVisibile(bool visible);
 protected:
 	virtual void paintComponent(Painter * p)=0;
 
@@ -77,6 +80,7 @@ private:
 	bool enabled_;
 	bool hasFocus_;
 	bool isMouseIn_;
+	bool isVisible_;
 };
 
 #endif /* COMPONENT_H_ */

@@ -46,6 +46,9 @@ SDL_Surface * Font::toSurface(std::string text, SDL_Color color) {
 }
 
 SDL_Rect Font::textBounds(std::string text) {
+	if (text.length()==0){
+		return SDL_Rect();
+	}
 	Color c;
 	SDL_Surface *surf = TTF_RenderText_Blended(font_, text.c_str(),
 			c.getSDLColor());

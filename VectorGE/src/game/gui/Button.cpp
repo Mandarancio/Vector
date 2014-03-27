@@ -76,14 +76,18 @@ void Button::paintComponent(Painter * p) {
 
 void Button::mouseButtonDown(SDL_MouseButtonEvent * e) {
 	if (isEnabled()) {
-		status_ = PRESSED;
-		triggerActionListeners();
+		if (status_==NORMAL){
+			triggerActionListeners();
+			status_ = PRESSED;
+		}
 	}
 }
 
 void Button::mouseButtonUp(SDL_MouseButtonEvent * e) {
 	if (isEnabled()) {
-		status_ = NORMAL;
+		if (status_==PRESSED){
+			status_ = NORMAL;
+		}
 	}
 }
 

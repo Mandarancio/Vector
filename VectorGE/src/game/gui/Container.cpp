@@ -46,7 +46,8 @@ void Container::setSize(int w, int h) {
 }
 void Container::mouseMotion(SDL_MouseMotionEvent * e) {
 	for (int i = 0; i < components_.size(); i++) {
-		if (rectContains(components_[i]->getBounds(), e->x, e->y)) {
+		if (components_[i]->isEnabled() && components_[i]->isVisible()
+				&& rectContains(components_[i]->getBounds(), e->x, e->y)) {
 			if (!components_[i]->isMouseIn())
 				components_[i]->mouseIn();
 			components_[i]->mouseMotion(e);
@@ -68,7 +69,7 @@ void Container::mouseButtonDown(SDL_MouseButtonEvent * e) {
 			components_[i]->mouseButtonDown(e);
 		}
 	}
-	if (!hasFocus()){
+	if (!hasFocus()) {
 		getFocus();
 	}
 }
@@ -81,9 +82,9 @@ void Container::mouseButtonUp(SDL_MouseButtonEvent * e) {
 	}
 }
 
-void Container::lostFocus(){
+void Container::lostFocus() {
 	Component::lostFocus();
-	for (int i=0;i<components_.size();i++){
+	for (int i = 0; i < components_.size(); i++) {
 		if (components_[i]->hasFocus())
 			components_[i]->lostFocus();
 	}
@@ -98,7 +99,8 @@ void Container::paintComponent(Painter * p) {
 
 void Container::paintSubComponents(Painter *p) {
 	for (int i = 0; i < components_.size(); i++) {
-		components_[i]->render(p);
+		if (components_[i]->isVisible())
+			components_[i]->render(p);
 	}
 }
 
