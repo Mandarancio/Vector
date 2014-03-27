@@ -31,7 +31,7 @@ public:
 	GameScene(Camera * camera, float gx,float gy);
 
 	virtual ~GameScene();
-	void gameLoop(int dt=0);
+	void gameLoop(Uint16 dt=0);
 	void addEntity(GameEntity *ge);
 	void addGUIMainComponent(MainContainer * mc);
 

@@ -50,13 +50,17 @@ GameScene::~GameScene() {
 	delete camera;
 }
 
-void GameScene::gameLoop(int dt) {
+void GameScene::gameLoop(Uint16 dt) {
 	bool quit = false;
 	SDL_Event event;
 	struct timeval past, present;
 
 	double delta;
 	gettimeofday(&past, NULL);
+
+	bool autoFPS = dt == 0;
+	int delay = dt;
+
 #if FPS_DEBUG
 	int fps;
 #endif
@@ -64,7 +68,7 @@ void GameScene::gameLoop(int dt) {
 	Painter * p = camera->getPainter();
 
 	while (!quit) {
-		past = present;
+		past.tv_usec= present.tv_usec;
 		gettimeofday(&present, NULL);
 		delta = (present.tv_usec - past.tv_usec) / 1000.0;
 		p->clearWindow();
@@ -102,7 +106,6 @@ void GameScene::gameLoop(int dt) {
 		}
 
 #if FPS_DEBUG
-		delta = (present.tv_usec - past.tv_usec) / 1000.0;
 		fps = abs(1000.0 / delta);
 
 		ss << "FPS: " << fps;
@@ -110,32 +113,37 @@ void GameScene::gameLoop(int dt) {
 		p->clearTransaltion();
 		p->removeClip();
 
-		SDL_Rect r=p->getFont()->textBounds(ss.str());
-		r.x=5;
-		r.y=5;
-		r.w+=10;
-		r.h+=10;
-		p->setFill(Color(0,0,0,180));
-		p->setPen(Color(0,0,0,180));
+		SDL_Rect r = p->getFont()->textBounds(ss.str());
+		r.x = 5;
+		r.y = 5;
+		r.w += 10;
+		r.h += 10;
+		p->setFill(Color(0, 0, 0, 180));
+		p->setPen(Color(0, 0, 0, 180));
 		p->paintRect(r);
-		p->setPen(Color(255,255,255));
+		p->setPen(Color(255, 255, 255));
 		p->paintText(ss.str(), 10, 10);
 
 		ss.str("");
 //		p->restore();
 #endif
 		p->renderToScreen();
+		if (autoFPS) {
+			delay = round(1000.0/ 500 - abs(delta));
+			if (delay<0)
+				delay=0;
+		}
 
-		if (dt > 0)
-			SDL_Delay(dt);
-
+		if (delay > 0) {
+			SDL_Delay(delay);
+		}
 	}
 }
 
 void GameScene::addEntity(GameEntity *ge) {
 	gameEntities.push_back(ge);
 }
-void GameScene::addGUIMainComponent(MainContainer * mc){
+void GameScene::addGUIMainComponent(MainContainer * mc) {
 	addEntity(mc);
 	addMouseListener(mc);
 	addWindowListener(mc);
