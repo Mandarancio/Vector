@@ -22,7 +22,9 @@ void Container::removeComponent(int ind){}
 
 
 void Container::paintComponent(Painter * p){
-	//paint something
+	p->setFill(backGround_);
+	p->setPen(backGround_);
+	p->paintRect(bounds_);
 	paintSubComponents(p);
 }
 
@@ -36,3 +38,4 @@ void Container::paintSubComponents(Painter *p){
 std::vector<Component *> Container::getComponents(){
 	return components_;
 }
+

@@ -11,6 +11,7 @@
 #include "../GameEntity.h"
 #include "../events/MouseListener.h"
 #include "../primitives/Color.h"
+#include "../primitives/SDLSize.h"
 
 class Component: public GameEntity, public MouseListener {
 public:
@@ -27,11 +28,30 @@ public:
 
 	void setBackground(Color c);
 	void setForeground(Color c);
+
+	SDL_Rect getBounds();
+	SDL_Point getLocation();
+	SDL_Size getSize();
+	int getX();
+	int getY();
+	int getWidth();
+	int getHeight();
+
+	void setBounds(SDL_Rect r);
+	void setBounds(int x,int y,int w,int h);
+
+	void setSize(SDL_Size size);
+	void setSize(int w,int h);
+
+	void setLocation(SDL_Point p);
+	void setLocation(int x,int y);
+
 protected:
 	virtual void paintComponent(Painter * p)=0;
 
 	Color backGround_;
 	Color foreGround_;
+	SDL_Rect bounds_;
 private:
 	bool hasFocus_;
 
