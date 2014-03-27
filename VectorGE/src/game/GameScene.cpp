@@ -30,6 +30,16 @@ GameScene::GameScene(Camera * camera, float gx, float gy) :
 }
 
 GameScene::~GameScene() {
+	for (int i=0;i<gameEntities.size();i++){
+		delete gameEntities[i];
+	}
+	gameEntities.clear();
+	for (int i=0;i<mouseListeners.size();i++){
+		delete mouseListeners[i];
+	}
+	mouseListeners.clear();
+	delete world;
+	delete camera;
 }
 
 void GameScene::gameLoop(int dt) {
@@ -55,8 +65,19 @@ void GameScene::gameLoop(int dt) {
 		SDL_PollEvent(&event);
 		switch (event.type) {
 		case SDL_QUIT:
-			std::cout << "here";
 			quit = true;
+			break;
+		case SDL_MOUSEMOTION:
+			triggerMouseListener(event);
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			triggerMouseListener(event);
+			break;
+		case SDL_MOUSEBUTTONUP:
+			triggerMouseListener(event);
+			break;
+		case SDL_MOUSEWHEEL:
+			triggerMouseListener(event);
 			break;
 		}
 
@@ -91,5 +112,26 @@ void GameScene::addEntity(GameEntity *ge) {
 
 b2World * GameScene::getWorld() {
 	return world;
+}
+
+void GameScene::addMouseListener(MouseListener * ml){
+	mouseListeners.push_back(ml);
+}
+void GameScene::removeMouseListener(MouseListener *ml){
+	for (int i=0;i<mouseListeners.size();i++){
+		if (ml==mouseListeners[i]){
+			removeMouseListener(i);
+			break;
+		}
+	}
+}
+void GameScene::removeMouseListener(int ind){
+	mouseListeners.erase(mouseListeners.begin()+ind);
+}
+
+void GameScene::triggerMouseListener(SDL_Event e){
+	for (int i=0;i<mouseListeners.size();i++){
+		mouseListeners[i]->triggerEvent(&e);
+	}
 }
 

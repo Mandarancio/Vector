@@ -23,8 +23,9 @@ int main(int argc, char **argv) {
 	Camera *c = new Camera(gw->painter());
 	GameScene *scene=new GameScene(c);//,0,0.0);//9.8);
 	scene->addEntity(new BackgroundLayer());
-	scene->addEntity(new TestAnimation());
-
+	TestAnimation *ta=new TestAnimation();
+	scene->addEntity(ta);
+	scene->addMouseListener(ta);
 
 	scene->gameLoop(0);
 
