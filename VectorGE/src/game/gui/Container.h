@@ -9,6 +9,7 @@
 #define CONTAINER_H_
 
 #include "Component.h"
+#include "Layout.h"
 
 #include <vector>
 
@@ -23,12 +24,16 @@ public:
 
 	std::vector<Component *> getComponents();
 
+	Layout* getLayout();
+	void setLayout(Layout * l);
+
+	void setSize(int w,int h);
 protected:
 	virtual void paintComponent(Painter * p);
 	virtual void paintSubComponents(Painter *p);
 private:
 	std::vector<Component*> components_;
-
+	Layout * 				layout_;
 };
 
 #endif /* CONTAINER_H_ */

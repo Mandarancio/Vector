@@ -41,10 +41,10 @@ public:
 	void setBounds(int x, int y, int w, int h);
 
 	void setSize(SDL_Size size);
-	void setSize(int w, int h);
+	void setSize(int w, int h); //BASIC Function
 
 	void setLocation(SDL_Point p);
-	void setLocation(int x, int y);
+	void setLocation(int x, int y); //BASIC Function
 
 	Component * getParent();
 	void setParent(Component * parent);

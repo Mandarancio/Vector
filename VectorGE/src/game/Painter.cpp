@@ -23,8 +23,8 @@ Painter::Painter(SDL_Renderer * rend, SDL_Size size) :
 
 	clip.x=0;
 	clip.y=0;
-	clip.w=size.width;
-	clip.h=size.height;
+	clip.w=0;
+	clip.h=0;
 }
 
 Painter::~Painter() {
@@ -223,7 +223,14 @@ SDL_Rect Painter::getClip(){
 }
 void Painter::setClip(SDL_Rect clip){
 	this->clip=clip;
-	SDL_RenderSetClipRect(renderer,&clip);
+	if (clip.w>0 && clip.h>0){
+		SDL_RenderSetClipRect(renderer,&clip);
+	}else{
+		SDL_Rect screen;
+		screen.w=displaySize.width;
+		screen.h=displaySize.height;
+		SDL_RenderSetClipRect(renderer,&screen);
+	}
 }
 void Painter::setClip(int x,int y,int w,int h){
 	clip.x=x;
@@ -231,4 +238,22 @@ void Painter::setClip(int x,int y,int w,int h){
 	clip.w=w;
 	clip.h=h;
 	SDL_RenderSetClipRect(renderer,&clip);
+}
+
+void Painter::removeClip(){
+	clip.w=0;
+	clip.x=0;
+	clip.y=0;
+	clip.h=0;
+	SDL_Rect screen;
+	screen.w=displaySize.width;
+	screen.h=displaySize.height;
+	SDL_RenderSetClipRect(renderer,&screen);
+}
+
+void Painter::windowResized(SDL_WindowEvent *e){
+	displaySize.width=e->data1;
+	displaySize.height=e->data2;
+	displayCenter.x=e->data1/2;
+	displayCenter.y=e->data2/2;
 }

@@ -19,6 +19,8 @@ GameScene::GameScene(Camera * camera, b2World *world) :
 	this->world = world;
 	positionIterations = 8;
 	velocityIterations = 10;
+
+	this->addWindowListener(camera->getPainter());
 }
 
 GameScene::GameScene(Camera * camera, float gx, float gy) :
@@ -27,6 +29,8 @@ GameScene::GameScene(Camera * camera, float gx, float gy) :
 	this->world = new b2World(b2Vec2(gx, gy));
 	positionIterations = 8;
 	velocityIterations = 10;
+
+	this->addWindowListener(camera->getPainter());
 }
 
 GameScene::~GameScene() {
@@ -82,6 +86,9 @@ void GameScene::gameLoop(int dt) {
 			break;
 		case SDL_MOUSEWHEEL:
 			triggerMouseListener(event);
+			break;
+		case SDL_WINDOWEVENT:
+			triggerWindowListener(event);
 			break;
 		}
 
@@ -148,7 +155,24 @@ void GameScene::removeKeyListener(KeyListener *kl) {
 }
 
 void GameScene::removeKeyListener(int ind) {
-	keyListeners.erase(keyListeners.begin()+ind);
+	keyListeners.erase(keyListeners.begin() + ind);
+}
+
+void GameScene::addWindowListener(WindowListener *l){
+	windowListeners.push_back(l);
+}
+
+void GameScene::removeWindowListener(WindowListener *l){
+	for (int i = 0; i < windowListeners.size(); i++) {
+		if (windowListeners[i]==l){
+			removeWindowListener(i);
+			break;
+		}
+	}
+}
+
+void GameScene::removeWindowListener(int ind){
+	windowListeners.erase(windowListeners.begin() + ind);
 }
 
 void GameScene::triggerMouseListener(SDL_Event e) {
@@ -158,9 +182,14 @@ void GameScene::triggerMouseListener(SDL_Event e) {
 	}
 }
 
-void GameScene::triggerKeyListener(SDL_Event e){
-	for (int i=0;i<keyListeners.size();i++){
+void GameScene::triggerKeyListener(SDL_Event e) {
+	for (int i = 0; i < keyListeners.size(); i++) {
 		keyListeners[i]->triggerEvent(&e);
 	}
 }
 
+void GameScene::triggerWindowListener(SDL_Event e) {
+	for (int i = 0; i < windowListeners.size(); i++) {
+		windowListeners[i]->triggerEvent(&e);
+	}
+}

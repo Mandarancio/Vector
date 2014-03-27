@@ -15,7 +15,7 @@ GameWindow::GameWindow(std::string title,Uint32 w,Uint32 h) {
 		//Error: The video can not be enabled... abort program...
 	} else {
 		window_ = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, w,h, SDL_WINDOW_SHOWN);
+		SDL_WINDOWPOS_UNDEFINED, w,h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 		//ANTI ALIASING
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 

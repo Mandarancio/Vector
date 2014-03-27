@@ -12,6 +12,7 @@
 #include <string>
 
 #include "../core/Entity.h"
+
 #include "primitives/Color.h"
 #include "primitives/Transformation.h"
 #include "primitives/Font.h"
@@ -21,7 +22,9 @@
 #include "primitives/geometry/Line.h"
 #include "primitives/geometry/Polygon.h"
 
-class Painter: public Entity {
+#include "events/WindowListener.h"
+
+class Painter: public Entity,public WindowListener {
 public:
 	Painter(SDL_Renderer * rend,SDL_Size size);
 	virtual ~Painter();
@@ -72,6 +75,10 @@ public:
 	SDL_Rect getClip();
 	void setClip(SDL_Rect clip);
 	void setClip(int x,int y,int w,int h);
+	void removeClip();
+
+protected:
+	virtual void windowResized(SDL_WindowEvent *e);
 
 private:
 
