@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 //	scene->addEntity(ta);
 //	scene->addMouseListener(ta);
 
-	scene->gameLoop(0);
+	scene->gameLoop(1000/500);
 
 	delete c;
 	delete gw;
