@@ -16,7 +16,7 @@ GameEntity::~GameEntity() {
 	// TODO Auto-generated destructor stub
 }
 
-void GameEntity::step(double dt,SDL_Event event){
+void GameEntity::step(double dt){
 	//by default nothing to do
 	//needed for animation and other stuff..
 }

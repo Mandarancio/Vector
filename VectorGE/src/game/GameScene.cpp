@@ -101,7 +101,7 @@ void GameScene::gameLoop(Uint16 dt) {
 		}
 
 		for (int i = 0; i < gameEntities.size(); i++) {
-			gameEntities[i]->step(delta, event);
+			gameEntities[i]->step(delta);
 			gameEntities[i]->render(p);
 		}
 

@@ -17,7 +17,7 @@ public:
 	SimpleSquare(b2World * world, Camera * c);
 	virtual ~SimpleSquare();
 	virtual void render(Painter * p);
-	virtual void step(double dt,SDL_Event event);
+	virtual void step(double dt);
 private:
 	SDL_Point pos;
 	b2Body *body;
