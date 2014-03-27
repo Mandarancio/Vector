@@ -69,6 +69,16 @@ void Painter::paintRect(SDL_Rect rect) {
 
 }
 
+void Painter::paintCircle(int x, int y,Uint16 r){
+	filledCircleColor(renderer,x,y,r,fill.getRGBA());
+	circleColor(renderer,x,y,r,fill.getRGBA());
+}
+
+void Painter::paintOval(int x,int y,Uint16 rx,Uint16 ry){
+	filledEllipseColor(renderer,x,y,rx,ry,fill.getRGBA());
+	ellipseColor(renderer,x,y,rx,ry,pen.getRGBA());
+}
+
 void Painter::paintLine(int x1, int y1, int x2, int y2) {
 	paintLine(Line(x1, y1, x2, y2));
 }

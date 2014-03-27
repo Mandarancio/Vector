@@ -15,6 +15,7 @@ public:
 	KeyListener();
 	virtual ~KeyListener();
 	void triggerEvent(SDL_Event *event);
+protected:
 	virtual void keyUp(SDL_KeyboardEvent *e);
 	virtual void keyDown(SDL_KeyboardEvent * e);
 };

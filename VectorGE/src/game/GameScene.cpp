@@ -152,6 +152,7 @@ void GameScene::removeKeyListener(int ind) {
 }
 
 void GameScene::triggerMouseListener(SDL_Event e) {
+
 	for (int i = 0; i < mouseListeners.size(); i++) {
 		mouseListeners[i]->triggerEvent(&e);
 	}

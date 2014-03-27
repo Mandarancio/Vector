@@ -36,6 +36,9 @@ public:
 	void paintRect(Sint16 x,Sint16 y,Uint16 w,Uint16 h);
 	void paintRect(SDL_Rect rect);
 
+	void paintCircle(int x, int y,Uint16 r);
+	void paintOval(int x,int y,Uint16 rx,Uint16 ry);
+
 	void paintLine(int x1,int y1,int x2,int y2);
 	void paintLine(Line  l);
 	void paintPoint(int x,int y);
