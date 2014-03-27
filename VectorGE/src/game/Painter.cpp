@@ -138,6 +138,8 @@ void Painter::paintText(std::string text, int x, int y) {
 		logSDLError(std::cout, "CreateTexture");
 	}
 	SDL_RenderCopy(renderer, texture, NULL, &r);
+	SDL_FreeSurface(surface);
+	SDL_DestroyTexture(texture);
 }
 
 void Painter::paintImage(Image img, SDL_Rect bounds) {
