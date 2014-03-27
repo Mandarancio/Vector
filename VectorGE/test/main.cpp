@@ -18,12 +18,12 @@
 #include "../src/game/gui/MainContainer.h"
 #include "../src/game/gui/Label.h"
 
-//#include "TestAnimation.h"
+#include "TestAnimation.h"
 
 int main(int argc, char **argv) {
 	GameWindow *gw = new GameWindow();
 	Camera *c = new Camera(gw->painter());
-	GameScene *scene=new GameScene(c);//,0,0.0);//9.8);
+	GameScene *scene=new GameScene(c,0);//,0,0.0);//9.8);
 
 	MainContainer * mc=new MainContainer();
 	mc->setBounds(0,0,gw->getSize().width,gw->getSize().height);
@@ -32,8 +32,6 @@ int main(int argc, char **argv) {
 	mc->addComponent(l);
 
 	scene->addWindowListener(mc);
-
-
 	scene->addEntity(mc);
 
 //	scene->addEntity(new BackgroundLayer());

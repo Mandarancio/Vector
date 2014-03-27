@@ -11,7 +11,7 @@ Component::Component() {
 	// TODO Auto-generated constructor stub
 	hasFocus_ = false;
 	foreGround_ = Color(230, 230, 230);
-	backGround_ = Color(32, 41, 63);
+	backGround_ = Color(54, 61, 63);
 	bounds_.x = 0;
 	bounds_.y = 0;
 	bounds_.w = 0;
@@ -24,10 +24,10 @@ Component::~Component() {
 }
 
 void Component::render(Painter * p) {
-	SDL_Rect oldclip = p->getClip();
+	p->save();
 	p->setClip(bounds_);
 	this->paintComponent(p);
-	p->setClip(oldclip);
+	p->restore();
 }
 bool Component::hasFocus() {
 	return hasFocus_;

@@ -26,6 +26,8 @@ public:
 
 	void scale(double s);
 
+	Font * clone();
+
 private:
 	TTF_Font *font_;
 	std::string ttf_file_;

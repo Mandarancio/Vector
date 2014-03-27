@@ -57,13 +57,17 @@ void GameScene::gameLoop(int dt) {
 
 	double delta;
 	gettimeofday(&past, NULL);
+#if FPS_DEBUG
 	int fps;
+#endif
 	std::stringstream ss;
+	Painter * p = camera->getPainter();
+
 	while (!quit) {
 		past = present;
 		gettimeofday(&present, NULL);
 		delta = (present.tv_usec - past.tv_usec) / 1000.0;
-		camera->getPainter()->clearWindow();
+		p->clearWindow();
 
 		if (world != 0) {
 			float dt = delta / 1000.0;
@@ -94,22 +98,32 @@ void GameScene::gameLoop(int dt) {
 
 		for (int i = 0; i < gameEntities.size(); i++) {
 			gameEntities[i]->step(delta, event);
-			gameEntities[i]->render(camera->getPainter());
+			gameEntities[i]->render(p);
 		}
-		if (FPS_DEBUG) {
-			delta = (present.tv_usec - past.tv_usec) / 1000.0;
-			fps = abs(1000.0 / delta);
 
-			ss << "FPS: " << fps;
-			camera->getPainter()->save();
-			camera->getPainter()->clearTransaltion();
+#if FPS_DEBUG
+		delta = (present.tv_usec - past.tv_usec) / 1000.0;
+		fps = abs(1000.0 / delta);
 
-			camera->getPainter()->setPen(Color(125, 125, 125, 255));
-			camera->getPainter()->paintText(ss.str(), 5, 10);
-			ss.str("");
-			camera->getPainter()->restore();
-		}
-		camera->getPainter()->renderToScreen();
+		ss << "FPS: " << fps;
+		p->save();
+		p->clearTransaltion();
+
+		SDL_Rect r=p->getFont()->textBounds(ss.str());
+		r.x=5;
+		r.y=5;
+		r.w+=10;
+		r.h+=10;
+		p->setFill(Color(0,0,0));
+		p->setPen(Color(0,0,0));
+		p->paintRect(r);
+		p->setPen(Color(255,255,255));
+		p->paintText(ss.str(), 10, 10);
+
+		ss.str("");
+		p->restore();
+#endif
+		p->renderToScreen();
 
 		if (dt > 0)
 			SDL_Delay(dt);
@@ -158,20 +172,20 @@ void GameScene::removeKeyListener(int ind) {
 	keyListeners.erase(keyListeners.begin() + ind);
 }
 
-void GameScene::addWindowListener(WindowListener *l){
+void GameScene::addWindowListener(WindowListener *l) {
 	windowListeners.push_back(l);
 }
 
-void GameScene::removeWindowListener(WindowListener *l){
+void GameScene::removeWindowListener(WindowListener *l) {
 	for (int i = 0; i < windowListeners.size(); i++) {
-		if (windowListeners[i]==l){
+		if (windowListeners[i] == l) {
 			removeWindowListener(i);
 			break;
 		}
 	}
 }
 
-void GameScene::removeWindowListener(int ind){
+void GameScene::removeWindowListener(int ind) {
 	windowListeners.erase(windowListeners.begin() + ind);
 }
 

@@ -18,7 +18,7 @@ Font::Font() {
 	if (font_ == 0) {
 		logSDLError(std::cout, "TTF_OpenFont");
 	}
-	scale_=1.0;
+	scale_ = 1.0;
 }
 
 Font::Font(std::string font, int size) {
@@ -29,10 +29,11 @@ Font::Font(std::string font, int size) {
 	if (this->font_ == 0) {
 		logSDLError(std::cout, "TTF_OpenFont");
 	}
-	scale_=1.0;
+	scale_ = 1.0;
 }
 
 Font::~Font() {
+	TTF_CloseFont(font_);
 }
 
 SDL_Surface * Font::toSurface(std::string text, SDL_Color color) {
@@ -68,12 +69,16 @@ int Font::getSize() {
 	return size_;
 }
 
-void Font::scale(double s){
-	scale_=s;
-	font_ = TTF_OpenFont(ttf_file_.c_str(),scale_*size_);
+void Font::scale(double s) {
+	scale_ = s;
+	TTF_CloseFont(font_);
+	font_ = TTF_OpenFont(ttf_file_.c_str(), scale_ * size_);
 
-		if (font_ == 0) {
-			logSDLError(std::cout, "TTF_OpenFont");
-		}
+	if (font_ == 0) {
+		logSDLError(std::cout, "TTF_OpenFont");
+	}
 }
 
+Font * Font::clone() {
+	return new Font(ttf_file_, size_);
+}
