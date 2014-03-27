@@ -15,6 +15,7 @@
 
 #include "../src/game/gui/Button.h"
 #include "../src/game/gui/Label.h"
+#include "../src/game/gui/CheckBox.h"
 
 #include "../src/game/events/ActionListener.h"
 
@@ -49,6 +50,9 @@ int main(int argc, char **argv) {
 	b->setBounds(10,100,120,30);
 	b->addActionListener(new TestListener(l));
 	mc->addComponent(b);
+	CheckBox * cb=new CheckBox("check box");
+	cb->setBounds(10,200,200,30);
+	mc->addComponent(cb);
 
 	scene->addGUIMainComponent(mc);
 

@@ -28,10 +28,10 @@ Component::~Component() {
 }
 
 void Component::render(Painter * p) {
-	p->save();
+//	p->save(); <-- Performance incrised of 5x without the history saving
 	p->setClip(bounds_);
 	this->paintComponent(p);
-	p->restore();
+//	p->restore();
 }
 bool Component::hasFocus() {
 	return hasFocus_;

@@ -106,8 +106,9 @@ void GameScene::gameLoop(int dt) {
 		fps = abs(1000.0 / delta);
 
 		ss << "FPS: " << fps;
-		p->save();
+//		p->save();
 		p->clearTransaltion();
+		p->removeClip();
 
 		SDL_Rect r=p->getFont()->textBounds(ss.str());
 		r.x=5;
@@ -121,7 +122,7 @@ void GameScene::gameLoop(int dt) {
 		p->paintText(ss.str(), 10, 10);
 
 		ss.str("");
-		p->restore();
+//		p->restore();
 #endif
 		p->renderToScreen();
 
