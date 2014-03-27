@@ -20,6 +20,11 @@ Painter::Painter(SDL_Renderer * rend, SDL_Size size) :
 	pen = (Color(0, 0, 0));
 	displayCenter.x = size.width / 2;
 	displayCenter.y = size.height / 2;
+
+	clip.x=0;
+	clip.y=0;
+	clip.w=size.width;
+	clip.h=size.height;
 }
 
 Painter::~Painter() {
@@ -37,6 +42,10 @@ void Painter::setFill(Color c) {
 void Painter::setFont(Font *f) {
 	delete font;
 	font = new Font(f->getName(), f->getSize() * transformation->getScale());
+}
+
+Font * Painter::getFont(){
+	return font;
 }
 
 Color Painter::getFill() {
@@ -208,3 +217,18 @@ SDL_Point Painter::getDisplayCenter() {
 	return displayCenter;
 }
 
+
+SDL_Rect Painter::getClip(){
+	return clip;
+}
+void Painter::setClip(SDL_Rect clip){
+	this->clip=clip;
+	SDL_RenderSetClipRect(renderer,&clip);
+}
+void Painter::setClip(int x,int y,int w,int h){
+	clip.x=x;
+	clip.y=y;
+	clip.w=w;
+	clip.h=h;
+	SDL_RenderSetClipRect(renderer,&clip);
+}

@@ -16,6 +16,7 @@ Component::Component() {
 	bounds_.y=0;
 	bounds_.w=0;
 	bounds_.h=0;
+	parent_=0;
 }
 
 Component::~Component() {
@@ -23,7 +24,10 @@ Component::~Component() {
 }
 
 void Component::render(Painter * p){
+	SDL_Rect oldclip=p->getClip();
+	p->setClip(bounds_);
 	this->paintComponent(p);
+	p->setClip(oldclip);
 }
 bool Component::hasFocus(){
 	return hasFocus_;
@@ -114,4 +118,12 @@ void Component::setLocation(SDL_Point p){
 void Component::setLocation(int x,int y){
 	bounds_.x=x;
 	bounds_.y=y;
+}
+
+Component * Component::getParent(){
+	return parent_;
+}
+
+void Component::setParent(Component * parent){
+	parent_=parent;
 }

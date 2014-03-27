@@ -7,16 +7,16 @@
 
 #include "Container.h"
 
-Container::Container() {
-	// TODO Auto-generated constructor stub
-
+Container::Container(): Component() {
 }
 
 Container::~Container() {
 	// TODO Auto-generated destructor stub
 }
 
-void Container::addComponent(Component * c){}
+void Container::addComponent(Component * c){
+	components_.push_back(c);
+}
 void Container::removeComponent(Component * c){}
 void Container::removeComponent(int ind){}
 

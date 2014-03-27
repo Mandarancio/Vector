@@ -17,9 +17,9 @@ public:
 	Container();
 	virtual ~Container();
 
-	void addComponent(Component * c);
-	void removeComponent(Component * c);
-	void removeComponent(int ind);
+	virtual void addComponent(Component * c);
+	virtual void removeComponent(Component * c);
+	virtual void removeComponent(int ind);
 
 	std::vector<Component *> getComponents();
 

@@ -38,20 +38,23 @@ public:
 	int getHeight();
 
 	void setBounds(SDL_Rect r);
-	void setBounds(int x,int y,int w,int h);
+	void setBounds(int x, int y, int w, int h);
 
 	void setSize(SDL_Size size);
-	void setSize(int w,int h);
+	void setSize(int w, int h);
 
 	void setLocation(SDL_Point p);
-	void setLocation(int x,int y);
+	void setLocation(int x, int y);
 
+	Component * getParent();
+	void setParent(Component * parent);
 protected:
 	virtual void paintComponent(Painter * p)=0;
 
 	Color backGround_;
 	Color foreGround_;
 	SDL_Rect bounds_;
+	Component * parent_;
 private:
 	bool hasFocus_;
 
