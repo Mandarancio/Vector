@@ -32,6 +32,8 @@ public:
 	virtual void mouseMotion(SDL_MouseMotionEvent * e);
 	virtual void mouseButtonDown(SDL_MouseButtonEvent * e);
 	virtual void mouseButtonUp(SDL_MouseButtonEvent *e);
+
+	void lostFocus();
 protected:
 	virtual void paintComponent(Painter * p);
 	virtual void paintSubComponents(Painter *p);

@@ -9,6 +9,7 @@
 
 Button::Button(std::string text) {
 	text_ = text;
+	cmdString_ = "button";
 	horizontalAlignment_ = H_CENTER;
 	status_ = NORMAL;
 }
@@ -37,7 +38,7 @@ void Button::paintComponent(Painter * p) {
 		p->setFill(backGround_.darker().darker());
 		p->paintRect(bounds_);
 		p->setFill(
-				(hasFocus() ? backGround_.brighter().brighter() : backGround_));
+				(isMouseIn() ? backGround_.brighter().brighter() : backGround_));
 		p->paintRect(x + 1, y + 1, w - 2, h - 4);
 		h -= 2;
 	} else if (status_ == PRESSED) {
@@ -74,9 +75,35 @@ void Button::paintComponent(Painter * p) {
 }
 
 void Button::mouseButtonDown(SDL_MouseButtonEvent * e) {
-	status_=PRESSED;
+	if (isEnabled()) {
+		status_ = PRESSED;
+		triggerActionListeners();
+	}
 }
 
 void Button::mouseButtonUp(SDL_MouseButtonEvent * e) {
-	status_=NORMAL;
+	if (isEnabled()) {
+		status_ = NORMAL;
+	}
 }
+
+void Button::addActionListener(ActionListener * l) {
+	actionListeners_.push_back(l);
+}
+
+void Button::removeActionListener(ActionListener * l) {
+	for (int i = 0; i < actionListeners_.size(); i++) {
+		if (actionListeners_[i] == l) {
+			actionListeners_.erase(actionListeners_.begin() + i);
+			return;
+		}
+	}
+}
+
+void Button::triggerActionListeners() {
+	Action * action = new Action(cmdString_);
+	for (int i = 0; i < actionListeners_.size(); i++) {
+		actionListeners_[i]->actionPerfoormed(action);
+	}
+}
+

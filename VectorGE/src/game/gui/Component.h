@@ -59,6 +59,8 @@ public:
 	void setEnabled(bool enabled);
 	bool isEnabled();
 
+	bool isMouseIn();
+
 	virtual void mouseIn();
 	virtual void mouseOut();
 protected:
@@ -74,7 +76,7 @@ protected:
 private:
 	bool enabled_;
 	bool hasFocus_;
-
+	bool isMouseIn_;
 };
 
 #endif /* COMPONENT_H_ */

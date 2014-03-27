@@ -9,6 +9,8 @@
 #define BUTTON_H_
 
 #include "Component.h"
+#include "../events/ActionListener.h"
+
 #include <string>
 
 enum ButtonStatus
@@ -27,11 +29,17 @@ public:
 	virtual void mouseButtonDown(SDL_MouseButtonEvent * e);
 	virtual void mouseButtonUp(SDL_MouseButtonEvent *e);
 
+	void addActionListener(ActionListener * l);
+	void removeActionListener(ActionListener * l);
 protected:
 	virtual void paintComponent(Painter * p);
+	void triggerActionListeners();
+
+	std::vector<ActionListener*> actionListeners_;
 
 private:
 	std::string text_;
+	std::string cmdString_;
 	ButtonStatus status_;
 };
 
