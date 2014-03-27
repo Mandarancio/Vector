@@ -12,6 +12,8 @@
 #include "GameEntity.h"
 #include "Camera.h"
 #include "events/MouseListener.h"
+#include "events/KeyListener.h"
+
 
 #include <vector>
 #include <string>
@@ -33,12 +35,18 @@ public:
 	void addMouseListener(MouseListener * ml);
 	void removeMouseListener(MouseListener *ml);
 	void removeMouseListener(int ind);
+
+	void addKeyListener(KeyListener *kl);
+	void removeKeyListener(KeyListener *kl);
+	void removeKeyListener(int ind);
 private:
 	void triggerMouseListener(SDL_Event e);
+	void triggerKeyListener(SDL_Event e);
 
 	std::string sceneName;
 	std::vector<GameEntity*> gameEntities;
 	std::vector<MouseListener*> mouseListeners;
+	std::vector<KeyListener*> keyListeners;
 
 	Camera * camera;
 	b2World * world;

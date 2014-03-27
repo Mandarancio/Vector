@@ -30,14 +30,18 @@ GameScene::GameScene(Camera * camera, float gx, float gy) :
 }
 
 GameScene::~GameScene() {
-	for (int i=0;i<gameEntities.size();i++){
+	for (int i = 0; i < gameEntities.size(); i++) {
 		delete gameEntities[i];
 	}
 	gameEntities.clear();
-	for (int i=0;i<mouseListeners.size();i++){
+	for (int i = 0; i < mouseListeners.size(); i++) {
 		delete mouseListeners[i];
 	}
 	mouseListeners.clear();
+	for (int i = 0; i < keyListeners.size(); i++) {
+		delete keyListeners[i];
+	}
+	keyListeners.clear();
 	delete world;
 	delete camera;
 }
@@ -52,7 +56,7 @@ void GameScene::gameLoop(int dt) {
 	int fps;
 	std::stringstream ss;
 	while (!quit) {
-		past=present;
+		past = present;
 		gettimeofday(&present, NULL);
 		delta = (present.tv_usec - past.tv_usec) / 1000.0;
 		camera->getPainter()->clearWindow();
@@ -114,24 +118,48 @@ b2World * GameScene::getWorld() {
 	return world;
 }
 
-void GameScene::addMouseListener(MouseListener * ml){
+void GameScene::addMouseListener(MouseListener * ml) {
 	mouseListeners.push_back(ml);
 }
-void GameScene::removeMouseListener(MouseListener *ml){
-	for (int i=0;i<mouseListeners.size();i++){
-		if (ml==mouseListeners[i]){
+void GameScene::removeMouseListener(MouseListener *ml) {
+	for (int i = 0; i < mouseListeners.size(); i++) {
+		if (ml == mouseListeners[i]) {
 			removeMouseListener(i);
 			break;
 		}
 	}
 }
-void GameScene::removeMouseListener(int ind){
-	mouseListeners.erase(mouseListeners.begin()+ind);
+
+void GameScene::removeMouseListener(int ind) {
+	mouseListeners.erase(mouseListeners.begin() + ind);
 }
 
-void GameScene::triggerMouseListener(SDL_Event e){
-	for (int i=0;i<mouseListeners.size();i++){
+void GameScene::addKeyListener(KeyListener *kl) {
+	keyListeners.push_back(kl);
+}
+
+void GameScene::removeKeyListener(KeyListener *kl) {
+	for (int i = 0; i < keyListeners.size(); i++) {
+		if (kl == keyListeners[i]) {
+			removeKeyListener(i);
+			break;
+		}
+	}
+}
+
+void GameScene::removeKeyListener(int ind) {
+	keyListeners.erase(keyListeners.begin()+ind);
+}
+
+void GameScene::triggerMouseListener(SDL_Event e) {
+	for (int i = 0; i < mouseListeners.size(); i++) {
 		mouseListeners[i]->triggerEvent(&e);
+	}
+}
+
+void GameScene::triggerKeyListener(SDL_Event e){
+	for (int i=0;i<keyListeners.size();i++){
+		keyListeners[i]->triggerEvent(&e);
 	}
 }
 
