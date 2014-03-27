@@ -114,8 +114,8 @@ void GameScene::gameLoop(int dt) {
 		r.y=5;
 		r.w+=10;
 		r.h+=10;
-		p->setFill(Color(0,0,0));
-		p->setPen(Color(0,0,0));
+		p->setFill(Color(0,0,0,180));
+		p->setPen(Color(0,0,0,180));
 		p->paintRect(r);
 		p->setPen(Color(255,255,255));
 		p->paintText(ss.str(), 10, 10);
@@ -133,6 +133,12 @@ void GameScene::gameLoop(int dt) {
 
 void GameScene::addEntity(GameEntity *ge) {
 	gameEntities.push_back(ge);
+}
+void GameScene::addGUIMainComponent(MainContainer * mc){
+	addEntity(mc);
+	addMouseListener(mc);
+	addWindowListener(mc);
+	addKeyListener(mc);
 }
 
 b2World * GameScene::getWorld() {

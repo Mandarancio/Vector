@@ -15,7 +15,6 @@ public:
 	WindowListener();
 	virtual ~WindowListener();
 	void triggerEvent(SDL_Event *e);
-protected:
 	virtual void windowResized(SDL_WindowEvent *e);
 
 

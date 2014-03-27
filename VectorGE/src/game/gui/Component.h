@@ -10,10 +10,14 @@
 
 #include "../GameEntity.h"
 #include "../events/MouseListener.h"
+#include "../events/KeyListener.h"
+
 #include "../primitives/Color.h"
 #include "../primitives/SDLSize.h"
 
-class Component: public GameEntity, public MouseListener {
+#include "ComponentSupport.h"
+
+class Component: public GameEntity, public MouseListener,public KeyListener {
 public:
 	Component();
 	virtual ~Component();
@@ -48,6 +52,15 @@ public:
 
 	Component * getParent();
 	void setParent(Component * parent);
+
+	void setHorizontalAlignment(HorizontalAlignment ha);
+	void setVerticalAlignment(VerticalAlignment va);
+
+	void setEnabled(bool enabled);
+	bool isEnabled();
+
+	virtual void mouseIn();
+	virtual void mouseOut();
 protected:
 	virtual void paintComponent(Painter * p)=0;
 
@@ -55,7 +68,11 @@ protected:
 	Color foreGround_;
 	SDL_Rect bounds_;
 	Component * parent_;
+
+	HorizontalAlignment horizontalAlignment_;
+	VerticalAlignment verticalAlgnment_;
 private:
+	bool enabled_;
 	bool hasFocus_;
 
 };

@@ -21,10 +21,10 @@ Painter::Painter(SDL_Renderer * rend, SDL_Size size) :
 	displayCenter.x = size.width / 2;
 	displayCenter.y = size.height / 2;
 
-	status.clip.x=0;
-	status.clip.y=0;
-	status.clip.w=0;
-	status.clip.h=0;
+	status.clip.x = 0;
+	status.clip.y = 0;
+	status.clip.w = 0;
+	status.clip.h = 0;
 }
 
 Painter::~Painter() {
@@ -41,10 +41,11 @@ void Painter::setFill(Color c) {
 
 void Painter::setFont(Font *f) {
 	delete status.font;
-	status.font = new Font(f->getName(), f->getSize() * status.transformation->getScale());
+	status.font = new Font(f->getName(),
+			f->getSize() * status.transformation->getScale());
 }
 
-Font * Painter::getFont(){
+Font * Painter::getFont() {
 	return status.font;
 }
 
@@ -78,14 +79,30 @@ void Painter::paintRect(SDL_Rect rect) {
 
 }
 
-void Painter::paintCircle(int x, int y,Uint16 r){
-	filledCircleColor(renderer,x,y,r,status.fill.getRGBA());
-	circleColor(renderer,x,y,r,status.pen.getRGBA());
+void Painter::paintRoundedRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h,
+		Uint16 r) {
+	status.transformation->applyTransformation(x, y);
+	status.transformation->applySizeTransformation(w, h);
+	r*=status.transformation->getScale();
+
+	roundedRectangleColor(renderer,x,y,x+w,y+h,r,status.pen.getRGBA());
+
 }
 
-void Painter::paintOval(int x,int y,Uint16 rx,Uint16 ry){
-	filledEllipseColor(renderer,x,y,rx,ry,status.fill.getRGBA());
-	ellipseColor(renderer,x,y,rx,ry,status.pen.getRGBA());
+void Painter::paintRoundedRect(SDL_Rect rect, Uint16 r) {
+	paintRoundedRect(rect.x,rect.y,rect.w,rect.h,r);
+
+
+}
+
+void Painter::paintCircle(int x, int y, Uint16 r) {
+	filledCircleColor(renderer, x, y, r, status.fill.getRGBA());
+	circleColor(renderer, x, y, r, status.pen.getRGBA());
+}
+
+void Painter::paintOval(int x, int y, Uint16 rx, Uint16 ry) {
+	filledEllipseColor(renderer, x, y, rx, ry, status.fill.getRGBA());
+	ellipseColor(renderer, x, y, rx, ry, status.pen.getRGBA());
 }
 
 void Painter::paintLine(int x1, int y1, int x2, int y2) {
@@ -94,21 +111,22 @@ void Painter::paintLine(int x1, int y1, int x2, int y2) {
 
 void Painter::paintLine(Line l) {
 	Line *l1 = l.transformLine(*status.transformation);
-	SDL_SetRenderDrawColor(renderer, status.pen.red(), status.pen.green(), status.pen.blue(),
-			status.pen.alpha());
+	SDL_SetRenderDrawColor(renderer, status.pen.red(), status.pen.green(),
+			status.pen.blue(), status.pen.alpha());
 	SDL_RenderDrawLine(renderer, l1->p1().x, l1->p1().y, l1->p2().x,
 			l1->p2().y);
 }
 
 void Painter::paintPoint(int x, int y) {
 	status.transformation->applyTransformation(x, y);
-	SDL_SetRenderDrawColor(renderer, status.pen.red(), status.pen.green(), status.pen.blue(),
-			status.pen.alpha());
+	SDL_SetRenderDrawColor(renderer, status.pen.red(), status.pen.green(),
+			status.pen.blue(), status.pen.alpha());
 	SDL_RenderDrawPoint(renderer, x, y);
 }
 
 void Painter::paintText(std::string text, int x, int y) {
-	SDL_Surface * surface = status.font->toSurface(text, status.pen.getSDLColor());
+	SDL_Surface * surface = status.font->toSurface(text,
+			status.pen.getSDLColor());
 	SDL_Rect r = status.font->textBounds(text);
 	r.x = x;
 	r.y = y;
@@ -158,11 +176,13 @@ void Painter::paintShape(Shape * shape) {
 			if (s->contains(x, y)) {
 				if (!s->contains(x - 1, y) || !s->contains(x, y - 1)
 						|| !s->contains(x + 1, y) || !s->contains(x, y + 1)) {
-					SDL_SetRenderDrawColor(renderer, status.pen.red(), status.pen.green(),
-							status.pen.blue(), status.pen.alpha());
+					SDL_SetRenderDrawColor(renderer, status.pen.red(),
+							status.pen.green(), status.pen.blue(),
+							status.pen.alpha());
 				} else {
-					SDL_SetRenderDrawColor(renderer, status.fill.red(), status.fill.green(),
-							status.fill.blue(), status.fill.alpha());
+					SDL_SetRenderDrawColor(renderer, status.fill.red(),
+							status.fill.green(), status.fill.blue(),
+							status.fill.alpha());
 				}
 				SDL_RenderDrawPoint(renderer, x, y);
 
@@ -176,11 +196,13 @@ void Painter::paintPolygon(Polygon p) {
 	Polygon * s = p.transformPolygon(*status.transformation);
 	filledPolygonColor(renderer, s->vx(), s->vy(), s->vertex().size(),
 			status.fill.getRGBA());
-	polygonColor(renderer, s->vx(), s->vy(), s->vertex().size(), status.pen.getRGBA());
+	polygonColor(renderer, s->vx(), s->vy(), s->vertex().size(),
+			status.pen.getRGBA());
 }
 
 void Painter::clearWindow() {
 	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
 }
 void Painter::renderToScreen() {
 	SDL_RenderPresent(renderer);
@@ -195,18 +217,17 @@ void Painter::scale(double s) {
 	status.font->scale(status.transformation->getScale());
 }
 
-
-Transformation * Painter::getTransformation(){
+Transformation * Painter::getTransformation() {
 	return status.transformation;
 }
 
 void Painter::save() {
 	PainterStatus past;
-	past.clip=status.clip;
-	past.fill=status.fill;
-	past.pen=status.pen;
-	past.font=status.font->clone();
-	past.transformation=status.transformation->clone();
+	past.clip = status.clip;
+	past.fill = status.fill;
+	past.pen = status.pen;
+	past.font = status.font->clone();
+	past.transformation = status.transformation->clone();
 
 	history.push_back(past);
 
@@ -234,39 +255,38 @@ SDL_Point Painter::getDisplayCenter() {
 	return displayCenter;
 }
 
-
-SDL_Rect Painter::getClip(){
+SDL_Rect Painter::getClip() {
 	return status.clip;
 }
-void Painter::setClip(SDL_Rect clip){
-	status.clip=clip;
-	if (clip.w>0 && clip.h>0){
-		SDL_RenderSetClipRect(renderer,&clip);
-	}else{
-		SDL_RenderSetClipRect(renderer,NULL);
+void Painter::setClip(SDL_Rect clip) {
+	status.clip = clip;
+	if (clip.w > 0 && clip.h > 0) {
+		SDL_RenderSetClipRect(renderer, &clip);
+	} else {
+		SDL_RenderSetClipRect(renderer, NULL);
 	}
 }
-void Painter::setClip(int x,int y,int w,int h){
-	status.clip.x=x;
-	status.clip.y=y;
-	status.clip.w=w;
-	status.clip.h=h;
+void Painter::setClip(int x, int y, int w, int h) {
+	status.clip.x = x;
+	status.clip.y = y;
+	status.clip.w = w;
+	status.clip.h = h;
 
-	SDL_RenderSetClipRect(renderer,&status.clip);
+	SDL_RenderSetClipRect(renderer, &status.clip);
 }
 
-void Painter::removeClip(){
-	status.clip.w=0;
-	status.clip.x=0;
-	status.clip.y=0;
-	status.clip.h=0;
+void Painter::removeClip() {
+	status.clip.w = 0;
+	status.clip.x = 0;
+	status.clip.y = 0;
+	status.clip.h = 0;
 
-	SDL_RenderSetClipRect(renderer,NULL);
+	SDL_RenderSetClipRect(renderer, NULL);
 }
 
-void Painter::windowResized(SDL_WindowEvent *e){
-	displaySize.width=e->data1;
-	displaySize.height=e->data2;
-	displayCenter.x=e->data1/2;
-	displayCenter.y=e->data2/2;
+void Painter::windowResized(SDL_WindowEvent *e) {
+	displaySize.width = e->data1;
+	displaySize.height = e->data2;
+	displayCenter.x = e->data1 / 2;
+	displayCenter.y = e->data2 / 2;
 }

@@ -48,6 +48,9 @@ public:
 	void paintRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h);
 	void paintRect(SDL_Rect rect);
 
+	void paintRoundedRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h, Uint16 r);
+	void paintRoundedRect(SDL_Rect rect, Uint16 r);
+
 	void paintCircle(int x, int y, Uint16 r);
 	void paintOval(int x, int y, Uint16 rx, Uint16 ry);
 
@@ -86,7 +89,6 @@ public:
 	void setClip(int x, int y, int w, int h);
 	void removeClip();
 
-protected:
 	virtual void windowResized(SDL_WindowEvent *e);
 
 private:

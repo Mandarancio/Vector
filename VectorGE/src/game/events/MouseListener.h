@@ -14,7 +14,6 @@ public:
 	MouseListener();
 	virtual ~MouseListener();
 	void triggerEvent(SDL_Event *event);
-protected:
 	virtual void mouseMotion(SDL_MouseMotionEvent *e);
 	virtual void mouseButtonDown(SDL_MouseButtonEvent *e);
 	virtual void mouseButtonUp(SDL_MouseButtonEvent *e);

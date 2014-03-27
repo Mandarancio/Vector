@@ -28,6 +28,10 @@ public:
 	void setLayout(Layout * l);
 
 	void setSize(int w,int h);
+
+	virtual void mouseMotion(SDL_MouseMotionEvent * e);
+	virtual void mouseButtonDown(SDL_MouseButtonEvent * e);
+	virtual void mouseButtonUp(SDL_MouseButtonEvent *e);
 protected:
 	virtual void paintComponent(Painter * p);
 	virtual void paintSubComponents(Painter *p);

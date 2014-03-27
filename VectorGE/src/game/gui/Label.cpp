@@ -9,9 +9,7 @@
 
 Label::Label(std::string text) :
 		Component(), text_(text) {
-	// TODO Auto-generated constructor stub
-	horizontalTextAlignment_ = H_LEFT;
-	verticalTextAlgnment_ = V_CENTER;
+
 }
 
 Label::~Label() {
@@ -26,31 +24,25 @@ std::string Label::getText() {
 	return text_;
 }
 
-void Label::setHorizontalAlignment(HorizontalAlignment ha) {
-	horizontalTextAlignment_ = ha;
-}
 
-void Label::setVerticalAlignment(VerticalAlignment va) {
-	verticalTextAlgnment_ = va;
-}
 
 void Label::paintComponent(Painter * p) {
 	p->setPen(foreGround_);
 	int x = getX();
 	int y = getY();
 
-	if (verticalTextAlgnment_ == V_CENTER) {
+	if (verticalAlgnment_ == V_CENTER) {
 		int h = p->getFont()->textBounds(text_).h;
 		y += (getHeight() - h) / 2;
-	} else if (verticalTextAlgnment_ == V_BOTTOM) {
+	} else if (verticalAlgnment_ == V_BOTTOM) {
 		int h = p->getFont()->textBounds(text_).h;
 		y += (getHeight() - h);
 	}
 
-	if (horizontalTextAlignment_ == H_CENTER) {
+	if (horizontalAlignment_ == H_CENTER) {
 		int w = p->getFont()->textBounds(text_).w;
 		x += (getWidth() - w) / 2;
-	} else if (horizontalTextAlignment_ == H_RIGHT) {
+	} else if (horizontalAlignment_ == H_RIGHT) {
 		int w = p->getFont()->textBounds(text_).w;
 		x += (getWidth() - w);
 	}

@@ -13,9 +13,7 @@
 #include "../src/game/GameScene.h"
 #include "../src/game/BackgroundLayer.h"
 
-
-
-#include "../src/game/gui/MainContainer.h"
+#include "../src/game/gui/Button.h"
 #include "../src/game/gui/Label.h"
 
 #include "TestAnimation.h"
@@ -30,9 +28,11 @@ int main(int argc, char **argv) {
 	Label * l=new Label("hello world");
 	l->setBounds(10,285,120,30);
 	mc->addComponent(l);
+	Button *b=new Button("button");
+	b->setBounds(10,100,120,30);
+	mc->addComponent(b);
 
-	scene->addWindowListener(mc);
-	scene->addEntity(mc);
+	scene->addGUIMainComponent(mc);
 
 //	scene->addEntity(new BackgroundLayer());
 //	TestAnimation *ta=new TestAnimation();

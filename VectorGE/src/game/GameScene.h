@@ -17,6 +17,8 @@
 #include "events/WindowListener.h"
 
 
+#include "gui/MainContainer.h"
+
 #include <vector>
 #include <string>
 
@@ -31,6 +33,7 @@ public:
 	virtual ~GameScene();
 	void gameLoop(int dt=0);
 	void addEntity(GameEntity *ge);
+	void addGUIMainComponent(MainContainer * mc);
 
 	b2World * getWorld();
 

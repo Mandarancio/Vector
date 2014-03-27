@@ -39,3 +39,11 @@ Uint8 Color::blue(){
 Uint8 Color::alpha(){
 	return color.a;
 }
+
+Color Color::darker(){
+	return Color(color.r-10,color.g-10,color.b-10,color.a);
+}
+
+Color Color::brighter(){
+	return Color(color.r+10,color.g+10,color.b+10,color.a);
+}

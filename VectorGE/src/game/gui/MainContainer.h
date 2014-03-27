@@ -15,7 +15,6 @@ class MainContainer: public Container, public WindowListener {
 public:
 	MainContainer();
 	virtual ~MainContainer();
-protected:
 	virtual void windowResized(SDL_WindowEvent *e);
 
 };

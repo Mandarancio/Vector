@@ -8,8 +8,8 @@
 #include "Component.h"
 
 Component::Component() {
-	// TODO Auto-generated constructor stub
 	hasFocus_ = false;
+	enabled_ = true;
 	foreGround_ = Color(230, 230, 230);
 	backGround_ = Color(54, 61, 63);
 	bounds_.x = 0;
@@ -17,10 +17,12 @@ Component::Component() {
 	bounds_.w = 0;
 	bounds_.h = 0;
 	parent_ = 0;
+	horizontalAlignment_ = H_LEFT;
+	verticalAlgnment_ = V_CENTER;
+
 }
 
 Component::~Component() {
-	// TODO Auto-generated destructor stub
 }
 
 void Component::render(Painter * p) {
@@ -124,3 +126,22 @@ Component * Component::getParent() {
 void Component::setParent(Component * parent) {
 	parent_ = parent;
 }
+
+void Component::setHorizontalAlignment(HorizontalAlignment ha) {
+	horizontalAlignment_ = ha;
+}
+
+void Component::setVerticalAlignment(VerticalAlignment va) {
+	verticalAlgnment_ = va;
+}
+
+void Component::setEnabled(bool enabled) {
+	enabled_ = enabled;
+}
+
+bool Component::isEnabled() {
+	return enabled_;
+}
+
+void Component::mouseIn(){}
+void Component::mouseOut(){}

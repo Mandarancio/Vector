@@ -21,6 +21,9 @@ public:
 	Uint8 green();
 	Uint8 blue();
 	Uint8 alpha();
+
+	Color darker();
+	Color brighter();
 private:
 	SDL_Color color;
 };
