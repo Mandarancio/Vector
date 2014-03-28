@@ -27,8 +27,9 @@
 
 class GameScene: public Entity {
 public:
-	GameScene(Camera * camera, b2World *world=0);
-	GameScene(Camera * camera, float gx,float gy);
+	explicit GameScene(Camera * camera);
+	explicit GameScene(Camera * camera, b2World *world);
+	explicit GameScene(Camera * camera, float gx,float gy);
 
 	virtual ~GameScene();
 	void gameLoop(Uint16 dt=0);

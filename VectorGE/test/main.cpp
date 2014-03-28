@@ -47,7 +47,7 @@ private:
 int main(int argc, char **argv) {
 	GameWindow *gw = new GameWindow();
 	Camera *c = new Camera(gw->painter());
-	GameScene *scene = new GameScene(c, 0); //,0,0.0);//9.8);
+	GameScene *scene = new GameScene(c); //,0,0.0);//9.8);
 
 	MainContainer * mc = new MainContainer();
 	mc->setBounds(0, 0, gw->getSize().width, gw->getSize().height);

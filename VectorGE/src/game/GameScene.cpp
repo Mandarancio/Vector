@@ -13,6 +13,15 @@
 
 #define FPS_DEBUG true
 
+GameScene::GameScene(Camera * camera) :Entity(){
+	this->camera = camera;
+	this->world = 0;
+	positionIterations = 8;
+	velocityIterations = 10;
+
+	this->addWindowListener(camera->getPainter());
+}
+
 GameScene::GameScene(Camera * camera, b2World *world) :
 		Entity() {
 	this->camera = camera;
@@ -21,6 +30,7 @@ GameScene::GameScene(Camera * camera, b2World *world) :
 	velocityIterations = 10;
 
 	this->addWindowListener(camera->getPainter());
+
 }
 
 GameScene::GameScene(Camera * camera, float gx, float gy) :
@@ -68,7 +78,7 @@ void GameScene::gameLoop(Uint16 dt) {
 	Painter * p = camera->getPainter();
 
 	while (!quit) {
-		past.tv_usec= present.tv_usec;
+		past.tv_usec = present.tv_usec;
 		gettimeofday(&present, NULL);
 		delta = (present.tv_usec - past.tv_usec) / 1000.0;
 		p->clearWindow();
@@ -129,9 +139,9 @@ void GameScene::gameLoop(Uint16 dt) {
 #endif
 		p->renderToScreen();
 		if (autoFPS) {
-			delay = round(1000.0/ 500 - abs(delta));
-			if (delay<0)
-				delay=0;
+			delay = round(1000.0 / 500 - abs(delta));
+			if (delay < 0)
+				delay = 0;
 		}
 
 		if (delay > 0) {

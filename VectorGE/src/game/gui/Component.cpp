@@ -66,68 +66,6 @@ Font * Component::getFont() {
 	return font_;
 }
 
-SDL_Rect Component::getBounds() {
-	return bounds_;
-}
-
-SDL_Point Component::getLocation() {
-	SDL_Point p;
-	p.x = bounds_.x;
-	p.y = bounds_.y;
-	return p;
-}
-
-SDL_Size Component::getSize() {
-	SDL_Size s;
-	s.width = bounds_.w;
-	s.height = bounds_.h;
-	return s;
-}
-
-int Component::getX() {
-	return bounds_.x;
-}
-
-int Component::getY() {
-	return bounds_.y;
-}
-
-int Component::getWidth() {
-	return bounds_.w;
-}
-
-int Component::getHeight() {
-	return bounds_.h;
-}
-
-void Component::setBounds(SDL_Rect r) {
-	setLocation(r.x, r.y);
-	setSize(r.w, r.h);
-}
-
-void Component::setBounds(int x, int y, int w, int h) {
-	setLocation(x, y);
-	setSize(w, h);
-}
-
-void Component::setSize(SDL_Size size) {
-	setSize(size.width, size.height);
-}
-
-void Component::setSize(int w, int h) {
-	bounds_.w = w;
-	bounds_.h = h;
-}
-
-void Component::setLocation(SDL_Point p) {
-	setLocation(p.x, p.y);
-}
-
-void Component::setLocation(int x, int y) {
-	bounds_.x = x;
-	bounds_.y = y;
-}
-
 Component * Component::getParent() {
 	return parent_;
 }

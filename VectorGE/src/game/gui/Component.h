@@ -38,23 +38,6 @@ public:
 	void setFont(Font *f);
 	Font * getFont();
 
-	SDL_Rect getBounds();
-	SDL_Point getLocation();
-	SDL_Size getSize();
-	int getX();
-	int getY();
-	int getWidth();
-	int getHeight();
-
-	void setBounds(SDL_Rect r);
-	void setBounds(int x, int y, int w, int h);
-
-	void setSize(SDL_Size size);
-	void setSize(int w, int h); //BASIC Function
-
-	void setLocation(SDL_Point p);
-	void setLocation(int x, int y); //BASIC Function
-
 	Component * getParent();
 	void setParent(Component * parent);
 
@@ -80,7 +63,6 @@ protected:
 	Color backGround_;
 	Color foreGround_;
 	Font * font_;
-	SDL_Rect bounds_;
 	Component * parent_;
 
 	HorizontalAlignment horizontalAlignment_;
