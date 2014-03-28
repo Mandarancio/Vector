@@ -28,6 +28,7 @@ std::string Label::getText() {
 
 void Label::paintComponent(Painter * p) {
 	p->setPen(foreGround_);
+	p->setFont(getFont());
 	int x = getX();
 	int y = getY();
 

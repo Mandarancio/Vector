@@ -71,6 +71,7 @@ void CheckBox::mouseButtonUp(SDL_MouseButtonEvent * e) {
 void CheckBox::paintComponent(Painter * p) {
 	int h = getHeight() - 8;
 	p->setPen(backGround_.brighter());
+	p->setFont(getFont());
 	if (__onCheckArea && isEnabled()) {
 		p->setFill(backGround_.darker());
 	} else {

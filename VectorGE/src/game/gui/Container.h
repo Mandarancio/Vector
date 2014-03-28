@@ -18,6 +18,8 @@ public:
 	Container();
 	virtual ~Container();
 
+	virtual void step(double dt);
+
 	virtual void addComponent(Component * c);
 	virtual void removeComponent(Component * c);
 	virtual void removeComponent(int ind);

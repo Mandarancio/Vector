@@ -35,6 +35,9 @@ public:
 	void setBackground(Color c);
 	void setForeground(Color c);
 
+	void setFont(Font *f);
+	Font * getFont();
+
 	SDL_Rect getBounds();
 	SDL_Point getLocation();
 	SDL_Size getSize();
@@ -76,6 +79,7 @@ protected:
 
 	Color backGround_;
 	Color foreGround_;
+	Font * font_;
 	SDL_Rect bounds_;
 	Component * parent_;
 

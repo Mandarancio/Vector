@@ -17,6 +17,7 @@ public:
 	virtual ~MainContainer();
 	virtual void windowResized(SDL_WindowEvent *e);
 
+
 };
 
 #endif /* MAINCONTAINER_H_ */

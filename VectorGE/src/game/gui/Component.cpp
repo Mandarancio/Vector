@@ -10,8 +10,8 @@
 Component::Component() {
 	hasFocus_ = false;
 	enabled_ = true;
-	isVisible_=true;
-	isMouseIn_=true;
+	isVisible_ = true;
+	isMouseIn_ = true;
 	foreGround_ = Color(230, 230, 230);
 	backGround_ = Color(54, 61, 63);
 	bounds_.x = 0;
@@ -21,17 +21,17 @@ Component::Component() {
 	parent_ = 0;
 	horizontalAlignment_ = H_LEFT;
 	verticalAlgnment_ = V_CENTER;
-
+	font_ = new Font();
 }
 
 Component::~Component() {
 }
 
 void Component::render(Painter * p) {
-//	p->save(); <-- Performance incrised of 5x without the history saving
+	p->save();// <-- Performance incrised of 5x without the history saving
 	p->setClip(bounds_);
 	this->paintComponent(p);
-//	p->restore();
+	p->restore();
 }
 bool Component::hasFocus() {
 	return hasFocus_;
@@ -57,6 +57,13 @@ void Component::setBackground(Color c) {
 
 void Component::setForeground(Color c) {
 	foreGround_ = c;
+}
+
+void Component::setFont(Font *f) {
+	font_=f;
+}
+Font * Component::getFont() {
+	return font_;
 }
 
 SDL_Rect Component::getBounds() {
@@ -145,26 +152,26 @@ bool Component::isEnabled() {
 	return enabled_;
 }
 
-bool Component::isMouseIn(){
+bool Component::isMouseIn() {
 	return isMouseIn_;
 }
 
-void Component::mouseIn(){
-	isMouseIn_=true;
+void Component::mouseIn() {
+	isMouseIn_ = true;
 }
-void Component::mouseOut(){
-	isMouseIn_=false;
+void Component::mouseOut() {
+	isMouseIn_ = false;
 }
 
-bool Component::isVisible(){
+bool Component::isVisible() {
 	return isVisible_;
 }
-void Component::setVisibile(bool visible){
-	isVisible_=visible;
+void Component::setVisibile(bool visible) {
+	isVisible_ = visible;
 }
-void  Component::setTooltip(std::string tooltip){
-	tooltip_=tooltip;
+void Component::setTooltip(std::string tooltip) {
+	tooltip_ = tooltip;
 }
-std::string  Component::getTooltip(){
+std::string Component::getTooltip() {
 	return tooltip_;
 }

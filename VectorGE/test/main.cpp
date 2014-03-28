@@ -16,6 +16,7 @@
 #include "../src/game/gui/Button.h"
 #include "../src/game/gui/Label.h"
 #include "../src/game/gui/CheckBox.h"
+#include "../src/game/gui/TextField.h"
 
 #include "../src/game/events/ActionListener.h"
 
@@ -63,6 +64,10 @@ int main(int argc, char **argv) {
 	cb->addActionListener(tl);
 	cb->setBounds(10, 200, 200, 30);
 	mc->addComponent(cb);
+
+	TextField *tf=new TextField("text field");
+	tf->setBounds(10,350,200,30);
+	mc->addComponent(tf);
 
 	scene->addGUIMainComponent(mc);
 

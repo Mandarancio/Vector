@@ -143,7 +143,9 @@ void Painter::paintText(std::string text, int x, int y) {
 }
 
 void Painter::paintImage(Image img, SDL_Rect bounds) {
-	paintTexture(img.getTexture(renderer), bounds);
+	SDL_Texture * t=img.getTexture(renderer);
+	paintTexture(t, bounds);
+	SDL_DestroyTexture(t);
 }
 
 void Painter::paintImage(Image img, SDL_Point pos) {

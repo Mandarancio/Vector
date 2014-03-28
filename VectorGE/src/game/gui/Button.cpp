@@ -33,6 +33,7 @@ void Button::paintComponent(Painter * p) {
 	int h = getHeight();
 
 	p->setPen(Color(0, 0, 0, 0));
+	p->setFont(getFont());
 
 	if (status_ == NORMAL) {
 		p->setFill(backGround_.darker().darker());

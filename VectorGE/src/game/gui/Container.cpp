@@ -17,6 +17,12 @@ Container::~Container() {
 	// TODO Auto-generated destructor stub
 }
 
+void Container::step(double dt){
+	for (int i=0;i<components_.size();i++){
+		components_[i]->step(dt);
+	}
+}
+
 void Container::addComponent(Component * c) {
 	c->setParent(this);
 	components_.push_back(c);
