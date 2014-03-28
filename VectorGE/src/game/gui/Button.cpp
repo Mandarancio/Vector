@@ -38,7 +38,7 @@ void Button::paintComponent(Painter * p) {
 		p->setFill(backGround_.darker().darker());
 		p->paintRect(bounds_);
 		p->setFill(
-				(isMouseIn() ? backGround_.brighter().brighter() : backGround_));
+				(isMouseIn() ? backGround_.brighter() : backGround_));
 		p->paintRect(x + 1, y + 1, w - 2, h - 4);
 		h -= 2;
 	} else if (status_ == PRESSED) {

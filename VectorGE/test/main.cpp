@@ -21,14 +21,22 @@
 
 #include "TestAnimation.h"
 
-class TestListener: public ActionListener{
+class TestListener: public ActionListener {
 public:
-	TestListener(Label *l){
-		label=l;
+	TestListener(Label *l) {
+		label = l;
 	}
 
-	virtual void actionPerfoormed(Action * a){
-		label->setVisibile(!label->isVisible());
+	virtual void actionPerfoormed(Action * a) {
+		if (!a->getCommand().compare("button")) {
+			if (!label->getText().compare("hello world!")) {
+				label->setText("ciao mondo!");
+			} else {
+				label->setText("hello world!");
+			}
+		} else {
+			label->setVisibile(!label->isVisible());
+		}
 	}
 
 private:
@@ -38,24 +46,25 @@ private:
 int main(int argc, char **argv) {
 	GameWindow *gw = new GameWindow();
 	Camera *c = new Camera(gw->painter());
-	GameScene *scene=new GameScene(c,0);//,0,0.0);//9.8);
+	GameScene *scene = new GameScene(c, 0); //,0,0.0);//9.8);
 
-	MainContainer * mc=new MainContainer();
-	mc->setBounds(0,0,gw->getSize().width,gw->getSize().height);
-	Label * l=new Label("Hello World!");
-	l->setVisibile(false);
-	l->setBounds(10,285,120,30);
+	MainContainer * mc = new MainContainer();
+	mc->setBounds(0, 0, gw->getSize().width, gw->getSize().height);
+	Label * l = new Label("hello world!");
+	l->setBounds(10, 285, 150, 30);
 	mc->addComponent(l);
-	Button *b=new Button("button");
-	b->setBounds(10,100,120,30);
-	b->addActionListener(new TestListener(l));
+	Button *b = new Button("button");
+	b->setBounds(10, 100, 120, 30);
+	TestListener * tl=new TestListener(l);
+	b->addActionListener(tl);
 	mc->addComponent(b);
-	CheckBox * cb=new CheckBox("check box");
-	cb->setBounds(10,200,200,30);
+	CheckBox * cb = new CheckBox("visible");
+	cb->setChecked(true);
+	cb->addActionListener(tl);
+	cb->setBounds(10, 200, 200, 30);
 	mc->addComponent(cb);
 
 	scene->addGUIMainComponent(mc);
-
 
 //	scene->addEntity(new BackgroundLayer());
 //	TestAnimation *ta=new TestAnimation();

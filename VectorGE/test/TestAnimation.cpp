@@ -30,7 +30,7 @@ void TestAnimation::render(Painter * p){
 	p->setFill(Color(0,0,0));
 	p->paintRect(mPos.x-5,mPos.y-5,10,10);
 }
-void TestAnimation::step(double dt,SDL_Event event){}
+void TestAnimation::step(double dt){}
 
 void TestAnimation::mouseMotion(SDL_MouseMotionEvent *e){
 	mPos.x=e->x;

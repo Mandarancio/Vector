@@ -19,7 +19,7 @@ public:
 	TestAnimation();
 	virtual ~TestAnimation();
 	virtual void render(Painter * p);
-	virtual void step(double dt,SDL_Event event);
+	virtual void step(double dt);
 
 	virtual void mouseMotion(SDL_MouseMotionEvent *e);
 private:
