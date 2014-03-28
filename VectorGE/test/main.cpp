@@ -22,58 +22,58 @@
 
 #include "TestAnimation.h"
 
-class TestListener: public ActionListener {
-public:
-	TestListener(Label *l) {
-		label = l;
-	}
-
-	virtual void actionPerfoormed(Action * a) {
-		if (!a->getCommand().compare("button")) {
-			if (!label->getText().compare("hello world!")) {
-				label->setText("ciao mondo!");
-			} else {
-				label->setText("hello world!");
-			}
-		} else {
-			label->setVisibile(!label->isVisible());
-		}
-	}
-
-private:
-	Label * label;
-};
+//class TestListener: public ActionListener {
+//public:
+//	TestListener(Label *l) {
+//		label = l;
+//	}
+//
+//	virtual void actionPerfoormed(Action * a) {
+//		if (!a->getCommand().compare("button")) {
+//			if (!label->getText().compare("hello world!")) {
+//				label->setText("ciao mondo!");
+//			} else {
+//				label->setText("hello world!");
+//			}
+//		} else {
+//			label->setVisibile(!label->isVisible());
+//		}
+//	}
+//
+//private:
+//	Label * label;
+//};
 
 int main(int argc, char **argv) {
 	GameWindow *gw = new GameWindow();
 	Camera *c = new Camera(gw->painter());
 	GameScene *scene = new GameScene(c); //,0,0.0);//9.8);
+//
+//	MainContainer * mc = new MainContainer();
+//	mc->setBounds(0, 0, gw->getSize().width, gw->getSize().height);
+//	Label * l = new Label("hello world!");
+//	l->setBounds(10, 285, 150, 30);
+//	mc->addComponent(l);
+//	Button *b = new Button("button");
+//	b->setBounds(10, 100, 120, 30);
+//	TestListener * tl=new TestListener(l);
+//	b->addActionListener(tl);
+//	mc->addComponent(b);
+//	CheckBox * cb = new CheckBox("visible");
+//	cb->setChecked(true);
+//	cb->addActionListener(tl);
+//	cb->setBounds(10, 200, 200, 30);
+//	mc->addComponent(cb);
+//
+//	TextField *tf=new TextField("text field");
+//	tf->setBounds(10,350,200,30);
+//	mc->addComponent(tf);
+//
+//	scene->addGUIMainComponent(mc);
 
-	MainContainer * mc = new MainContainer();
-	mc->setBounds(0, 0, gw->getSize().width, gw->getSize().height);
-	Label * l = new Label("hello world!");
-	l->setBounds(10, 285, 150, 30);
-	mc->addComponent(l);
-	Button *b = new Button("button");
-	b->setBounds(10, 100, 120, 30);
-	TestListener * tl=new TestListener(l);
-	b->addActionListener(tl);
-	mc->addComponent(b);
-	CheckBox * cb = new CheckBox("visible");
-	cb->setChecked(true);
-	cb->addActionListener(tl);
-	cb->setBounds(10, 200, 200, 30);
-	mc->addComponent(cb);
-
-	TextField *tf=new TextField("text field");
-	tf->setBounds(10,350,200,30);
-	mc->addComponent(tf);
-
-	scene->addGUIMainComponent(mc);
-
-//	scene->addEntity(new BackgroundLayer());
-//	TestAnimation *ta=new TestAnimation();
-//	scene->addEntity(ta);
+	scene->addEntity(new BackgroundLayer());
+	TestAnimation *ta=new TestAnimation(gw->getSize());
+	scene->addEntity(ta);
 //	scene->addMouseListener(ta);
 
 	scene->gameLoop(2);

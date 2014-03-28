@@ -8,14 +8,21 @@
 #include "GameWindow.h"
 #include <SDL2/SDL_ttf.h>
 
-GameWindow::GameWindow(std::string title,Uint32 w,Uint32 h) {
-	size_.width=w;
-	size_.height=h;
+GameWindow::GameWindow(std::string title, Uint32 w, Uint32 h, bool resizable) {
+	size_.width = w;
+	size_.height = h;
+	resizable_ = resizable;
 	if (SDL_Init( SDL_INIT_VIDEO) < 0) {
 		//Error: The video can not be enabled... abort program...
 	} else {
-		window_ = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, w,h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+		if (resizable) {
+			window_ = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
+			SDL_WINDOWPOS_UNDEFINED, w, h,
+					SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+		} else {
+			window_ = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
+			SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
+		}
 		//ANTI ALIASING
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 
@@ -32,7 +39,7 @@ GameWindow::GameWindow(std::string title,Uint32 w,Uint32 h) {
 			}
 		}
 	}
-	painter_= new Painter(renderer_,size_);
+	painter_ = new Painter(renderer_, size_);
 }
 
 GameWindow::~GameWindow() {
@@ -43,11 +50,10 @@ GameWindow::~GameWindow() {
 
 }
 
-
-SDL_Size GameWindow::getSize(){
+SDL_Size GameWindow::getSize() {
 	return size_;
 }
 
-Painter * GameWindow::painter(){
+Painter * GameWindow::painter() {
 	return painter_;
 }

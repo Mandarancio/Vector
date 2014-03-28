@@ -56,6 +56,7 @@ Color Painter::getPen() {
 	return status.pen;
 }
 
+
 void Painter::paintRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h) {
 	SDL_Rect r;
 	r.x = x;
@@ -83,15 +84,15 @@ void Painter::paintRoundedRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h,
 		Uint16 r) {
 	status.transformation->applyTransformation(x, y);
 	status.transformation->applySizeTransformation(w, h);
-	r*=status.transformation->getScale();
+	r *= status.transformation->getScale();
 
-	roundedRectangleColor(renderer,x,y,x+w,y+h,r,status.pen.getRGBA());
+	roundedRectangleColor(renderer, x, y, x + w, y + h, r,
+			status.pen.getRGBA());
 
 }
 
 void Painter::paintRoundedRect(SDL_Rect rect, Uint16 r) {
-	paintRoundedRect(rect.x,rect.y,rect.w,rect.h,r);
-
+	paintRoundedRect(rect.x, rect.y, rect.w, rect.h, r);
 
 }
 
@@ -125,7 +126,8 @@ void Painter::paintPoint(int x, int y) {
 }
 
 void Painter::paintText(std::string text, int x, int y) {
-	if (text.length()==0) return;
+	if (text.length() == 0)
+		return;
 
 	SDL_Surface * surface = status.font->toSurface(text,
 			status.pen.getSDLColor());
@@ -142,31 +144,32 @@ void Painter::paintText(std::string text, int x, int y) {
 	SDL_DestroyTexture(texture);
 }
 
-void Painter::paintImage(Image img, SDL_Rect bounds) {
-	SDL_Texture * t=img.getTexture(renderer);
-	paintTexture(t, bounds);
+void Painter::paintImage(Image img, SDL_Rect bounds,Uint8 alpha) {
+	SDL_Texture * t = img.getTexture(renderer);
+	paintTexture(t, bounds,alpha);
 	SDL_DestroyTexture(t);
 }
 
-void Painter::paintImage(Image img, SDL_Point pos) {
+void Painter::paintImage(Image img, SDL_Point pos,Uint8 alpha) {
 	SDL_Rect r;
 	r.x = pos.x;
 	r.y = pos.y;
 	r.w = img.getSize().width;
 	r.h = img.getSize().height;
-	paintImage(img, r);
+	paintImage(img, r,alpha);
 }
 
-void Painter::paintImage(Image img, int x, int y) {
+void Painter::paintImage(Image img, int x, int y,Uint8 alpha) {
 	SDL_Rect r;
 	r.x = x;
 	r.y = y;
 	r.w = img.getSize().width;
 	r.h = img.getSize().height;
-	paintImage(img, r);
+	paintImage(img, r,alpha);
 }
 
-void Painter::paintTexture(SDL_Texture *texture, SDL_Rect bounds) {
+void Painter::paintTexture(SDL_Texture *texture, SDL_Rect bounds, Uint8 alpha) {
+	SDL_SetTextureAlphaMod(texture,alpha);
 	status.transformation->applyTransformation(bounds.x, bounds.y);
 	status.transformation->applySizeTransformation(bounds.w, bounds.h);
 	SDL_RenderCopy(renderer, texture, NULL, &bounds);
@@ -208,7 +211,7 @@ void Painter::paintPolygon(Polygon p) {
 
 void Painter::clearWindow() {
 	SDL_RenderClear(renderer);
-	SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 }
 void Painter::renderToScreen() {
 	SDL_RenderPresent(renderer);

@@ -25,11 +25,11 @@
 #include "events/WindowListener.h"
 
 struct PainterStatus {
-	Color pen;
-	Color fill;
-	Font * font;
-	Transformation * transformation;
-	SDL_Rect clip;
+	Color 				pen;
+	Color 				fill;
+	Font * 				font;
+	Transformation * 	transformation;
+	SDL_Rect 			clip;
 };
 
 class Painter: public Entity, public WindowListener {
@@ -60,11 +60,11 @@ public:
 
 	void paintText(std::string text, int x, int y);
 
-	void paintImage(Image img, SDL_Rect bounds);
-	void paintImage(Image img, SDL_Point pos);
-	void paintImage(Image img, int x, int y);
+	void paintImage(Image img, SDL_Rect bounds,Uint8 alpha=255);
+	void paintImage(Image img, SDL_Point pos, Uint8 alpha=255);
+	void paintImage(Image img, int x, int y,Uint8 alpha=255);
 
-	void paintTexture(SDL_Texture *texture, SDL_Rect bounds);
+	void paintTexture(SDL_Texture *texture, SDL_Rect bounds,  Uint8 alpha=255);
 
 	void paintShape(Shape * shape);
 	void paintPolygon(Polygon p);

@@ -9,22 +9,19 @@
 #define TESTANIMATION_H_
 
 #include "../src/game/GameEntity.h"
-#include "../src/core/stateMachine/StateMachine.h"
 #include "../src/game/primitives/Image.h"
-#include "../src/game/primitives/geometry/Polygon.h"
-#include "../src/game/events/MouseListener.h"
+#include "../src/game/animation/Animation.h"
 
-class TestAnimation : public GameEntity, public MouseListener{
+class TestAnimation : public GameEntity{
 public:
-	TestAnimation();
+	TestAnimation(SDL_Size display);
 	virtual ~TestAnimation();
 	virtual void render(Painter * p);
 	virtual void step(double dt);
 
-	virtual void mouseMotion(SDL_MouseMotionEvent *e);
 private:
 	Image * image;
-	SDL_Point mPos;
+	Animation * animation;
 };
 
 #endif /* TESTANIMATION_H_ */

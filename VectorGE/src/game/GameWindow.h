@@ -17,7 +17,7 @@
 
 class GameWindow {
 public:
-	GameWindow(std::string title="title",Uint32 w=800,Uint32 h=600);
+	GameWindow(std::string title="title",Uint32 w=800,Uint32 h=600,bool resizable=false);
 	virtual ~GameWindow();
 	SDL_Size getSize();
 	Painter * painter();
@@ -27,6 +27,7 @@ private:
 	SDL_Renderer* renderer_;
 	SDL_Size size_;
 	Painter * painter_;
+	bool resizable_;
 };
 
 #endif /* GAMEWINDOW_H_ */
