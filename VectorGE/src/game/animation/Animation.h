@@ -9,7 +9,7 @@
 #define ANIMATION_H_
 
 #include "../GameEntity.h"
-
+#include "AnimationFunction.h"
 #include <map>
 
 enum LoopMode{
@@ -19,9 +19,13 @@ enum LoopMode{
 class Animation {
 public:
 	Animation(EntityStatus startStatus,EntityStatus endStatus,double duration,LoopMode loop=NOLOOP);
+	Animation(EntityStatus startStatus,AnimationFunction * function,EntityStatus endStatus,double duration,LoopMode loop=NOLOOP);
+
 	virtual ~Animation();
 
 	void addStep(float at, EntityStatus step);
+	void addStep(float at, EntityStatus step, AnimationFunction* function);
+
 
 	EntityStatus step(float dt);
 
@@ -33,6 +37,7 @@ private:
 	LoopMode loop_;
 
 	std::map<float,EntityStatus> steps_;
+	std::map<float,AnimationFunction*> functions_;
 
 	float __time;
 	EntityStatus __currentStatus;

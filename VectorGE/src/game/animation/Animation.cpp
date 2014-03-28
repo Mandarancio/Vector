@@ -6,6 +6,7 @@
  */
 
 #include "Animation.h"
+#include "LinearAnimationFunction.h"
 
 #include <iostream>
 
@@ -16,6 +17,28 @@ Animation::Animation(EntityStatus startStatus, EntityStatus endStatus,
 	__time = 0;
 	steps_[0.0] = startStatus;
 	steps_[1.0] = endStatus;
+
+	functions_[0.0] = new LinearAnimationFunction();
+	functions_[1.0] = new LinearAnimationFunction();
+
+	__currentStatus = startStatus;
+	__nextStatus = endStatus;
+	__currentTime = 0.0;
+	__nextTime = duration;
+	__reverseFlag = false;
+}
+
+Animation::Animation(EntityStatus startStatus, AnimationFunction * function,
+		EntityStatus endStatus, double duration, LoopMode loop) {
+	duration_ = duration;
+	loop_ = loop;
+	__time = 0;
+	steps_[0.0] = startStatus;
+	steps_[1.0] = endStatus;
+
+	functions_[0.0] = function;
+	functions_[1.0] = function;
+
 	__currentStatus = startStatus;
 	__nextStatus = endStatus;
 	__currentTime = 0.0;
@@ -27,11 +50,16 @@ Animation::~Animation() {
 }
 
 void Animation::addStep(float at, EntityStatus step) {
+	addStep(at, step, new LinearAnimationFunction());
+}
+void Animation::addStep(float at, EntityStatus step,
+		AnimationFunction* function) {
 	steps_[at] = step;
 	if (at * duration_ < __nextTime) {
 		__nextStatus = step;
 		__nextTime = at * duration_;
 	}
+	functions_[at] = function;
 }
 
 EntityStatus Animation::step(float dt) {
@@ -65,7 +93,7 @@ EntityStatus Animation::step(float dt) {
 			return __currentStatus;
 		} else if (loop_ == REVERSELOOP) {
 			__currentStatus = __nextStatus;
-			__currentTime=duration_;
+			__currentTime = duration_;
 			__time = duration_;
 			__reverseFlag = true;
 			_prevStep();
@@ -76,28 +104,24 @@ EntityStatus Animation::step(float dt) {
 	if (__time > __nextTime && !__reverseFlag) {
 		__currentTime = __nextTime;
 		_nextStep();
-	}
-	else if (__time<__nextTime && __reverseFlag){
+	} else if (__time < __nextTime && __reverseFlag) {
 		__currentTime = __nextTime;
 		_prevStep();
 	}
-
-	float dx=(__time - __currentTime) / (__nextTime - __currentTime);
+	AnimationFunction * f = functions_[__currentTime/duration_];
+	if (!f) {
+		std::cout << "ERROR! Function["<<__currentTime<<"] null!\n";
+		return __currentStatus;
+	}
+	float dx = (__time - __currentTime) / (__nextTime - __currentTime);
 	SDL_Rect r;
-	r.x = round(
-			__currentStatus.bounds.x * (1.0 - dx) + __nextStatus.bounds.x * dx);
-	r.y = round(
-			__currentStatus.bounds.y * (1.0 - dx) + __nextStatus.bounds.y * dx);
-	r.w = round(
-			__currentStatus.bounds.w * (1.0 - dx) + __nextStatus.bounds.w * dx);
-	r.h = round(
-			__currentStatus.bounds.h * (1.0 - dx) + __nextStatus.bounds.h * dx);
-	float opacity = __currentStatus.opacity * (1.0 - dx)
-			+ __nextStatus.opacity * dx;
-	float angle = round(
-			__currentStatus.angle * (1.0 - dx) + __nextStatus.angle * dx);
-	float scale = round(
-			__currentStatus.scale * (1.0 - dx) + __nextStatus.scale * dx);
+	r.x = f->eval(__currentStatus.bounds.x, __nextStatus.bounds.x, dx);
+	r.y = f->eval(__currentStatus.bounds.y, __nextStatus.bounds.y, dx);
+	r.w = f->eval(__currentStatus.bounds.w, __nextStatus.bounds.w, dx);
+	r.h = f->eval(__currentStatus.bounds.h, __nextStatus.bounds.h, dx);
+	float opacity = f->eval(__currentStatus.opacity, __nextStatus.opacity, dx);
+	float angle = f->eval(__currentStatus.angle, __nextStatus.angle, dx);
+	float scale = f->eval(__currentStatus.scale, __nextStatus.scale, dx);
 
 	EntityStatus status;
 	status.bounds = r;
@@ -109,18 +133,18 @@ EntityStatus Animation::step(float dt) {
 }
 
 void Animation::_nextStep() {
-	float t=__currentTime/duration_;
+	float t = __currentTime / duration_;
 	__nextTime = steps_.upper_bound(t)->first * duration_;
 	__nextStatus = steps_.upper_bound(t)->second;
 }
 
-void Animation::_prevStep(){
-	float t=__currentTime/duration_;
-	std::map<float,EntityStatus>::iterator iter=steps_.lower_bound(t);
-	if (iter!=steps_.begin()){
+void Animation::_prevStep() {
+	float t = __currentTime / duration_;
+	std::map<float, EntityStatus>::iterator iter = steps_.lower_bound(t);
+	if (iter != steps_.begin()) {
 		iter--;
 
 	}
-	__nextTime=iter->first;
-	__nextStatus=iter->second;
+	__nextTime = iter->first;
+	__nextStatus = iter->second;
 }
