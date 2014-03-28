@@ -27,6 +27,7 @@ public:
 
 private:
 	void _nextStep();
+	void _prevStep();
 
 	double duration_;
 	LoopMode loop_;
@@ -38,6 +39,8 @@ private:
 	float __currentTime;
 	EntityStatus __nextStatus;
 	float __nextTime;
+
+	bool __reverseFlag;
 };
 
 #endif /* ANIMATION_H_ */

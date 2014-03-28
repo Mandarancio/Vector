@@ -20,6 +20,7 @@ Animation::Animation(EntityStatus startStatus, EntityStatus endStatus,
 	__nextStatus = endStatus;
 	__currentTime = 0.0;
 	__nextTime = duration;
+	__reverseFlag = false;
 }
 
 Animation::~Animation() {
@@ -34,44 +35,69 @@ void Animation::addStep(float at, EntityStatus step) {
 }
 
 EntityStatus Animation::step(float dt) {
-	if (dt > 0)
-		__time += dt;
+	if (dt > 0) {
+		if (__reverseFlag) {
+			__time -= dt;
 
-
-	if (__time < 0)
-		return steps_[0.0];
-
-	if (__time >= duration_) {
-		if (loop_ == NOLOOP){
-			return steps_[1.0];
+		} else {
+			__time += dt;
 		}
-		else if (loop_== RESTARTLOOP){
-			__time=0+dt;
-			__currentStatus=steps_[0.0];
-			__currentTime=0.0;
+	}
+	if (__time <= 0) {
+		__time = 0;
+		if (__reverseFlag) {
+			__reverseFlag = false;
+			__currentStatus = steps_[0.0];
+			__currentTime = 0.0;
 			_nextStep();
-			std::cout<<"\n\nRestart\n";
 			return __currentStatus;
 		}
 	}
 
-	std::cout<<__time<<"\n";
-	if (__time > __nextTime) {
+	if (__time >= duration_) {
+		if (loop_ == NOLOOP) {
+			return steps_[1.0];
+		} else if (loop_ == RESTARTLOOP) {
+			__time = 0;
+			__currentStatus = steps_[0.0];
+			__currentTime = 0.0;
+			_nextStep();
+			return __currentStatus;
+		} else if (loop_ == REVERSELOOP) {
+			__currentStatus = __nextStatus;
+			__currentTime=duration_;
+			__time = duration_;
+			__reverseFlag = true;
+			_prevStep();
+			return __currentStatus;
+		}
+	}
+
+	if (__time > __nextTime && !__reverseFlag) {
 		__currentTime = __nextTime;
 		_nextStep();
 	}
+	else if (__time<__nextTime && __reverseFlag){
+		__currentTime = __nextTime;
+		_prevStep();
+	}
 
-	float dx = (__time - __currentTime) / (__nextTime - __currentTime);
-
+	float dx=(__time - __currentTime) / (__nextTime - __currentTime);
 	SDL_Rect r;
-	r.x = __currentStatus.bounds.x * (1 - dx) + __nextStatus.bounds.x * dx;
-	r.y = __currentStatus.bounds.y * (1 - dx) + __nextStatus.bounds.y * dx;
-	r.w = __currentStatus.bounds.w * (1 - dx) + __nextStatus.bounds.w * dx;
-	r.h = __currentStatus.bounds.h * (1 - dx) + __nextStatus.bounds.h * dx;
-	float opacity = __currentStatus.opacity * (1 - dx)
+	r.x = round(
+			__currentStatus.bounds.x * (1.0 - dx) + __nextStatus.bounds.x * dx);
+	r.y = round(
+			__currentStatus.bounds.y * (1.0 - dx) + __nextStatus.bounds.y * dx);
+	r.w = round(
+			__currentStatus.bounds.w * (1.0 - dx) + __nextStatus.bounds.w * dx);
+	r.h = round(
+			__currentStatus.bounds.h * (1.0 - dx) + __nextStatus.bounds.h * dx);
+	float opacity = __currentStatus.opacity * (1.0 - dx)
 			+ __nextStatus.opacity * dx;
-	float angle = __currentStatus.angle * (1 - dx) + __nextStatus.angle * dx;
-	float scale = __currentStatus.scale * (1 - dx) + __nextStatus.scale * dx;
+	float angle = round(
+			__currentStatus.angle * (1.0 - dx) + __nextStatus.angle * dx);
+	float scale = round(
+			__currentStatus.scale * (1.0 - dx) + __nextStatus.scale * dx);
 
 	EntityStatus status;
 	status.bounds = r;
@@ -83,6 +109,18 @@ EntityStatus Animation::step(float dt) {
 }
 
 void Animation::_nextStep() {
-	__nextTime = steps_.upper_bound(__currentTime)->first;
-	__nextStatus = steps_.upper_bound(__currentTime)->second;
+	float t=__currentTime/duration_;
+	__nextTime = steps_.upper_bound(t)->first * duration_;
+	__nextStatus = steps_.upper_bound(t)->second;
+}
+
+void Animation::_prevStep(){
+	float t=__currentTime/duration_;
+	std::map<float,EntityStatus>::iterator iter=steps_.lower_bound(t);
+	if (iter!=steps_.begin()){
+		iter--;
+
+	}
+	__nextTime=iter->first;
+	__nextStatus=iter->second;
 }

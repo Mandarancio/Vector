@@ -18,7 +18,7 @@ TestAnimation::TestAnimation(SDL_Size display): GameEntity() {
 	EntityStatus end=this->getCurrentStatus();
 	end.opacity=1.0;
 
-	animation=new Animation(this->getCurrentStatus(),end,2000);
+	animation=new Animation(this->getCurrentStatus(),end,2000,REVERSELOOP);
 }
 
 TestAnimation::~TestAnimation() {
