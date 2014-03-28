@@ -17,6 +17,8 @@
 
 #include "ComponentSupport.h"
 
+#include <string>
+
 class Component: public GameEntity, public MouseListener,public KeyListener {
 public:
 	Component();
@@ -66,6 +68,9 @@ public:
 
 	bool isVisible();
 	void setVisibile(bool visible);
+
+	void setTooltip(std::string tooltip);
+	std::string getTooltip();
 protected:
 	virtual void paintComponent(Painter * p)=0;
 
@@ -81,6 +86,8 @@ private:
 	bool hasFocus_;
 	bool isMouseIn_;
 	bool isVisible_;
+
+	std::string tooltip_;
 };
 
 #endif /* COMPONENT_H_ */

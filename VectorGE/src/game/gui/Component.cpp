@@ -162,3 +162,9 @@ bool Component::isVisible(){
 void Component::setVisibile(bool visible){
 	isVisible_=visible;
 }
+void  Component::setTooltip(std::string tooltip){
+	tooltip_=tooltip;
+}
+std::string  Component::getTooltip(){
+	return tooltip_;
+}
