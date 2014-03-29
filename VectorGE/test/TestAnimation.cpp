@@ -16,9 +16,16 @@ TestAnimation::TestAnimation(SDL_Size display): GameEntity() {
 	opacity_=0.0;
 
 	EntityStatus end=this->getCurrentStatus();
-	end.opacity=1.0;
+	EntityStatus middle=this->getCurrentStatus();
+	middle.opacity=1.0;
+	middle.bounds.x+=10;
+	middle.bounds.y+=10;
+	middle.bounds.w-=20;
+	middle.bounds.h-=20;
 
 	animation=new Animation(this->getCurrentStatus(),end,2000,REVERSELOOP);
+	animation->addStep(0.6,middle);
+	animation->addStep(0.4,middle);
 }
 
 TestAnimation::~TestAnimation() {

@@ -20,6 +20,7 @@ public:
 	SDL_Surface * getImage();
 	SDL_Texture * getTexture(SDL_Renderer * renderer);
 	SDL_Size getSize();
+	SDL_Rect getBounds();
 private:
 	std::string path_;
 	SDL_Surface * image_;

@@ -175,6 +175,7 @@ void Painter::paintTexture(SDL_Texture *texture, SDL_Rect bounds, Uint8 alpha) {
 	SDL_RenderCopy(renderer, texture, NULL, &bounds);
 }
 
+
 void Painter::paintShape(Shape * shape) {
 	Shape * s = shape->transform(*status.transformation);
 

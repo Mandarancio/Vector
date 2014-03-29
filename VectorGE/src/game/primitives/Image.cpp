@@ -14,6 +14,7 @@
 Image::Image(std::string path) {
 	path_=path;
 	image_=IMG_Load(path.c_str());
+
 	if (image_==NULL){
 		logSDLError(std::cout,"IMG_Load");
 		size_.width=0;
@@ -42,4 +43,10 @@ SDL_Texture * Image::getTexture(SDL_Renderer * renderer){
 
 SDL_Size Image::getSize(){
 	return size_;
+}
+SDL_Rect Image::getBounds(){
+	SDL_Rect r;
+	r.w=size_.width;
+	r.h=size_.height;
+	return r;
 }

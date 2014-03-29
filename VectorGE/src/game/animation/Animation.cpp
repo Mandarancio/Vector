@@ -103,9 +103,12 @@ EntityStatus Animation::step(float dt) {
 
 	if (__time > __nextTime && !__reverseFlag) {
 		__currentTime = __nextTime;
+		__currentStatus=__nextStatus;
 		_nextStep();
 	} else if (__time < __nextTime && __reverseFlag) {
 		__currentTime = __nextTime;
+		__currentStatus=__nextStatus;
+
 		_prevStep();
 	}
 	AnimationFunction * f = functions_[__currentTime/duration_];
@@ -136,6 +139,7 @@ void Animation::_nextStep() {
 	float t = __currentTime / duration_;
 	__nextTime = steps_.upper_bound(t)->first * duration_;
 	__nextStatus = steps_.upper_bound(t)->second;
+
 }
 
 void Animation::_prevStep() {
@@ -145,6 +149,8 @@ void Animation::_prevStep() {
 		iter--;
 
 	}
-	__nextTime = iter->first;
+	__nextTime = iter->first*duration_;
 	__nextStatus = iter->second;
+
+
 }
