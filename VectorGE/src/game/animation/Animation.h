@@ -19,7 +19,7 @@ enum LoopMode{
 class Animation {
 public:
 	Animation(EntityStatus startStatus,EntityStatus endStatus,double duration,LoopMode loop=NOLOOP);
-	Animation(EntityStatus startStatus,AnimationFunction * function,EntityStatus endStatus,double duration,LoopMode loop=NOLOOP);
+	Animation(EntityStatus startStatus,AnimationFunction * s_function,EntityStatus endStatus,AnimationFunction * e_function,double duration,LoopMode loop=NOLOOP);
 
 	virtual ~Animation();
 

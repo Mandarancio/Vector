@@ -28,16 +28,16 @@ Animation::Animation(EntityStatus startStatus, EntityStatus endStatus,
 	__reverseFlag = false;
 }
 
-Animation::Animation(EntityStatus startStatus, AnimationFunction * function,
-		EntityStatus endStatus, double duration, LoopMode loop) {
+Animation::Animation(EntityStatus startStatus, AnimationFunction * s_function,
+		EntityStatus endStatus,AnimationFunction * e_function, double duration, LoopMode loop) {
 	duration_ = duration;
 	loop_ = loop;
 	__time = 0;
 	steps_[0.0] = startStatus;
 	steps_[1.0] = endStatus;
 
-	functions_[0.0] = function;
-	functions_[1.0] = function;
+	functions_[0.0] = s_function;
+	functions_[1.0] = e_function;
 
 	__currentStatus = startStatus;
 	__nextStatus = endStatus;

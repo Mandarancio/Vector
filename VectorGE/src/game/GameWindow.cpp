@@ -7,6 +7,8 @@
 
 #include "GameWindow.h"
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_hints.h>
+
 
 GameWindow::GameWindow(std::string title, Uint32 w, Uint32 h, bool resizable) {
 	size_.width = w;
@@ -25,6 +27,7 @@ GameWindow::GameWindow(std::string title, Uint32 w, Uint32 h, bool resizable) {
 		}
 		//ANTI ALIASING
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 		TTF_Init();
 		if (window_ == NULL) {
