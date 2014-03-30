@@ -20,6 +20,8 @@
 
 #include "../src/game/events/ActionListener.h"
 
+#include "../src/game/armature/Armature.h"
+
 #include "TestAnimation.h"
 
 //class TestListener: public ActionListener {
@@ -75,7 +77,20 @@ int main(int argc, char **argv) {
 	TestAnimation *ta=new TestAnimation(gw->getSize());
 	scene->addEntity(ta);
 //	scene->addMouseListener(ta);
+	SDL_Point p;
+	p.x=200;
+	p.y=240;
 
+	ArmaturePoint * a=new ArmaturePoint(p);
+
+	p.y-=100;
+	ArmaturePoint * a1=new ArmaturePoint(p);
+
+	a->addLinkedEntity(a1);
+
+	scene->addEntity(a);
+	scene->addEntity(a1);
+	scene->addMouseListener(a);
 	scene->gameLoop(2);
 
 	delete c;
