@@ -58,8 +58,8 @@ void TestAnimation::render(Painter * p) {
 	p->setFill(Color());
 
 //	p->fillShape(path);
-	p->fillShape(pol);
-//	p->paintBezierPath(path);
+//	p->fillShape(pol);
+	p->paintBezierPath(path);
 	Sint16 *vx = path->vx();
 	Sint16 *vy = path->vy();
 	for (int i = 0; i < path->vertexCount(); i++) {

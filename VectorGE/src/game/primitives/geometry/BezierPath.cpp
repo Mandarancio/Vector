@@ -305,12 +305,13 @@ void BezierPath::__computeBBox() {
 }
 
 void BezierPath::__initVertex() {
-	int size = 0;
+
+	__vertexCount = 0;
 	for (int i = 0; i < __curves.size(); i++) {
-		size += __curves[i]->vertex().size();
+		__vertexCount += __curves[i]->vertex().size();
 	}
-	__vx = new Sint16[size];
-	__vy = new Sint16[size];
+	__vx = new Sint16[__vertexCount];
+	__vy = new Sint16[__vertexCount];
 	int c = 0;
 	for (int i = 0; i < __curves.size(); i++) {
 		for (int j = 0; j < __curves[i]->vertex().size(); j++) {
