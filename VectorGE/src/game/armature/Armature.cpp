@@ -61,6 +61,7 @@ void ArmaturePoint::addLinkedEntity(GameEntity * ge) {
 	linkedEntities_.push_back(ge);
 }
 
+
 void ArmaturePoint::_updateLinkedEntities(int dx, int dy) {
 	for (int i = 0; i < linkedEntities_.size(); i++) {
 		linkedEntities_[i]->setLocation(linkedEntities_[i]->getX() + dx,
@@ -75,6 +76,7 @@ ArmatureLine::ArmatureLine(ArmaturePoint * a, ArmaturePoint * c_a,ArmaturePoint 
 	this->c_b=c_b;
 
 	curve=0;
+
 }
 
 ArmatureLine::~ArmatureLine(){
@@ -95,4 +97,12 @@ void ArmatureLine::render(Painter * p){
 
 	p->paintLine(a->getX(),a->getY(),c_a->getX(),c_a->getY());
 	p->paintLine(b->getX(),b->getY(),c_b->getX(),c_b->getY());
+}
+
+void ArmatureLine::addLinkedEntity(GameEntity * ge){
+	linkedEntities_.push_back(ge);
+}
+
+void ArmatureLine::updateLinkedEntities(){
+
 }

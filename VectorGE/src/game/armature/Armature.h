@@ -26,11 +26,9 @@ public:
 	virtual void mouseButtonUp(SDL_MouseButtonEvent *e);
 
 	void addLinkedEntity(GameEntity * ge);
-
 private:
 	void _updateLinkedEntities(int dx,int dy);
 	std::vector<GameEntity*> linkedEntities_;
-
 	bool __mouseDown;
 };
 
@@ -40,10 +38,15 @@ public:
 	virtual ~ArmatureLine();
 	virtual void render(Painter * p);
 
+
+	void addLinkedEntity(GameEntity * ge);
+	void updateLinkedEntities();
+
 private:
 	ArmaturePoint * a,*b,*c_b,*c_a;
 	BezierCurve * curve;
 
+	std::vector<GameEntity*> linkedEntities_;
 
 };
 

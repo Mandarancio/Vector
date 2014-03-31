@@ -43,23 +43,23 @@ TestAnimation::~TestAnimation() {
 }
 
 void TestAnimation::render(Painter * p) {
-	SDL_Point *arr =new SDL_Point[4];
-	arr[0]=(SDL_Point){50,150};
-	arr[1]=(SDL_Point){250,150};
-	arr[2]=(SDL_Point){150,250};
-	arr[3]=(SDL_Point){80,240};
-	Polygon pol(arr,4);
-
+//	SDL_Point *arr =new SDL_Point[4];
+//	arr[0]=(SDL_Point){50,450};
+//	arr[1]=(SDL_Point){250,450};
+//	arr[2]=(SDL_Point){150,550};
+//	arr[3]=(SDL_Point){80,540};
+//	Polygon pol(arr,4);
+//
 	p->setPen(Color());
-	p->setFill(Color(0, 0, 0, 0));
-
-	p->paintRect(path->getBoundingBox());
-	p->paintRect(pol.getBoundingBox());
+//	p->setFill(Color(0, 0, 0, 0));
+//
+//	p->paintRect(path->getBoundingBox());
+//	p->paintRect(pol.getBoundingBox());
 	p->setFill(Color());
 
+//	p->fillShape(path);
+//	p->fillShape(&pol);
 	p->paintBezierPath(path);
-	p->paintPolygon(pol);
-
 	Sint16 *vx = path->vx();
 	Sint16 *vy = path->vy();
 	for (int i = 0; i < path->vertexCount(); i++) {

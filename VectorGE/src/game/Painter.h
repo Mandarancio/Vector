@@ -74,7 +74,7 @@ public:
 	void paintBezierCourve(BezierCurve *bezier );
 	void paintBezierPath(BezierPath *s);
 
-	void paintShape(Shape * shape);
+	void fillShape(Shape * shape);
 	void paintPolygon(Polygon p);
 
 	void clearWindow();

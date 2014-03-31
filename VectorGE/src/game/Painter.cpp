@@ -25,6 +25,7 @@ Painter::Painter(SDL_Renderer * rend, SDL_Size size) :
 	status.clip.y = 0;
 	status.clip.w = 0;
 	status.clip.h = 0;
+
 }
 
 Painter::~Painter() {
@@ -115,6 +116,7 @@ void Painter::paintLine(Line l) {
 			status.pen.blue(), status.pen.alpha());
 	SDL_RenderDrawLine(renderer, l1->p1().x, l1->p1().y, l1->p2().x,
 			l1->p2().y);
+
 }
 
 void Painter::paintPoint(int x, int y) {
@@ -186,29 +188,23 @@ void Painter::paintBezierPath(BezierPath *s) {
 			status.fill.getRGBA());
 //	polygonColor(renderer, s->vx(), s->vy(),  s->vertexCount(),
 //			status.pen.getRGBA());
-	for (int i=0;i<s->getCurves().size();i++){
+	for (int i = 0; i < s->getCurves().size(); i++) {
 		paintBezierCourve(s->getCurves()[i]);
 	}
 }
 
-void Painter::paintShape(Shape * shape) {
+void Painter::fillShape(Shape * shape) {
 	Shape * s = shape->transform(*status.transformation);
 
-	for (int y = s->getBoundingBox().y;
-			y <= s->getBoundingBox().y + s->getBoundingBox().h; y++) {
-		for (int x = s->getBoundingBox().x;
-				x <= s->getBoundingBox().x + s->getBoundingBox().w; x++) {
+	SDL_SetRenderDrawColor(renderer, status.fill.red(), status.fill.green(),
+			status.fill.blue(), status.fill.alpha());
+	int sy = s->getBoundingBox().y;
+	int fy = sy + s->getBoundingBox().y + s->getBoundingBox().h;
+	int sx = s->getBoundingBox().x;
+	int fx = sx + s->getBoundingBox().w;
+	for (int y = sy; y <= fy; y++) {
+		for (int x = sx; x <= fx; x++) {
 			if (s->contains(x, y)) {
-				if (!s->contains(x - 1, y) || !s->contains(x, y - 1)
-						|| !s->contains(x + 1, y) || !s->contains(x, y + 1)) {
-					SDL_SetRenderDrawColor(renderer, status.pen.red(),
-							status.pen.green(), status.pen.blue(),
-							status.pen.alpha());
-				} else {
-					SDL_SetRenderDrawColor(renderer, status.fill.red(),
-							status.fill.green(), status.fill.blue(),
-							status.fill.alpha());
-				}
 				SDL_RenderDrawPoint(renderer, x, y);
 
 			}

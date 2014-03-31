@@ -175,42 +175,19 @@ bool BezierPath::contains(SDL_Point p) {
 }
 
 bool BezierPath::contains(int x, int y) {
-	if (rectContains(boundingBox_, x, y)) {
-
-		for (int i = 0; i < __curves.size(); i++) {
-			if (__curves[i]->contains(x, y))
-				return true;
-		}
-		if (__closed) {
-			std::vector<Line> lines_;
-			for (int i = 0; i < __curves.size(); i++) {
-				lines_.insert(lines_.end(), __curves[i]->getLines().begin(),
-						__curves[i]->getLines().end());
-			}
-			Line l1(boundingBox_.x, y, x, y);
-			int li = 0;
-			for (int i = 0; i < lines_.size(); i++) {
-				if (lines_[i].intersectLine(l1))
-					li++;
-			}
-			if (li % 2 == 0)
-				return false;
-
-			Line l3(x, boundingBox_.y, x, y);
-			int ti = 0;
-			for (int i = 0; i < lines_.size(); i++) {
-				if (lines_[i].intersectLine(l1))
-					ti++;
-			}
-
-			if (ti % 2 == 0)
-				return false;
-
-			return true;
-		}
+	int nvert = vertexCount();
+	Sint16 * vertx = vx();
+	Sint16 * verty = vy();
+	int i, j, c = 0;
+#pragma omp parallel for
+	for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+		if (((verty[i] > y) != (verty[j] > y))
+				&& (x
+						< (vertx[j] - vertx[i]) * (y - verty[i])
+								/ (verty[j] - verty[i]) + vertx[i]))
+			c = !c;
 	}
-
-	return false;
+	return c;
 }
 
 Shape * BezierPath::transform(Transformation t) {

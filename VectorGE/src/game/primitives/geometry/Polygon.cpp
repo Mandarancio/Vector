@@ -19,9 +19,9 @@ Polygon::Polygon(SDL_Point *vertex) {
 		addVertex(vertex[i]);
 }
 
-Polygon::Polygon(SDL_Point * vertex,int n){
+Polygon::Polygon(SDL_Point * vertex, int n) {
 	for (int i = 0; i < n; i++)
-			addVertex(vertex[i]);
+		addVertex(vertex[i]);
 }
 
 Polygon::Polygon(std::vector<SDL_Point> vertex) {
@@ -86,30 +86,18 @@ bool Polygon::contains(SDL_Point p) {
 }
 
 bool Polygon::contains(int x, int y) {
-	if (rectContains(boundingBox_, x, y)) {
-		Line l1(boundingBox_.x, y, x, y);
-		int li = 0;
-		for (int i = 0; i < lines_.size(); i++) {
-			if (lines_[i].intersectLine(l1))
-				li++;
-		}
-		if (li % 2 == 0)
-			return false;
-
-		Line l3(x, boundingBox_.y, x, y);
-		int ti = 0;
-		for (int i = 0; i < lines_.size(); i++) {
-			if (lines_[i].intersectLine(l1))
-				ti++;
-		}
-
-		if (ti % 2 == 0)
-			return false;
-
-		return true;
+	int nvert = vertex_.size();
+	Sint16 * vertx = vx();
+	Sint16 * verty = vy();
+	int testx=x;
+	int testy=y;
+	int i, j, c = 0;
+#pragma omp parallel for
+	for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+		if (((verty[i] > testy) != (verty[j] > testy))	&& (testx< (vertx[j] - vertx[i]) * (testy - verty[i])/ (verty[j] - verty[i]) + vertx[i]))
+			c = !c;
 	}
-
-	return false;
+	return c;
 }
 
 Shape * Polygon::transform(Transformation t) {
