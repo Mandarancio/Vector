@@ -6,6 +6,7 @@
  */
 
 #include "BezierPath.h"
+#include "../../../support/Geometric.h"
 #define BEZIER_RES 5
 
 BezierCurve::BezierCurve(SDL_Point a, SDL_Point c_a, SDL_Point c_b,
@@ -15,6 +16,7 @@ BezierCurve::BezierCurve(SDL_Point a, SDL_Point c_a, SDL_Point c_b,
 	this->c_a = c_a;
 	this->c_b = c_b;
 	__initLines();
+	__computeBBox();
 }
 
 BezierCurve::~BezierCurve() {
@@ -35,6 +37,10 @@ bool BezierCurve::contains(int x, int y) {
 }
 
 Shape * BezierCurve::transform(Transformation t) {
+	return transformBezierCurve(t);
+}
+
+BezierCurve * BezierCurve::transformBezierCurve(Transformation t) {
 	SDL_Point a = this->a;
 	SDL_Point b = this->b;
 	SDL_Point c_a = this->c_a;
@@ -68,6 +74,31 @@ std::vector<SDL_Point> BezierCurve::getPoints() {
 
 std::vector<Line> BezierCurve::getLines() {
 	return __lines;
+}
+
+void BezierCurve::__computeBBox() {
+	SDL_Rect bb = __lines[0].getBoundingBox();
+	SDL_Rect bbi;
+	for (int i = 1; i < __lines.size(); i++) {
+
+		bbi = __lines[i].getBoundingBox();
+		if (bb.x > bbi.x) {
+			bb.w += bb.x - bbi.x;
+			bb.x = bbi.x;
+		}
+		if (bb.y > bbi.y) {
+			bb.h += bb.y - bbi.y;
+			bb.y = bbi.y;
+		}
+		if (bb.w < abs(bbi.x - bb.x) + bbi.w) {
+			bb.w = abs(bbi.x - bb.x) + bbi.w;
+		}
+		if (bb.h < abs(bbi.y - bb.y) + bbi.h) {
+			bb.h = abs(bbi.y - bb.y) + bbi.h;
+		}
+
+	}
+	boundingBox_ = bb;
 }
 
 void BezierCurve::__initLines() {
@@ -112,28 +143,197 @@ SDL_Point BezierCurve::__computePoint(float t) {
 	tSquared = t * t;
 	tCubed = tSquared * t;
 
-	result.x = (ax * tCubed) + (bx * tSquared) + (cx * t) + a.x;
-	result.y = (ay * tCubed) + (by * tSquared) + (cy * t) + a.y;
+	result.x = round((ax * tCubed) + (bx * tSquared) + (cx * t) + a.x);
+	result.y = round((ay * tCubed) + (by * tSquared) + (cy * t) + a.y);
 
 	return result;
 }
 
-BezierPath::BezierPath() {
-	__closed=false;
+BezierPath::BezierPath(BezierCurve * curve) {
+	__closed = false;
+	__curves.push_back(curve);
+	__computeBBox();
 }
+
+BezierPath::BezierPath(SDL_Point a, SDL_Point c_a, SDL_Point c_b, SDL_Point b) {
+	__closed = false;
+	__curves.push_back(new BezierCurve(a, c_a, c_b, b));
+	__computeBBox();
+}
+
 BezierPath::~BezierPath() {
-	for (int i=0;i<__curves.size();i++){
+	for (int i = 0; i < __curves.size(); i++) {
 		delete __curves[i];
 	}
 	__curves.clear();
 }
 
 bool BezierPath::contains(SDL_Point p) {
-	return contains(p.x,p.y);
+	return contains(p.x, p.y);
 }
+
 bool BezierPath::contains(int x, int y) {
+	if (rectContains(boundingBox_, x, y)) {
+
+		for (int i = 0; i < __curves.size(); i++) {
+			if (__curves[i]->contains(x, y))
+				return true;
+		}
+		if (__closed) {
+			std::vector<Line> lines_;
+			for (int i = 0; i < __curves.size(); i++) {
+				lines_.insert(lines_.end(), __curves[i]->getLines().begin(),
+						__curves[i]->getLines().end());
+			}
+			Line l1(boundingBox_.x, y, x, y);
+			int li = 0;
+			for (int i = 0; i < lines_.size(); i++) {
+				if (lines_[i].intersectLine(l1))
+					li++;
+			}
+			if (li % 2 == 0)
+				return false;
+
+			Line l3(x, boundingBox_.y, x, y);
+			int ti = 0;
+			for (int i = 0; i < lines_.size(); i++) {
+				if (lines_[i].intersectLine(l1))
+					ti++;
+			}
+
+			if (ti % 2 == 0)
+				return false;
+
+			return true;
+		}
+	}
+
 	return false;
 }
+
 Shape * BezierPath::transform(Transformation t) {
-	return 0;
+	return transformBezierPath(t);
+}
+
+BezierPath * BezierPath::transformBezierPath(Transformation t) {
+
+	SDL_Point a, c_a, c_b, b;
+	a = __curves.front()->getPointA();
+	b = __curves.front()->getPointB();
+	c_a = __curves.front()->getControlPointA();
+	c_b = __curves.front()->getControlPointB();
+	t.applyTransformation(a);
+	t.applyTransformation(c_a);
+	t.applyTransformation(c_b);
+	t.applyTransformation(b);
+	BezierPath *bp = new BezierPath(a, c_a, c_b, b);
+
+	for (int i = 1; i < __curves.size(); i++) {
+		c_a = __curves[i]->getControlPointA();
+		c_b = __curves[i]->getControlPointB();
+		b = __curves[i]->getPointB();
+		t.applyTransformation(c_a);
+		t.applyTransformation(c_b);
+		t.applyTransformation(b);
+		bp->addCurve(c_a, c_b, b);
+	}
+
+	return bp;
+}
+
+bool BezierPath::isClosed() {
+	return __closed;
+}
+
+void BezierPath::addCurve(SDL_Point c_a, SDL_Point c_b, SDL_Point b) {
+	SDL_Point a = __curves.back()->getPointB();
+	__curves.push_back(new BezierCurve(a, c_a, c_b, b));
+	if (b.x == __curves.front()->getPointA().x
+			&& b.y == __curves.front()->getPointA().y)
+		__closed = true;
+	__computeBBox();
+}
+
+void BezierPath::closeCurve(SDL_Point c_a, SDL_Point c_b) {
+	SDL_Point a = __curves.back()->getPointB();
+	SDL_Point b = __curves.front()->getPointA();
+	__curves.push_back(new BezierCurve(a, c_a, c_b, b));
+	__closed = true;
+	__computeBBox();
+}
+void BezierPath::closeCurve() {
+	SDL_Point a = __curves.back()->getPointB();
+	SDL_Point b = __curves.front()->getPointA();
+	__curves.push_back(new BezierCurve(a, a, b, b));
+	__closed = true;
+	__computeBBox();
+}
+
+std::vector<BezierCurve *> BezierPath::getCurves() {
+	return __curves;
+}
+
+Sint16 * BezierPath::vx() {
+	Sint16 size = 0;
+	for (int i = 0; i < __curves.size(); i++) {
+		size += __curves[i]->getPoints().size();
+	}
+	Sint16 * vx = new Sint16[size];
+	int c = 0;
+	for (int i = 0; i < __curves.size(); i++) {
+		for (int j = 0; j < __curves[i]->getPoints().size(); j++) {
+			vx[c] = __curves[i]->getPoints()[j].x;
+			c++;
+		}
+	}
+	return vx;
+}
+
+Sint16 * BezierPath::vy() {
+	Sint16 size = 0;
+	for (int i = 0; i < __curves.size(); i++) {
+		size += __curves[i]->getPoints().size();
+	}
+	Sint16 * vy = new Sint16[size];
+	int c = 0;
+	for (int i = 0; i < __curves.size(); i++) {
+		for (int j = 0; j < __curves[i]->getPoints().size(); j++) {
+			vy[c] = __curves[i]->getPoints()[j].y;
+			c++;
+		}
+	}
+	return vy;
+}
+
+int BezierPath::vertexCount() {
+	int size = 0;
+	for (int i = 0; i < __curves.size(); i++) {
+		size += __curves[i]->getPoints().size();
+	}
+
+	return size;
+}
+
+void BezierPath::__computeBBox() {
+	SDL_Rect bb = __curves[0]->getBoundingBox();
+	SDL_Rect bbi;
+	for (int i = 1; i < __curves.size(); i++) {
+		bbi = __curves[i]->getBoundingBox();
+		if (bb.x > bbi.x) {
+			bb.w += bb.x - bbi.x;
+			bb.x = bbi.x;
+		}
+		if (bb.y > bbi.y) {
+			bb.h += bb.y - bbi.y;
+			bb.y = bbi.y;
+		}
+		if (bb.w < abs(bbi.x - bb.x) + bbi.w) {
+			bb.w = abs(bbi.x - bb.x) + bbi.w;
+		}
+		if (bb.h < abs(bbi.y - bb.y) + bbi.h) {
+			bb.h = abs(bbi.y - bb.y) + bbi.h;
+		}
+
+	}
+	boundingBox_ = bb;
 }

@@ -56,7 +56,6 @@ Color Painter::getPen() {
 	return status.pen;
 }
 
-
 void Painter::paintRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h) {
 	SDL_Rect r;
 	r.x = x;
@@ -144,41 +143,51 @@ void Painter::paintText(std::string text, int x, int y) {
 	SDL_DestroyTexture(texture);
 }
 
-void Painter::paintImage(Image img, SDL_Rect bounds,Uint8 alpha) {
+void Painter::paintImage(Image img, SDL_Rect bounds, Uint8 alpha) {
 	SDL_Texture * t = img.getTexture(renderer);
-	paintTexture(t, bounds,alpha);
+	paintTexture(t, bounds, alpha);
 	SDL_DestroyTexture(t);
 }
 
-void Painter::paintImage(Image img, SDL_Point pos,Uint8 alpha) {
+void Painter::paintImage(Image img, SDL_Point pos, Uint8 alpha) {
 	SDL_Rect r;
 	r.x = pos.x;
 	r.y = pos.y;
 	r.w = img.getSize().width;
 	r.h = img.getSize().height;
-	paintImage(img, r,alpha);
+	paintImage(img, r, alpha);
 }
 
-void Painter::paintImage(Image img, int x, int y,Uint8 alpha) {
+void Painter::paintImage(Image img, int x, int y, Uint8 alpha) {
 	SDL_Rect r;
 	r.x = x;
 	r.y = y;
 	r.w = img.getSize().width;
 	r.h = img.getSize().height;
-	paintImage(img, r,alpha);
+	paintImage(img, r, alpha);
 }
 
 void Painter::paintTexture(SDL_Texture *texture, SDL_Rect bounds, Uint8 alpha) {
-	SDL_SetTextureAlphaMod(texture,alpha);
+	SDL_SetTextureAlphaMod(texture, alpha);
 	status.transformation->applyTransformation(bounds.x, bounds.y);
 	status.transformation->applySizeTransformation(bounds.w, bounds.h);
 	SDL_RenderCopy(renderer, texture, NULL, &bounds);
 }
 
-
-void Painter::paintBezierCourve(BezierCurve *bezier ){
-	for (int i=0;i<bezier->getLines().size();i++){
+void Painter::paintBezierCourve(BezierCurve *bezier) {
+	for (int i = 0; i < bezier->getLines().size(); i++) {
 		paintLine(bezier->getLines()[i]);
+	}
+}
+
+void Painter::paintBezierPath(BezierPath *s) {
+
+	filledPolygonColor(renderer, s->vx(), s->vy(), s->vertexCount(),
+			status.fill.getRGBA());
+//	polygonColor(renderer, s->vx(), s->vy(),  s->vertexCount(),
+//			status.pen.getRGBA());
+	for (int i=0;i<s->getCurves().size();i++){
+		paintBezierCourve(s->getCurves()[i]);
 	}
 }
 

@@ -20,6 +20,7 @@ public:
 	virtual bool contains(SDL_Point p);
 	virtual bool contains(int x, int y);
 	virtual Shape * transform(Transformation t);
+	BezierCurve * transformBezierCurve(Transformation t);
 
 	SDL_Point getPointA();
 	SDL_Point getPointB();
@@ -30,6 +31,7 @@ public:
 	std::vector<Line> getLines();
 
 private:
+	void __computeBBox();
 	void __initLines();
 	SDL_Point __computePoint(float t);
 	SDL_Point a, b, c_a, c_b;
@@ -38,12 +40,30 @@ private:
 };
 
 class BezierPath: public Shape {
-	BezierPath();
+public:
+	BezierPath(BezierCurve * curve);
+	BezierPath(SDL_Point a, SDL_Point c_a, SDL_Point c_b, SDL_Point b);
+
 	virtual ~BezierPath();
 	virtual bool contains(SDL_Point p);
 	virtual bool contains(int x, int y);
 	virtual Shape * transform(Transformation t);
+	BezierPath * transformBezierPath(Transformation t);
+
+	bool isClosed();
+
+	void addCurve(SDL_Point c_a, SDL_Point c_b, SDL_Point b);
+	void closeCurve(SDL_Point c_a, SDL_Point c_b);
+	void closeCurve();
+
+
+	std::vector<BezierCurve *> getCurves();
+	Sint16 * vx();
+	Sint16 * vy();
+
+	int vertexCount();
 private:
+	void __computeBBox();
 
 	std::vector<BezierCurve *> __curves;
 	bool __closed;

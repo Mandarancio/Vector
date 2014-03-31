@@ -72,6 +72,7 @@ public:
 	void paintTexture(SDL_Texture *texture, SDL_Rect bounds,  Uint8 alpha=255);
 
 	void paintBezierCourve(BezierCurve *bezier );
+	void paintBezierPath(BezierPath *s);
 
 	void paintShape(Shape * shape);
 	void paintPolygon(Polygon p);

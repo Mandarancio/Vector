@@ -10,6 +10,7 @@
 
 #include "../src/game/GameEntity.h"
 #include "../src/game/primitives/Image.h"
+#include "../src/game/primitives/geometry/BezierPath.h"
 #include "../src/game/animation/Animation.h"
 
 class TestAnimation : public GameEntity{
@@ -22,6 +23,7 @@ public:
 private:
 	Image * image;
 	Animation * animation;
+	BezierPath *path;
 };
 
 #endif /* TESTANIMATION_H_ */
