@@ -10,6 +10,7 @@
 
 #include "../GameEntity.h"
 #include "../events/MouseListener.h"
+#include "../primitives/geometry/BezierPath.h"
 
 #include <vector>
 
@@ -31,6 +32,19 @@ private:
 	std::vector<GameEntity*> linkedEntities_;
 
 	bool __mouseDown;
+};
+
+class ArmatureLine : public GameEntity{
+public:
+	ArmatureLine(ArmaturePoint * a, ArmaturePoint * c_a,ArmaturePoint * c_b,ArmaturePoint *b);
+	virtual ~ArmatureLine();
+	virtual void render(Painter * p);
+
+private:
+	ArmaturePoint * a,*b,*c_b,*c_a;
+	BezierCurve * curve;
+
+
 };
 
 #endif /* ARMATURE_H_ */

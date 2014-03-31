@@ -83,14 +83,30 @@ int main(int argc, char **argv) {
 
 	ArmaturePoint * a=new ArmaturePoint(p);
 
-	p.y-=100;
-	ArmaturePoint * a1=new ArmaturePoint(p);
+	p.x+=100;
+	ArmaturePoint * c_a=new ArmaturePoint(p);
 
-	a->addLinkedEntity(a1);
+	p.x+=50;
+	p.y+=100;
+	ArmaturePoint * c_b=new ArmaturePoint(p);
 
+	p.x+=100;
+	ArmaturePoint *b=new ArmaturePoint(p);
+//	a->addLinkedEntity(a1);
+
+	ArmatureLine *line=new ArmatureLine(a,c_a,c_b,b);
+
+	scene->addEntity(line);
 	scene->addEntity(a);
-	scene->addEntity(a1);
+	scene->addEntity(c_a);
+	scene->addEntity(c_b);
+	scene->addEntity(b);
+
 	scene->addMouseListener(a);
+	scene->addMouseListener(c_a);
+	scene->addMouseListener(c_b);
+	scene->addMouseListener(b);
+
 	scene->gameLoop(2);
 
 	delete c;

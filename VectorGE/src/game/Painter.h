@@ -15,12 +15,17 @@
 
 #include "primitives/Color.h"
 #include "primitives/Transformation.h"
-#include "primitives/Font.h"
 #include "primitives/SDLSize.h"
+
+#include "primitives/Font.h"
 #include "primitives/Image.h"
+
 #include "primitives/geometry/Shape.h"
 #include "primitives/geometry/Line.h"
 #include "primitives/geometry/Polygon.h"
+#include "primitives/geometry/BezierPath.h"
+
+
 
 #include "events/WindowListener.h"
 
@@ -65,6 +70,8 @@ public:
 	void paintImage(Image img, int x, int y,Uint8 alpha=255);
 
 	void paintTexture(SDL_Texture *texture, SDL_Rect bounds,  Uint8 alpha=255);
+
+	void paintBezierCourve(BezierCurve *bezier );
 
 	void paintShape(Shape * shape);
 	void paintPolygon(Polygon p);

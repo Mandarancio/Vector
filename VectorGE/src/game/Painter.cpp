@@ -176,6 +176,12 @@ void Painter::paintTexture(SDL_Texture *texture, SDL_Rect bounds, Uint8 alpha) {
 }
 
 
+void Painter::paintBezierCourve(BezierCurve *bezier ){
+	for (int i=0;i<bezier->getLines().size();i++){
+		paintLine(bezier->getLines()[i]);
+	}
+}
+
 void Painter::paintShape(Shape * shape) {
 	Shape * s = shape->transform(*status.transformation);
 
