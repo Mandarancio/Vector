@@ -35,7 +35,12 @@ TestAnimation::TestAnimation(SDL_Size display) :
 	path->addCurve((SDL_Point ) { 300, 300 }, (SDL_Point ) { 400, 400 },
 			(SDL_Point ) { 500, 400 });
 	path->closeCurve((SDL_Point ) { 200, 300 }, (SDL_Point ) { 300, 300 });
-
+	SDL_Point *arr =new SDL_Point[4];
+	arr[0]=(SDL_Point){50,450};
+	arr[1]=(SDL_Point){250,450};
+	arr[2]=(SDL_Point){150,550};
+	arr[3]=(SDL_Point){80,540};
+	pol=new Polygon(arr,4);
 }
 
 TestAnimation::~TestAnimation() {
@@ -43,12 +48,7 @@ TestAnimation::~TestAnimation() {
 }
 
 void TestAnimation::render(Painter * p) {
-//	SDL_Point *arr =new SDL_Point[4];
-//	arr[0]=(SDL_Point){50,450};
-//	arr[1]=(SDL_Point){250,450};
-//	arr[2]=(SDL_Point){150,550};
-//	arr[3]=(SDL_Point){80,540};
-//	Polygon pol(arr,4);
+
 //
 	p->setPen(Color());
 //	p->setFill(Color(0, 0, 0, 0));
@@ -58,8 +58,8 @@ void TestAnimation::render(Painter * p) {
 	p->setFill(Color());
 
 //	p->fillShape(path);
-//	p->fillShape(&pol);
-	p->paintBezierPath(path);
+	p->fillShape(pol);
+//	p->paintBezierPath(path);
 	Sint16 *vx = path->vx();
 	Sint16 *vy = path->vy();
 	for (int i = 0; i < path->vertexCount(); i++) {

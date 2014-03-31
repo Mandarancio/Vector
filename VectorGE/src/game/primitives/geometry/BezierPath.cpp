@@ -106,7 +106,7 @@ void BezierCurve::__initLines() {
 	int dy = b.y - a.y;
 	int dcx = c_b.x - c_a.x;
 	int dcy = c_b.y - c_a.y;
-	float d = (sqrt(dx * dx + dy * dy)/2) + (sqrt(dcx * dcx + dcy * dcy)/2);
+	float d = (sqrt(dx * dx + dy * dy) / 2) + (sqrt(dcx * dcx + dcy * dcy) / 2);
 	int n = round(d / BEZIER_RES);
 //	if (n < 12)
 //		n = 12;
@@ -155,12 +155,17 @@ BezierPath::BezierPath(BezierCurve * curve) {
 	__closed = false;
 	__curves.push_back(curve);
 	__computeBBox();
+
+	__initVertex();
 }
 
 BezierPath::BezierPath(SDL_Point a, SDL_Point c_a, SDL_Point c_b, SDL_Point b) {
 	__closed = false;
 	__curves.push_back(new BezierCurve(a, c_a, c_b, b));
 	__computeBBox();
+
+	__initVertex();
+
 }
 
 BezierPath::~BezierPath() {
@@ -231,6 +236,7 @@ void BezierPath::addCurve(SDL_Point c_a, SDL_Point c_b, SDL_Point b) {
 			&& b.y == __curves.front()->getPointA().y)
 		__closed = true;
 	__computeBBox();
+	__initVertex();
 }
 
 void BezierPath::closeCurve(SDL_Point c_a, SDL_Point c_b) {
@@ -239,6 +245,7 @@ void BezierPath::closeCurve(SDL_Point c_a, SDL_Point c_b) {
 	__curves.push_back(new BezierCurve(a, c_a, c_b, b));
 	__closed = true;
 	__computeBBox();
+	__initVertex();
 }
 void BezierPath::closeCurve() {
 	SDL_Point a = __curves.back()->getPointB();
@@ -246,59 +253,31 @@ void BezierPath::closeCurve() {
 	__curves.push_back(new BezierCurve(a, a, b, b));
 	__closed = true;
 	__computeBBox();
+	__initVertex();
 }
 
 std::vector<BezierCurve *> BezierPath::getCurves() {
 	return __curves;
 }
 
-std::vector<SDL_Point>  BezierPath::vertex(){
+std::vector<SDL_Point> BezierPath::vertex() {
 	std::vector<SDL_Point> ver;
-	for (int i=0;i<__curves.size();i++){
-		for (int j=0;j<__curves[i]->vertex().size();j++){
-			ver.push_back(__curves[i]->vertex()[j]);
-		}
+	for (int i = 0; i < __vertexCount; i++) {
+			ver.push_back((SDL_Point){__vx[i],__vy[i]});
 	}
 	return ver;
 }
 
-
 Sint16 * BezierPath::vx() {
-	Sint16 size = vertexCount();
-	Sint16 * vx = new Sint16[size];
-	int c = 0;
-	for (int i = 0; i < __curves.size(); i++) {
-		for (int j = 0; j < __curves[i]->vertex().size(); j++) {
-			vx[c] = __curves[i]->vertex()[j].x;
-			c++;
-		}
-	}
-	vx[size-1]=vx[0];
-
-	return vx;
+	return __vx;
 }
 
 Sint16 * BezierPath::vy() {
-	Sint16 size = vertexCount();
-	Sint16 * vy = new Sint16[size];
-	int c = 0;
-	for (int i = 0; i < __curves.size(); i++) {
-		for (int j = 0; j < __curves[i]->vertex().size(); j++) {
-			vy[c] = __curves[i]->vertex()[j].y;
-			c++;
-		}
-	}
-	vy[size-1]=vy[0];
-	return vy;
+	return __vy;
 }
 
 int BezierPath::vertexCount() {
-	int size = 0;
-	for (int i = 0; i < __curves.size(); i++) {
-		size += __curves[i]->vertex().size();
-	}
-
-	return size+1;
+	return __vertexCount;
 }
 
 void BezierPath::__computeBBox() {
@@ -323,4 +302,21 @@ void BezierPath::__computeBBox() {
 
 	}
 	boundingBox_ = bb;
+}
+
+void BezierPath::__initVertex() {
+	int size = 0;
+	for (int i = 0; i < __curves.size(); i++) {
+		size += __curves[i]->vertex().size();
+	}
+	__vx = new Sint16[size];
+	__vy = new Sint16[size];
+	int c = 0;
+	for (int i = 0; i < __curves.size(); i++) {
+		for (int j = 0; j < __curves[i]->vertex().size(); j++) {
+			__vy[c] = __curves[i]->vertex()[j].y;
+			__vx[c] = __curves[i]->vertex()[j].x;
+			c++;
+		}
+	}
 }

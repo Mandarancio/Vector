@@ -65,10 +65,12 @@ public:
 	int vertexCount();
 private:
 	void __computeBBox();
+	void __initVertex();
 
 	std::vector<BezierCurve *> __curves;
 	bool __closed;
-
+	Sint16 * __vx,*__vy;
+	int __vertexCount;
 };
 
 #endif /* BEZIERPATH_H_ */

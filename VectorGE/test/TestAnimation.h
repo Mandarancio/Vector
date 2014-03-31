@@ -24,6 +24,7 @@ private:
 	Image * image;
 	Animation * animation;
 	BezierPath *path;
+	Polygon * pol;
 };
 
 #endif /* TESTANIMATION_H_ */

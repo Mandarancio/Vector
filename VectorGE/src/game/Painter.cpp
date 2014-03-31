@@ -202,15 +202,19 @@ void Painter::fillShape(Shape * shape) {
 	int fy = sy + s->getBoundingBox().y + s->getBoundingBox().h;
 	int sx = s->getBoundingBox().x;
 	int fx = sx + s->getBoundingBox().w;
-	for (int y = sy; y <= fy; y++) {
-		for (int x = sx; x <= fx; x++) {
+	SDL_Rect r;
+	int c=0;
+	for (int y = sy; y <= fy; y+=2) {
+		for (int x = sx; x <= fx; x+=2) {
 			if (s->contains(x, y)) {
-				SDL_RenderDrawPoint(renderer, x, y);
+				r=(SDL_Rect){x,y,1,1};
+				SDL_RenderFillRect(renderer,&r);
 
+				c++;
 			}
 		}
 	}
-
+	std::cout<<"painted "<<c<<" pixels\n";
 }
 
 void Painter::paintPolygon(Polygon p) {
