@@ -16,6 +16,8 @@ class Polygon: public Shape {
 public:
 	Polygon();
 	Polygon(SDL_Point * vertex);
+	Polygon(SDL_Point * vertex,int n);
+
 	Polygon(std::vector<SDL_Point> vertex);
 
 

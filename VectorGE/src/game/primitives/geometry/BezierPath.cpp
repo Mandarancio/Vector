@@ -7,7 +7,7 @@
 
 #include "BezierPath.h"
 #include "../../../support/Geometric.h"
-#define BEZIER_RES 5
+#define BEZIER_RES 10
 
 BezierCurve::BezierCurve(SDL_Point a, SDL_Point c_a, SDL_Point c_b,
 		SDL_Point b) {
@@ -68,7 +68,7 @@ SDL_Point BezierCurve::getControlPointB() {
 	return c_b;
 }
 
-std::vector<SDL_Point> BezierCurve::getPoints() {
+std::vector<SDL_Point> BezierCurve::vertex() {
 	return __points;
 }
 
@@ -104,10 +104,12 @@ void BezierCurve::__computeBBox() {
 void BezierCurve::__initLines() {
 	int dx = b.x - a.x;
 	int dy = b.y - a.y;
-	int d = round(sqrt(dx * dx + dy * dy));
-	int n = d / BEZIER_RES;
-	if (n < 12)
-		n = 12;
+	int dcx = c_b.x - c_a.x;
+	int dcy = c_b.y - c_a.y;
+	float d = (sqrt(dx * dx + dy * dy)/2) + (sqrt(dcx * dcx + dcy * dcy)/2);
+	int n = round(d / BEZIER_RES);
+//	if (n < 12)
+//		n = 12;
 	float dt;
 	int i;
 
@@ -273,45 +275,53 @@ std::vector<BezierCurve *> BezierPath::getCurves() {
 	return __curves;
 }
 
-Sint16 * BezierPath::vx() {
-	Sint16 size = 0;
-	for (int i = 0; i < __curves.size(); i++) {
-		size += __curves[i]->getPoints().size();
+std::vector<SDL_Point>  BezierPath::vertex(){
+	std::vector<SDL_Point> ver;
+	for (int i=0;i<__curves.size();i++){
+		for (int j=0;j<__curves[i]->vertex().size();j++){
+			ver.push_back(__curves[i]->vertex()[j]);
+		}
 	}
+	return ver;
+}
+
+
+Sint16 * BezierPath::vx() {
+	Sint16 size = vertexCount();
 	Sint16 * vx = new Sint16[size];
 	int c = 0;
 	for (int i = 0; i < __curves.size(); i++) {
-		for (int j = 0; j < __curves[i]->getPoints().size(); j++) {
-			vx[c] = __curves[i]->getPoints()[j].x;
+		for (int j = 0; j < __curves[i]->vertex().size(); j++) {
+			vx[c] = __curves[i]->vertex()[j].x;
 			c++;
 		}
 	}
+	vx[size-1]=vx[0];
+
 	return vx;
 }
 
 Sint16 * BezierPath::vy() {
-	Sint16 size = 0;
-	for (int i = 0; i < __curves.size(); i++) {
-		size += __curves[i]->getPoints().size();
-	}
+	Sint16 size = vertexCount();
 	Sint16 * vy = new Sint16[size];
 	int c = 0;
 	for (int i = 0; i < __curves.size(); i++) {
-		for (int j = 0; j < __curves[i]->getPoints().size(); j++) {
-			vy[c] = __curves[i]->getPoints()[j].y;
+		for (int j = 0; j < __curves[i]->vertex().size(); j++) {
+			vy[c] = __curves[i]->vertex()[j].y;
 			c++;
 		}
 	}
+	vy[size-1]=vy[0];
 	return vy;
 }
 
 int BezierPath::vertexCount() {
 	int size = 0;
 	for (int i = 0; i < __curves.size(); i++) {
-		size += __curves[i]->getPoints().size();
+		size += __curves[i]->vertex().size();
 	}
 
-	return size;
+	return size+1;
 }
 
 void BezierPath::__computeBBox() {

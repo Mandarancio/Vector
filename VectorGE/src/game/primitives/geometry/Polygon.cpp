@@ -19,6 +19,11 @@ Polygon::Polygon(SDL_Point *vertex) {
 		addVertex(vertex[i]);
 }
 
+Polygon::Polygon(SDL_Point * vertex,int n){
+	for (int i = 0; i < n; i++)
+			addVertex(vertex[i]);
+}
+
 Polygon::Polygon(std::vector<SDL_Point> vertex) {
 	for (int i = 0; i < vertex.size(); i++)
 		addVertex(vertex[i]);

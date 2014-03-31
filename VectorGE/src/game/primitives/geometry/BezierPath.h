@@ -27,7 +27,7 @@ public:
 	SDL_Point getControlPointA();
 	SDL_Point getControlPointB();
 
-	std::vector<SDL_Point> getPoints();
+	std::vector<SDL_Point> vertex();
 	std::vector<Line> getLines();
 
 private:
@@ -58,6 +58,7 @@ public:
 
 
 	std::vector<BezierCurve *> getCurves();
+	std::vector<SDL_Point> vertex();
 	Sint16 * vx();
 	Sint16 * vy();
 
