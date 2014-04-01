@@ -18,6 +18,14 @@ BezierCurve::BezierCurve(SDL_Point a, SDL_Point c_a, SDL_Point c_b,
 	__initLines();
 	__computeBBox();
 }
+BezierCurve::BezierCurve(SDL_Point a, SDL_Point c, SDL_Point b) {
+	this->a = a;
+	this->b = b;
+	this->c_a = c;
+	this->c_b = c;
+	__initLines();
+	__computeBBox();
+}
 
 BezierCurve::~BezierCurve() {
 	__lines.clear();
@@ -168,6 +176,14 @@ BezierPath::BezierPath(SDL_Point a, SDL_Point c_a, SDL_Point c_b, SDL_Point b) {
 
 }
 
+BezierPath::BezierPath(SDL_Point a, SDL_Point c, SDL_Point b) {
+	__closed = false;
+	__curves.push_back(new BezierCurve(a, c, b));
+	__computeBBox();
+
+	__initVertex();
+}
+
 BezierPath::~BezierPath() {
 	for (int i = 0; i < __curves.size(); i++) {
 		delete __curves[i];
@@ -239,6 +255,10 @@ void BezierPath::addCurve(SDL_Point c_a, SDL_Point c_b, SDL_Point b) {
 	__initVertex();
 }
 
+void BezierPath::addCurve(SDL_Point c, SDL_Point b){
+	this->addCurve(c,c,b);
+}
+
 void BezierPath::closeCurve(SDL_Point c_a, SDL_Point c_b) {
 	SDL_Point a = __curves.back()->getPointB();
 	SDL_Point b = __curves.front()->getPointA();
@@ -247,6 +267,11 @@ void BezierPath::closeCurve(SDL_Point c_a, SDL_Point c_b) {
 	__computeBBox();
 	__initVertex();
 }
+
+void BezierPath::closeCurve(SDL_Point c){
+	this->closeCurve(c,c);
+}
+
 void BezierPath::closeCurve() {
 	SDL_Point a = __curves.back()->getPointB();
 	SDL_Point b = __curves.front()->getPointA();
@@ -263,15 +288,15 @@ std::vector<BezierCurve *> BezierPath::getCurves() {
 std::vector<SDL_Point> BezierPath::vertex() {
 	std::vector<SDL_Point> ver;
 	for (int i = 0; i < __vertexCount; i++) {
-			ver.push_back((SDL_Point){__vx[i],__vy[i]});
+		ver.push_back((SDL_Point ) { __vx[i], __vy[i] });
 	}
 	return ver;
 }
 
-std::vector<Line> BezierPath::getLines(){
+std::vector<Line> BezierPath::getLines() {
 	std::vector<Line> lines;
-	for (int i=0;i<__curves.size();i++){
-		for (int j=0;j<__curves[i]->getLines().size();j++){
+	for (int i = 0; i < __curves.size(); i++) {
+		for (int j = 0; j < __curves[i]->getLines().size(); j++) {
 			lines.push_back(__curves[i]->getLines()[j]);
 		}
 	}

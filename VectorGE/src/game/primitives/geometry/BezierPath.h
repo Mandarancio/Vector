@@ -16,6 +16,8 @@
 class BezierCurve: public Shape {
 public:
 	BezierCurve(SDL_Point a, SDL_Point c_a, SDL_Point c_b, SDL_Point b);
+	BezierCurve(SDL_Point a, SDL_Point c, SDL_Point b);
+
 	virtual ~BezierCurve();
 	virtual bool contains(SDL_Point p);
 	virtual bool contains(int x, int y);
@@ -43,6 +45,7 @@ class BezierPath: public Shape {
 public:
 	BezierPath(BezierCurve * curve);
 	BezierPath(SDL_Point a, SDL_Point c_a, SDL_Point c_b, SDL_Point b);
+	BezierPath(SDL_Point a, SDL_Point c, SDL_Point b);
 
 	virtual ~BezierPath();
 	virtual bool contains(SDL_Point p);
@@ -53,7 +56,11 @@ public:
 	bool isClosed();
 
 	void addCurve(SDL_Point c_a, SDL_Point c_b, SDL_Point b);
+	void addCurve(SDL_Point c, SDL_Point b);
+
 	void closeCurve(SDL_Point c_a, SDL_Point c_b);
+	void closeCurve(SDL_Point c);
+
 	void closeCurve();
 
 
