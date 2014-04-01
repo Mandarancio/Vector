@@ -46,6 +46,8 @@ public:
 	BezierPath(BezierCurve * curve);
 	BezierPath(SDL_Point a, SDL_Point c_a, SDL_Point c_b, SDL_Point b);
 	BezierPath(SDL_Point a, SDL_Point c, SDL_Point b);
+	BezierPath(SDL_Point center, int rx,int ry);
+	BezierPath(SDL_Point center, int r);
 
 	virtual ~BezierPath();
 	virtual bool contains(SDL_Point p);

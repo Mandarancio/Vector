@@ -14,6 +14,8 @@
 
 #include <vector>
 
+
+
 class ArmaturePoint  : public GameEntity, public MouseListener{
 public:
 	ArmaturePoint(SDL_Point pos);
@@ -48,6 +50,15 @@ private:
 
 	std::vector<GameEntity*> linkedEntities_;
 
+};
+
+class Armature {
+public:
+	Armature();
+	Armature(ArmatureLine *line);
+	Armature(ArmaturePoint * a, ArmaturePoint * c_a,ArmaturePoint * c_b,ArmaturePoint *b);
+
+private:
 };
 
 #endif /* ARMATURE_H_ */

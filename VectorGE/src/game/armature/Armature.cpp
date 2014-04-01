@@ -106,3 +106,8 @@ void ArmatureLine::addLinkedEntity(GameEntity * ge){
 void ArmatureLine::updateLinkedEntities(){
 
 }
+
+Armature::Armature(){}
+Armature::Armature(ArmatureLine *line){}
+Armature::Armature(ArmaturePoint * a, ArmaturePoint * c_a,ArmaturePoint * c_b,ArmaturePoint *b){}
+

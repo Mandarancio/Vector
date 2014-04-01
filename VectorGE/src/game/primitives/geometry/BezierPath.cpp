@@ -184,6 +184,77 @@ BezierPath::BezierPath(SDL_Point a, SDL_Point c, SDL_Point b) {
 	__initVertex();
 }
 
+BezierPath::BezierPath(SDL_Point center, int rx,int ry){
+	__closed=false;
+	SDL_Point a,b,c_a,c_b;
+	a=b=c_a=c_b=center;
+	a.y-=ry;
+	c_a.x+=rx/2;
+	c_a.y-=ry;
+	b.x+=rx;
+	c_b.x+=rx;
+	c_b.y-=ry/2;
+	__curves.push_back(new BezierCurve(a,c_a,c_b,b));
+	__computeBBox();
+	__initVertex();
+	c_a=b;
+	c_a.y+=ry/2;
+	c_b.x=center.x+rx/2;
+	c_b.y=center.y+ry;
+	b=center;
+	b.y+=ry;
+	addCurve(c_a,c_b,b);
+	c_a=b;
+	c_a.x-=rx/2;
+	c_b.x=center.x-rx;
+	c_b.y=center.y+ry/2;
+	b=center;
+	b.x-=rx;
+	addCurve(c_a,c_b,b);
+	c_a=b;
+	c_a.y-=ry/2;
+	c_b=center;
+	c_b.y-=ry;
+	c_b.x-=rx/2;
+	closeCurve(c_a,c_b);
+}
+
+
+BezierPath::BezierPath(SDL_Point center, int r){
+	__closed=false;
+	SDL_Point a,b,c_a,c_b;
+	a=b=c_a=c_b=center;
+	a.y-=r;
+	c_a.x+=r/2;
+	c_a.y-=r;
+	b.x+=r;
+	c_b.x+=r;
+	c_b.y-=r/2;
+	__curves.push_back(new BezierCurve(a,c_a,c_b,b));
+	__computeBBox();
+	__initVertex();
+	c_a=b;
+	c_a.y+=r/2;
+	c_b.x=center.x+r/2;
+	c_b.y=center.y+r;
+	b=center;
+	b.y+=r;
+	addCurve(c_a,c_b,b);
+	c_a=b;
+	c_a.x-=r/2;
+	c_b.x=center.x-r;
+	c_b.y=center.y+r/2;
+	b=center;
+	b.x-=r;
+	addCurve(c_a,c_b,b);
+	c_a=b;
+	c_a.y-=r/2;
+	c_b=center;
+	c_b.y-=r;
+	c_b.x-=r/2;
+	closeCurve(c_a,c_b);
+}
+
 BezierPath::~BezierPath() {
 	for (int i = 0; i < __curves.size(); i++) {
 		delete __curves[i];
@@ -255,8 +326,8 @@ void BezierPath::addCurve(SDL_Point c_a, SDL_Point c_b, SDL_Point b) {
 	__initVertex();
 }
 
-void BezierPath::addCurve(SDL_Point c, SDL_Point b){
-	this->addCurve(c,c,b);
+void BezierPath::addCurve(SDL_Point c, SDL_Point b) {
+	this->addCurve(c, c, b);
 }
 
 void BezierPath::closeCurve(SDL_Point c_a, SDL_Point c_b) {
@@ -268,8 +339,8 @@ void BezierPath::closeCurve(SDL_Point c_a, SDL_Point c_b) {
 	__initVertex();
 }
 
-void BezierPath::closeCurve(SDL_Point c){
-	this->closeCurve(c,c);
+void BezierPath::closeCurve(SDL_Point c) {
+	this->closeCurve(c, c);
 }
 
 void BezierPath::closeCurve() {

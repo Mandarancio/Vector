@@ -30,13 +30,7 @@ TestAnimation::TestAnimation(SDL_Size display) :
 	animation->addStep(0.6, middle);
 	animation->addStep(0.4, middle);
 
-	path = new BezierPath((SDL_Point ) { 50, 50 }, (SDL_Point ) { 75,50 },
-			(SDL_Point ) { 100, 75 }, (SDL_Point ) { 100, 100 });
-	path->addCurve((SDL_Point ) { 100, 125 }, (SDL_Point ) { 75, 150 },
-			(SDL_Point ) { 50,150 });
-	path->addCurve((SDL_Point ) { 25, 150 }, (SDL_Point ) { 0, 125 },
-			(SDL_Point ) { 0,100 });
-	path->closeCurve((SDL_Point ) { 0, 75 }, (SDL_Point ) { 25,50  });
+	path = new BezierPath((SDL_Point ) { 50, 100 }, 50);
 	SDL_Point *arr =new SDL_Point[4];
 	arr[0]=(SDL_Point){50,50};
 	arr[1]=(SDL_Point){100,100};
