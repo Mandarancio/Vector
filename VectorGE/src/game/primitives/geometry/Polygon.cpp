@@ -56,30 +56,30 @@ void Polygon::addVertex(int x, int y) {
 }
 
 void Polygon::computeBox() {
-	if (vertex_.size() > 0) {
-		int w = 0;
-		int h = 0;
-		int x = vertex_[0].x;
-		int y = vertex_[0].y;
-		for (int i = 1; i < vertex_.size(); i++) {
-			if (w < abs(vertex_[i].x - x)) {
-				w = abs(vertex_[i].x - x);
-			}
-			if (h < abs(vertex_[i].y - y)) {
-				h = abs(vertex_[i].y - y);
-			}
-			if (x > vertex_[i].x) {
-				x = vertex_[i].x;
-			}
-			if (y > vertex_[i].y) {
-				y = vertex_[i].y;
-			}
+	if (lines_.size()==0)
+		return;
+	SDL_Rect bb = lines_[0].getBoundingBox();
+	SDL_Rect bbi;
+	for (int i = 1; i < lines_.size(); i++) {
+
+		bbi = lines_[i].getBoundingBox();
+		if (bb.x > bbi.x) {
+			bb.w += bb.x - bbi.x;
+			bb.x = bbi.x;
 		}
-		boundingBox_.x = x;
-		boundingBox_.y = y;
-		boundingBox_.w = w;
-		boundingBox_.h = h;
+		if (bb.y > bbi.y) {
+			bb.h += bb.y - bbi.y;
+			bb.y = bbi.y;
+		}
+		if (bb.w < abs(bbi.x - bb.x) + bbi.w) {
+			bb.w = abs(bbi.x - bb.x) + bbi.w;
+		}
+		if (bb.h < abs(bbi.y - bb.y) + bbi.h) {
+			bb.h = abs(bbi.y - bb.y) + bbi.h;
+		}
+
 	}
+	boundingBox_ = bb;
 }
 bool Polygon::contains(SDL_Point p) {
 	return contains(p.x, p.y);

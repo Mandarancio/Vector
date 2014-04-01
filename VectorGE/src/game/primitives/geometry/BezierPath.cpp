@@ -7,7 +7,7 @@
 
 #include "BezierPath.h"
 #include "../../../support/Geometric.h"
-#define BEZIER_RES 10
+#define BEZIER_RES 5
 
 BezierCurve::BezierCurve(SDL_Point a, SDL_Point c_a, SDL_Point c_b,
 		SDL_Point b) {
