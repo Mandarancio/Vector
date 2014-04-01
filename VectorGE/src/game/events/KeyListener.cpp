@@ -8,8 +8,7 @@
 #include "KeyListener.h"
 
 KeyListener::KeyListener() {
-	// TODO Auto-generated constructor stub
-
+	isKeyDown_=false;
 }
 
 KeyListener::~KeyListener() {
@@ -27,5 +26,9 @@ void KeyListener::triggerEvent(SDL_Event *event){
 	}
 }
 
-void KeyListener::keyUp(SDL_KeyboardEvent *e){}
-void KeyListener::keyDown(SDL_KeyboardEvent * e){}
+void KeyListener::keyUp(SDL_KeyboardEvent *e){
+	isKeyDown_=false;
+}
+void KeyListener::keyDown(SDL_KeyboardEvent * e){
+	isKeyDown_=true;
+}

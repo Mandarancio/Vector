@@ -135,6 +135,12 @@ EntityStatus Animation::step(float dt) {
 	return status;
 }
 
+bool Animation::isEnded(){
+	if (!loop_)
+		return __time>=duration_;
+	return false;
+}
+
 void Animation::_nextStep() {
 	float t = __currentTime / duration_;
 	__nextTime = steps_.upper_bound(t)->first * duration_;

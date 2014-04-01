@@ -4,7 +4,10 @@
  *  Created on: Mar 21, 2014
  *      Author: martino
  */
-
+/**
+ * TEST MAIN TO DELETE
+ */
+/*
 #include <iostream>
 
 #include "../src/game/GameWindow.h"
@@ -112,5 +115,5 @@ int main(int argc, char **argv) {
 	delete c;
 	delete gw;
 	return 0;
-}
+}*/
 

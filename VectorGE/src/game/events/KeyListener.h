@@ -17,6 +17,8 @@ public:
 	void triggerEvent(SDL_Event *event);
 	virtual void keyUp(SDL_KeyboardEvent *e);
 	virtual void keyDown(SDL_KeyboardEvent * e);
+protected:
+	bool isKeyDown_;
 };
 
 #endif /* KEYLISTENER_H_ */

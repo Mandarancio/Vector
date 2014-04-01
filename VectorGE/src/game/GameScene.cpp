@@ -105,6 +105,12 @@ void GameScene::gameLoop(Uint16 dt) {
 		case SDL_MOUSEWHEEL:
 			triggerMouseListener(event);
 			break;
+		case SDL_KEYDOWN:
+			triggerKeyListener(event);
+			break;
+		case SDL_KEYUP:
+			triggerKeyListener(event);
+			break;
 		case SDL_WINDOWEVENT:
 			triggerWindowListener(event);
 			break;

@@ -28,6 +28,7 @@ public:
 
 
 	EntityStatus step(float dt);
+	bool isEnded();
 
 private:
 	void _nextStep();
