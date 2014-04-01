@@ -32,15 +32,17 @@ TestAnimation::TestAnimation(SDL_Size display) :
 
 	path = new BezierPath((SDL_Point ) { 100, 100 }, 50);
 	SDL_Point *arr =new SDL_Point[4];
-	arr[0]=(SDL_Point){50,50};
-	arr[1]=(SDL_Point){100,100};
-	arr[2]=(SDL_Point){50,150};
-	arr[3]=(SDL_Point){0,100};
+	arr[0]=(SDL_Point){100,200};
+	arr[1]=(SDL_Point){150,250};
+	arr[2]=(SDL_Point){100,300};
+	arr[3]=(SDL_Point){50,250};
 	pol=new Polygon(arr,4);
 }
 
 TestAnimation::~TestAnimation() {
-	// TODO Auto-generated destructor stub
+	delete pol;
+	delete path;
+	delete image;
 }
 
 void TestAnimation::render(Painter * p) {
@@ -48,10 +50,7 @@ void TestAnimation::render(Painter * p) {
 	p->setPen(Color());
 	p->setFill(Color(100,100,100));
 	p->paintBezierPath(path);
-//	p->setFill(Color(255,255,255,100));
-//	p->paintPolygon(*pol);
-
-
+	p->paintPolygon(*pol);
 
 	Uint8 val = 255 * opacity_;
 	if (val > 255)

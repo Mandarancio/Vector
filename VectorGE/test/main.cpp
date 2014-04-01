@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
 	scene->addMouseListener(c_b);
 	scene->addMouseListener(b);
 
-	scene->gameLoop(2);
+	scene->gameLoop();
 
 	delete c;
 	delete gw;

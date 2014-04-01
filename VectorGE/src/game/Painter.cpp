@@ -8,7 +8,6 @@
 #include "Painter.h"
 #include "../support/Logging.h"
 #include <SDL2/SDL_surface.h>
-#include <SDL2/SDL2_gfxPrimitives.h>
 #include <math.h>
 #include <iostream>
 
@@ -90,8 +89,6 @@ void Painter::paintRoundedRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h,
 	status.transformation->applySizeTransformation(w, h);
 	r *= status.transformation->getScale();
 
-	roundedRectangleColor(renderer, x, y, x + w, y + h, r,
-			status.pen.getRGBA());
 
 }
 
@@ -101,13 +98,11 @@ void Painter::paintRoundedRect(SDL_Rect rect, Uint16 r) {
 }
 
 void Painter::paintCircle(int x, int y, Uint16 r) {
-	filledCircleColor(renderer, x, y, r, status.fill.getRGBA());
-	circleColor(renderer, x, y, r, status.pen.getRGBA());
+
 }
 
 void Painter::paintOval(int x, int y, Uint16 rx, Uint16 ry) {
-	filledEllipseColor(renderer, x, y, rx, ry, status.fill.getRGBA());
-	ellipseColor(renderer, x, y, rx, ry, status.pen.getRGBA());
+
 }
 
 void Painter::paintLine(int x1, int y1, int x2, int y2) {
@@ -218,7 +213,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 				status.fill.blue(), status.fill.alpha());
 		std::vector<int> inters;
 		if (w0 > h0) {
-
+#pragma omp for
 			for (int y = y0; y < y0 + h0; y++) {
 				inters.clear();
 				l = Line(x0, y, x0 + w0, y);
@@ -235,6 +230,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 				}
 				if (inters.size() > 0) {
 					std::sort(inters.begin(), inters.end());
+#pragma omp for
 					for (int i = 0; i < inters.size() - 1; i += 2) {
 						SDL_RenderDrawLine(renderer, inters[i], y,
 								inters[i + 1], y);
@@ -245,12 +241,14 @@ void Painter::paintBezierPath(BezierPath *s) {
 				}
 			}
 		} else {
+#pragma omp for
 			for (int x = x0; x < x0 + w0; x++) {
 				l = Line(x, y0, x, y0 + h0);
 				inters.clear();
 				if (s->contains(x, y0)) {
 					inters.push_back(y0);
 				}
+#pragma omp for
 				for (int i = 0; i < lines.size(); i++) {
 					if (lines[i].intersectLine(l, p)) {
 						if (std::find(inters.begin(), inters.end(), p.y)
@@ -273,6 +271,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 			}
 		}
 	}
+#pragma omp for
 	for (int i = 0; i < s->getCurves().size(); i++) {
 		paintBezierCourve(s->getCurves()[i]);
 	}
@@ -318,13 +317,14 @@ void Painter::paintPolygon(Polygon pol) {
 		SDL_SetRenderDrawColor(renderer, status.fill.red(), status.fill.green(),
 				status.fill.blue(), status.fill.alpha());
 		if (w0 > h0) {
-
+#pragma omp for
 			for (int y = y0; y < y0 + h0; y++) {
 				inters.clear();
 				l = Line(x0, y, x0 + w0, y);
 				if (s->contains(x0, y)) {
 					inters.push_back(x0);
 				}
+#pragma omp for
 				for (int i = 0; i < lines.size(); i++) {
 					if (lines[i].intersectLine(l, p)) {
 						if (std::find(inters.begin(), inters.end(), p.x)
@@ -335,6 +335,7 @@ void Painter::paintPolygon(Polygon pol) {
 				}
 				if (inters.size() > 0) {
 					std::sort(inters.begin(), inters.end());
+#pragma omp for
 					for (int i = 0; i < inters.size() - 1; i += 2) {
 						SDL_RenderDrawLine(renderer, inters[i], y,
 								inters[i + 1], y);
@@ -345,13 +346,14 @@ void Painter::paintPolygon(Polygon pol) {
 				}
 			}
 		} else {
-
+#pragma omp for
 			for (int x = x0; x < x0 + w0; x++) {
 				inters.clear();
 				l = Line(x, y0, x, y0 + h0);
 				if (s->contains(x, y0)) {
 					inters.push_back(y0);
 				}
+#pragma omp for
 				for (int i = 0; i < lines.size(); i++) {
 					if (lines[i].intersectLine(l, p)) {
 						if (std::find(inters.begin(), inters.end(), p.y)
@@ -362,6 +364,7 @@ void Painter::paintPolygon(Polygon pol) {
 				}
 				if (inters.size() > 0) {
 					std::sort(inters.begin(), inters.end());
+#pragma omp for
 					for (int i = 0; i < inters.size() - 1; i += 2) {
 						SDL_RenderDrawLine(renderer, x, inters[i], x,
 								inters[i + 1]);
@@ -373,6 +376,7 @@ void Painter::paintPolygon(Polygon pol) {
 			}
 		}
 	}
+#pragma omp for
 	for (int i = 0; i < pol.lines().size(); i++) {
 		paintLine(pol.lines()[i]);
 	}

@@ -46,7 +46,6 @@
 									<listOptionValue builtIn="false" value="SDL2"/>
 									<listOptionValue builtIn="false" value="SDL2_ttf"/>
 									<listOptionValue builtIn="false" value="SDL2_image"/>
-									<listOptionValue builtIn="false" value="SDL2_gfx"/>
 									<listOptionValue builtIn="false" value="Box2D"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.llvm.c.linker.input.1164769622" superClass="cdt.managedbuild.tool.llvm.c.linker.input">
