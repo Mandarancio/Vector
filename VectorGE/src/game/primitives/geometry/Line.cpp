@@ -59,46 +59,49 @@ bool Line::contains(int x, int y) {
 }
 
 bool Line::intersectLine(Line l) {
+	if (rectIntersect(l.getBoundingBox(), boundingBox_)) {
 
-	float x12 = (float) p1_.x - (float) p2_.x;
-	float x34 = (float) l.p1().x - (float) l.p2().x;
-	float y12 = (float) p1_.y - (float) p2_.y;
-	float y34 = (float) l.p1().y - (float) l.p2().y;
+		float s1_x, s1_y, s2_x, s2_y, sn, tn, sd, td;
+		s1_x = p2_.x - p1_.x;
+		s1_y = p2_.y - p1_.y;
+		s2_x = l.p2().x - l.p1().x;
+		s2_y = l.p2().y - l.p1().y;
 
-	float c = x12 * y34 - y12 * x34;
+		sn = -s1_y * (p1_.x - l.p1().x) + s1_x * (p1_.y - l.p1().y);
+		sd = -s2_x * s1_y + s1_x * s2_y;
+		tn = s2_x * (p1_.y - l.p1().y) - s2_y * (p1_.x - l.p1().x);
+		td = -s2_x * s1_y + s1_x * s2_y;
 
-	if (fabs(c) < 0.01) {
-		return false;
-	} else {
-		return true;
+		if (sn >= 0 && sn <= sd && tn >= 0 && tn <= td) {
+			return true;
+		}
 	}
+	return false; // No collision
 }
 
-bool Line::intersectLine(Line l, SDL_Point &inters){
-	float x12 = (float) p1_.x - (float) p2_.x;
-	float x34 = (float) l.p1().x - (float) l.p2().x;
-	float y12 = (float) p1_.y - (float) p2_.y;
-	float y34 = (float) l.p1().y - (float) l.p2().y;
+bool Line::intersectLine(Line l, SDL_Point &inters) {
+	if (rectIntersect(l.getBoundingBox(), boundingBox_)) {
+		float s1_x, s1_y, s2_x, s2_y;
+		s1_x = p2_.x - p1_.x;
+		s1_y = p2_.y - p1_.y;
+		s2_x = l.p2().x - l.p1().x;
+		s2_y = l.p2().y - l.p1().y;
+		float s, t;
+		s = (-s1_y * (p1_.x - l.p1().x) + s1_x * (p1_.y - l.p1().y))
+				/ (-s2_x * s1_y + s1_x * s2_y);
+		t = (s2_x * (p1_.y - l.p1().y) - s2_y * (p1_.x - l.p1().x))
+				/ (-s2_x * s1_y + s1_x * s2_y);
 
-	float c = x12 * y34 - y12 * x34;
+		if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
+			inters.x = p1_.x + (t * s1_x);
+			inters.y = p1_.y + (t * s1_y);
+			return true;
+		}
 
-	if (fabs(c) < 0.01) {
-		return false;
-	} else {
-		// Intersection
-		float a = p1_.x * p2_.y - p1_.y * p2_.x;
-		float b = l.p1().x * l.p2().y - l.p1().y * l.p2().x;
-
-		float x = (a * x34 - b * x12) / c;
-		float y = (a * y34 - b * y12) / c;
-
-		inters.x=round(x);
-		inters.y=round(y);
-
-		return true;
+		return false; // No collision
 	}
+	return false; // No collision
 }
-
 
 SDL_Point Line::intersectPoint(Line l) {
 	float x12 = (float) p1_.x - (float) p2_.x;
@@ -109,58 +112,59 @@ SDL_Point Line::intersectPoint(Line l) {
 	float c = x12 * y34 - y12 * x34;
 
 	if (fabs(c) < 0.01) {
-		return (SDL_Point){-1,-1};
-	} else {
-		// Intersection
-		float a = p1_.x * p2_.y - p1_.y * p2_.x;
-		float b = l.p1().x * l.p2().y - l.p1().y * l.p2().x;
+		return (SDL_Point ) { -1, -1 } ;
+			} else {
+				// Intersection
+				float a = p1_.x * p2_.y - p1_.y * p2_.x;
+				float b = l.p1().x * l.p2().y - l.p1().y * l.p2().x;
 
-		float x = (a * x34 - b * x12) / c;
-		float y = (a * y34 - b * y12) / c;
+				float x = (a * x34 - b * x12) / c;
+				float y = (a * y34 - b * y12) / c;
 
-		return (SDL_Point){round(x),round(y)};
-	}
+				return (SDL_Point ) { round(x), round(y) } ;
+					}
 
-}
+				}
 
-void Line::computeBox() {
-	int x, y, w, h;
-	x = p1_.x;
-	y = p1_.y;
-	if (x > p2_.x) {
-		x = p2_.x;
-		w = p1_.x - x;
-	} else {
-		w = p2_.x - x;
-	}
-	if (y > p2_.y) {
-		y = p2_.y;
-		h = p1_.y - y;
-	} else {
-		h = p2_.y - y;
-	}
+				void Line::computeBox() {
+					int x, y, w, h;
+					x = p1_.x;
+					y = p1_.y;
+					if (x > p2_.x) {
+						x = p2_.x;
+						w = p1_.x - x;
+					} else {
+						w = p2_.x - x;
+					}
+					if (y > p2_.y) {
+						y = p2_.y;
+						h = p1_.y - y;
+					} else {
+						h = p2_.y - y;
+					}
 
-	boundingBox_.x = x;
-	boundingBox_.y = y;
-	boundingBox_.w = w;
-	boundingBox_.h = h;
-}
-float Line::lenght() {
-	return sqrt(
-			boundingBox_.w * boundingBox_.w + boundingBox_.h * boundingBox_.h);
-}
+					boundingBox_.x = x;
+					boundingBox_.y = y;
+					boundingBox_.w = w;
+					boundingBox_.h = h;
+				}
+				float Line::lenght() {
+					return sqrt(
+							boundingBox_.w * boundingBox_.w
+									+ boundingBox_.h * boundingBox_.h);
+				}
 
-SDL_Point Line::p1() {
-	return p1_;
-}
-SDL_Point Line::p2() {
-	return p2_;
-}
+				SDL_Point Line::p1() {
+					return p1_;
+				}
+				SDL_Point Line::p2() {
+					return p2_;
+				}
 
-Shape * Line::transform(Transformation t) {
-	return transformLine(t);
-}
-Line * Line::transformLine(Transformation t) {
-	return new Line(t.transform(p1_), t.transform(p2_));
-}
+				Shape * Line::transform(Transformation t) {
+					return transformLine(t);
+				}
+				Line * Line::transformLine(Transformation t) {
+					return new Line(t.transform(p1_), t.transform(p2_));
+				}
 

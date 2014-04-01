@@ -53,10 +53,10 @@ void TestAnimation::render(Painter * p) {
 	p->setPen(Color());
 //	p->setFill(Color(0, 0, 0, 0));
 //
-//	p->paintRect(path->getBoundingBox());
-//	p->paintRect(pol.getBoundingBox());
+	p->paintRect(path->getBoundingBox());
+	p->paintRect(pol->getBoundingBox());
 	p->setFill(Color());
-
+	p->paintPolygon(*pol);
 //	p->fillShape(path);
 //	p->fillShape(pol);
 	p->paintBezierPath(path);
