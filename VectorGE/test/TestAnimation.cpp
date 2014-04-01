@@ -55,7 +55,7 @@ void TestAnimation::render(Painter * p) {
 //
 	p->paintRect(path->getBoundingBox());
 	p->paintRect(pol->getBoundingBox());
-	p->setFill(Color());
+	p->setFill(Color(100,100,100));
 	p->paintPolygon(*pol);
 //	p->fillShape(path);
 //	p->fillShape(pol);
