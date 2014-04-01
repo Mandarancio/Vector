@@ -268,6 +268,16 @@ std::vector<SDL_Point> BezierPath::vertex() {
 	return ver;
 }
 
+std::vector<Line> BezierPath::getLines(){
+	std::vector<Line> lines;
+	for (int i=0;i<__curves.size();i++){
+		for (int j=0;j<__curves[i]->getLines().size();j++){
+			lines.push_back(__curves[i]->getLines()[j]);
+		}
+	}
+	return lines;
+}
+
 Sint16 * BezierPath::vx() {
 	return __vx;
 }

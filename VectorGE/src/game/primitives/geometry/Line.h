@@ -20,6 +20,9 @@ public:
 	virtual bool contains(SDL_Point p);
 	virtual bool contains(int x,int y);
 	bool intersectLine(Line l);
+	bool intersectLine(Line l, SDL_Point &inters);
+
+	SDL_Point intersectPoint(Line l);
 
 	float lenght();
 	SDL_Point p1();

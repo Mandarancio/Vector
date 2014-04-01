@@ -59,6 +59,7 @@ public:
 
 	std::vector<BezierCurve *> getCurves();
 	std::vector<SDL_Point> vertex();
+	std::vector<Line> getLines();
 	Sint16 * vx();
 	Sint16 * vy();
 
