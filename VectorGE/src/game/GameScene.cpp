@@ -13,7 +13,8 @@
 
 #define FPS_DEBUG true
 
-GameScene::GameScene(Camera * camera) :Entity(){
+GameScene::GameScene(Camera * camera) :
+		Entity() {
 	this->camera = camera;
 	this->world = 0;
 	positionIterations = 8;
@@ -48,16 +49,12 @@ GameScene::~GameScene() {
 		delete gameEntities[i];
 	}
 	gameEntities.clear();
-	for (int i = 0; i < mouseListeners.size(); i++) {
-		delete mouseListeners[i];
-	}
+
 	mouseListeners.clear();
-	for (int i = 0; i < keyListeners.size(); i++) {
-		delete keyListeners[i];
-	}
+
 	keyListeners.clear();
-	delete world;
-	delete camera;
+	if (world != NULL)
+		delete world;
 }
 
 void GameScene::gameLoop(Uint16 dt) {

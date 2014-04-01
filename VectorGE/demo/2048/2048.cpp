@@ -31,9 +31,10 @@ int main(int argc, char **argv) {
 	scene->addEntity(board);
 	scene->addKeyListener(board);
 
-	scene->gameLoop(1);
+	scene->gameLoop();
+
 	delete scene;
-	delete camera;
 	delete window;
+
 	return 0;
 }

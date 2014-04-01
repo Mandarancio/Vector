@@ -13,6 +13,8 @@
 
 #include "Cell.h"
 
+#include <map>
+
 class Board: public GameEntity,public KeyListener {
 public:
 	Board(int cellSize, int cellPadding);
@@ -33,7 +35,7 @@ private:
 	int cellPadding_;
 	int boardSize_;
 
-	std::vector<Cell> cells_;
+	std::map<SDL_Point,Cell> cells_;
 
 	bool __active;
 };

@@ -22,9 +22,9 @@ Board::~Board() {
 
 void Board::render(Painter * p) {
 	p->getFont()->scale(2);
-	for (int i = 0; i < cells_.size(); i++) {
-		cells_[i].render(p);
-	}
+//	for (int i = 0; i < cells_.size(); i++) {
+//		cells_[i].render(p);
+//	}
 	p->setFill(Color(234, 226, 166));
 	p->setPen(p->getFill());
 	for (int i = 0; i <= 4; i++) {
@@ -71,11 +71,8 @@ bool Board::check(SDL_Keycode dir){
 }
 
 bool Board::isBusy(int x,int y){
-	for (int i=0;i<cells_.size();i++){
-		if (cells_[i].getCellX()==x && cells_[i].getCellY()==y)
-			return true;
-	}
-	return false;
+	SDL_Point p=(SDL_Point){x,y};
+	return cells_.count(p);
 }
 
 
