@@ -185,7 +185,10 @@ void Painter::paintBezierCourve(BezierCurve *bezier) {
 }
 
 void Painter::paintBezierPath(BezierPath *s) {
-	std::vector<Line> lines = s->getLines();
+	BezierPath *bp = s->transformBezierPath(*status.transformation);
+	std::vector<Line> lines = bp->getLines();
+
+	delete bp;
 	SDL_Point p;
 	Line l(0, 0, 0, 0);
 
@@ -196,7 +199,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 	SDL_SetRenderDrawColor(renderer, status.fill.red(), status.fill.green(),
 			status.fill.blue(), status.fill.alpha());
 	std::vector<int> inters;
-	if (w0 < h0) {
+	if (w0 > h0) {
 
 		for (int y = y0; y < y0 + h0; y++) {
 			inters.clear();
@@ -206,9 +209,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 			}
 			for (int i = 0; i < lines.size(); i++) {
 				if (lines[i].intersectLine(l, p)) {
-					if (p.x <= x0 || p.x > x0 + w0) {
-						continue;
-					} else if (std::find(inters.begin(), inters.end(), p.x)
+					if (std::find(inters.begin(), inters.end(), p.x)
 							== inters.end()) {
 						inters.push_back(p.x);
 					}
@@ -219,6 +220,9 @@ void Painter::paintBezierPath(BezierPath *s) {
 				for (int i = 0; i < inters.size() - 1; i += 2) {
 					SDL_RenderDrawLine(renderer, inters[i], y, inters[i + 1],
 							y);
+				}
+				if (inters.size() % 2 != 0) {
+					SDL_RenderDrawPoint(renderer, inters.back(), y);
 				}
 			}
 		}
@@ -231,9 +235,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 			}
 			for (int i = 0; i < lines.size(); i++) {
 				if (lines[i].intersectLine(l, p)) {
-					if (p.y <= y0 || p.y > y0 + h0) {
-						continue;
-					} else if (std::find(inters.begin(), inters.end(), p.y)
+					if (std::find(inters.begin(), inters.end(), p.y)
 							== inters.end()) {
 						inters.push_back(p.y);
 					}
@@ -246,7 +248,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 							inters[i + 1]);
 				}
 				if (inters.size() % 2 != 0) {
-					SDL_RenderDrawLine(renderer, x, inters.back(), x, y0 + h0);
+					SDL_RenderDrawPoint(renderer, x, inters.back());
 				}
 			}
 
@@ -306,9 +308,7 @@ void Painter::paintPolygon(Polygon pol) {
 			}
 			for (int i = 0; i < lines.size(); i++) {
 				if (lines[i].intersectLine(l, p)) {
-					if (p.x <= x0 || p.x > x0 + w0) {
-						continue;
-					} else if (std::find(inters.begin(), inters.end(), p.x)
+					if (std::find(inters.begin(), inters.end(), p.x)
 							== inters.end()) {
 						inters.push_back(p.x);
 					}
@@ -319,6 +319,9 @@ void Painter::paintPolygon(Polygon pol) {
 				for (int i = 0; i < inters.size() - 1; i += 2) {
 					SDL_RenderDrawLine(renderer, inters[i], y, inters[i + 1],
 							y);
+				}
+				if (inters.size() % 2 != 0) {
+					SDL_RenderDrawPoint(renderer, inters.back(), y);
 				}
 			}
 		}
@@ -332,9 +335,7 @@ void Painter::paintPolygon(Polygon pol) {
 			}
 			for (int i = 0; i < lines.size(); i++) {
 				if (lines[i].intersectLine(l, p)) {
-					if (p.y <= y0 || p.y > y0 + h0) {
-						continue;
-					} else if (std::find(inters.begin(), inters.end(), p.y)
+					if (std::find(inters.begin(), inters.end(), p.y)
 							== inters.end()) {
 						inters.push_back(p.y);
 					}
@@ -345,6 +346,9 @@ void Painter::paintPolygon(Polygon pol) {
 				for (int i = 0; i < inters.size() - 1; i += 2) {
 					SDL_RenderDrawLine(renderer, x, inters[i], x,
 							inters[i + 1]);
+				}
+				if (inters.size() % 2 != 0) {
+					SDL_RenderDrawPoint(renderer, x, inters.back());
 				}
 			}
 		}
