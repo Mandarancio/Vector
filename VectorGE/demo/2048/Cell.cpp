@@ -167,4 +167,4 @@ bool Cell::isAnimating() {
 
 SDL_Point Cell::getCell() {
 	return (SDL_Point ) { cellX_, cellY_ } ;
-		}
+}
