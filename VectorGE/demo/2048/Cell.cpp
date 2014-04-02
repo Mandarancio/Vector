@@ -130,6 +130,7 @@ bool Cell::sum(Cell * c) {
 		}
 		present_ = getCurrentStatus();
 		present_.scale = 1.5;
+		setCurrentStatus(present_);
 		animation_ = new Animation(present_, future_, ATIME);
 
 		return true;
@@ -145,9 +146,7 @@ void Cell::unlock() {
 }
 
 void Cell::move(int x, int y) {
-	double scale = present_.scale;
 	present_ = getCurrentStatus();
-	present_.scale = scale;
 	cellX_ = x;
 	cellY_ = y;
 	future_ = present_;
