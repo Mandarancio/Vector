@@ -33,7 +33,9 @@ Cell::Cell(int cx, int cy, int size, int padding, int val) {
 }
 
 Cell::~Cell() {
-
+	if (animation_!=NULL){
+		delete animation_;
+	}
 }
 
 void Cell::render(Painter * p) {
