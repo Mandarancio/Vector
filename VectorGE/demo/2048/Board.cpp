@@ -15,7 +15,7 @@ Board::Board(int cellSize, int cellPadding) {
 	boardSize_ = 4 * cellSize + 5 * cellPadding;
 	bounds_.w = boardSize_;
 	bounds_.h = boardSize_;
-	bg = new Image("./resources/2048/bg.png");
+	bgImage_ = new Image("./resources/2048/bg.png");
 	__active = true;
 	generate();
 	__gameOver = false;
@@ -23,7 +23,17 @@ Board::Board(int cellSize, int cellPadding) {
 }
 
 Board::~Board() {
-	// TODO Auto-generated destructor stub
+	delete bgImage_;
+	for (std::map<int, Cell*>::iterator i = cells_.begin(); i != cells_.end();
+			++i) {
+		if (i->second != NULL)
+			delete i->second;
+	}
+	for (int i = 0; i < toDelete_.size(); i++) {
+		delete toDelete_[i];
+	}
+	toDelete_.clear();
+	cells_.clear();
 }
 
 void Board::render(Painter * p) {
@@ -36,7 +46,7 @@ void Board::render(Painter * p) {
 			i->second->render(p);
 	}
 
-	p->paintImage(*bg, 0, 0);
+	p->paintImage(*bgImage_, 0, 0);
 
 	if (__gameWin || __gameOver) {
 		p->setFill(Color(0, 0, 0, 200));

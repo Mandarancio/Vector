@@ -42,7 +42,7 @@ private:
 	int cellPadding_;
 	int boardSize_;
 
-	Image * bg;
+	Image * bgImage_;
 
 	std::map<int, Cell*> cells_;
 	std::vector<Cell * > toDelete_;
