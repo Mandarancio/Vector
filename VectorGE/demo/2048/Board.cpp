@@ -7,14 +7,19 @@
 
 #include "Board.h"
 #include <iostream>
+#include <string>
 
 Board::Board(int cellSize, int cellPadding) {
 	cellPadding_ = cellPadding;
 	cellSize_ = cellSize;
 	boardSize_ = 4 * cellSize + 5 * cellPadding;
+	bounds_.w = boardSize_;
+	bounds_.h = boardSize_;
 	bg = new Image("./resources/2048/bg.png");
 	__active = true;
 	generate();
+	__gameOver = false;
+	__gameWin = false;
 }
 
 Board::~Board() {
@@ -33,6 +38,16 @@ void Board::render(Painter * p) {
 
 	p->paintImage(*bg, 0, 0);
 
+	if (__gameWin || __gameOver) {
+		p->setFill(Color(0, 0, 0, 200));
+		p->setPen(p->getFill());
+		p->paintRect(0, 0, boardSize_, boardSize_);
+		std::string message = (__gameOver ? "Game over!" : "You win!");
+		p->getFont()->scale(2.0);
+		p->setPen(Color(255, 255, 255));
+		SDL_Rect tb = p->getFont()->textBounds(message);
+		p->paintText(message, (boardSize_ - tb.w) / 2, (boardSize_ - tb.h) / 2);
+	}
 }
 
 void Board::step(double dt) {
@@ -63,20 +78,16 @@ void Board::keyDown(SDL_KeyboardEvent * e) {
 	if (!isKeyDown_ && __active) {
 		switch (e->keysym.sym) {
 		case (SDLK_UP):
-			std::cout << "UP\n";
 			moveUp();
 			break;
 		case (SDLK_DOWN):
 			moveDown();
-			std::cout << "DOWN\n";
 			break;
 		case (SDLK_LEFT):
 			moveLeft();
-			std::cout << "LEFT\n";
 			break;
 		case (SDLK_RIGHT):
 			moveRight();
-			std::cout << "RIGHT\n";
 			break;
 		}
 
@@ -85,15 +96,24 @@ void Board::keyDown(SDL_KeyboardEvent * e) {
 }
 
 bool Board::full() {
-	return cells_.size() == 16;
-}
-
-bool Board::check() {
-	return check(SDLK_UP) || check(SDLK_DOWN) || check(SDLK_LEFT)
-			|| check(SDLK_RIGHT);
-}
-
-bool Board::check(SDL_Keycode dir) {
+	if (cells_.size() == 16) {
+		for (int x = 0; x < 4; x++) {
+			for (int y = 0; y < 4; y++) {
+				if (getCell(x, y) != NULL) {
+					if (getCell(x, y)->compatible(getCell(x - 1, y)))
+						return false;
+					if (getCell(x, y)->compatible(getCell(x + 1, y)))
+						return false;
+					if (getCell(x, y)->compatible(getCell(x, y - 1)))
+						return false;
+					if (getCell(x, y)->compatible(getCell(x, y + 1)))
+						return false;
+				} else
+					return false;
+			}
+		}
+		return true;
+	}
 	return false;
 }
 
@@ -102,12 +122,17 @@ bool Board::isBusy(int x, int y) {
 }
 
 void Board::generate() {
+
 	std::vector<SDL_Point> freecell;
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y < 4; y++) {
 			if (!isBusy(x, y)) {
 				freecell.push_back((SDL_Point ) { x, y });
 			} else {
+				if (getCell(x, y)->getValue() == 2048) {
+					__gameWin = true;
+					__active = false;
+				}
 				getCell(x, y)->unlock();
 			}
 		}
@@ -118,6 +143,11 @@ void Board::generate() {
 				cellPadding_);
 		cells_[freecell[sel].x + freecell[sel].y * 4] = c;
 	}
+	if (full() && !__gameWin) {
+		__gameOver = true;
+		__active = false;
+	}
+
 }
 
 void Board::moveUp() {
@@ -244,6 +274,10 @@ void Board::moveRight() {
 }
 
 Cell * Board::getCell(int x, int y) {
+	if (x < 0 || x > 3)
+		return 0;
+	if (y < 0 || y > 3)
+		return 0;
 	return cells_[x + y * 4];
 }
 

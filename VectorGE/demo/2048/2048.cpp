@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
 	scene->addEntity(board);
 	scene->addKeyListener(board);
 
-	scene->gameLoop();
+	scene->gameLoop(10);
 
 	delete scene;
 	delete window;

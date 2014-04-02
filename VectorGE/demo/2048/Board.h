@@ -26,9 +26,6 @@ public:
 
 private:
 	bool full();
-	bool check();
-	bool check(SDL_Keycode dir);
-	int checkPos(SDL_Keycode dir);
 	bool isBusy(int x, int y);
 
 	void generate();
@@ -49,7 +46,8 @@ private:
 
 	std::map<int, Cell*> cells_;
 	std::vector<Cell * > toDelete_;
-
+	bool __gameOver;
+	bool __gameWin;
 	bool __active;
 };
 

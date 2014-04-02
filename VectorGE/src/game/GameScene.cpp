@@ -120,7 +120,7 @@ void GameScene::gameLoop(Uint16 dt) {
 
 #if FPS_DEBUG
 		fps = abs(1000.0 / delta);
-
+		p->getFont()->scale(1.0);
 		ss << "FPS: " << fps;
 //		p->save();
 		p->clearTransaltion();
