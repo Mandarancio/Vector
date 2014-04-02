@@ -46,7 +46,7 @@ SDL_Surface * Font::toSurface(std::string text, SDL_Color color) {
 }
 
 SDL_Rect Font::textBounds(std::string text) {
-	if (text.length()==0){
+	if (text.length() == 0) {
 		return SDL_Rect();
 	}
 	Color c;
@@ -62,7 +62,7 @@ SDL_Rect Font::textBounds(std::string text) {
 		r.h = 0;
 		return r;
 	}
-	r=surf->clip_rect;
+	r = surf->clip_rect;
 	SDL_FreeSurface(surf);
 	return r;
 }
@@ -76,12 +76,14 @@ int Font::getSize() {
 }
 
 void Font::scale(double s) {
-	scale_ = s;
-	TTF_CloseFont(font_);
-	font_ = TTF_OpenFont(ttf_file_.c_str(), scale_ * size_);
+	if (s != scale_) {
+		scale_ = s;
+		TTF_CloseFont(font_);
+		font_ = TTF_OpenFont(ttf_file_.c_str(), scale_ * size_);
 
-	if (font_ == 0) {
-		logSDLError(std::cout, "TTF_OpenFont");
+		if (font_ == 0) {
+			logSDLError(std::cout, "TTF_OpenFont");
+		}
 	}
 }
 
