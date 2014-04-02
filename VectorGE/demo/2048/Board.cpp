@@ -20,6 +20,8 @@ Board::Board(int cellSize, int cellPadding) {
 	generate();
 	__gameOver = false;
 	__gameWin = false;
+	__points = 0;
+	__point_texture = 0;
 }
 
 Board::~Board() {
@@ -31,6 +33,9 @@ Board::~Board() {
 	}
 	for (int i = 0; i < toDelete_.size(); i++) {
 		delete toDelete_[i];
+	}
+	if (__point_texture!=0){
+		SDL_DestroyTexture(__point_texture);
 	}
 	toDelete_.clear();
 	cells_.clear();
@@ -47,6 +52,21 @@ void Board::render(Painter * p) {
 	}
 
 	p->paintImage(*bgImage_, 0, 0);
+	p->setFill(Color());
+	p->setPen(Color());
+	p->paintRect(0, this->boardSize_, this->boardSize_, 40);
+	if (__point_texture == 0) {
+		__ss << __points;
+		std::string val = __ss.str();
+		__ss.str("");
+		p->getFont()->scale(1.1);
+		p->setPen(Color(255, 255, 255));
+		__point_bounds=p->getFont()->textBounds(val);
+		__point_texture=p->textToTexture(val);
+		__point_bounds.x=5;
+		__point_bounds.y=boardSize_+(40-__point_bounds.h)/2;
+	}
+	p->paintTexture(__point_texture,__point_bounds);
 
 	if (__gameWin || __gameOver) {
 		p->setFill(Color(0, 0, 0, 200));
@@ -132,6 +152,8 @@ bool Board::isBusy(int x, int y) {
 }
 
 void Board::generate() {
+	SDL_DestroyTexture(__point_texture);
+	__point_texture = 0;
 
 	std::vector<SDL_Point> freecell;
 	for (int x = 0; x < 4; x++) {
@@ -147,6 +169,7 @@ void Board::generate() {
 			}
 		}
 	}
+
 	if (freecell.size() > 0) {
 		int sel = rand() % freecell.size();
 		Cell * c = new Cell(freecell[sel].x, freecell[sel].y, cellSize_,
@@ -175,6 +198,7 @@ void Board::moveUp() {
 						something = true;
 					} else {
 						if (getCell(x, y - 1)->sum(getCell(x, y))) {
+							__points += getCell(x, y - 1)->getValue();
 							Cell * c = getCell(x, y);
 							cells_.erase(x + y * 4);
 							c->move(x, y - 1);
@@ -207,6 +231,7 @@ void Board::moveDown() {
 						something = true;
 					} else {
 						if (getCell(x, y + 1)->sum(getCell(x, y))) {
+							__points += getCell(x, 1 + y)->getValue();
 							Cell * c = getCell(x, y);
 							cells_.erase(x + y * 4);
 							c->move(x, y + 1);
@@ -238,6 +263,7 @@ void Board::moveLeft() {
 						something = true;
 					} else {
 						if (getCell(x - 1, y)->sum(getCell(x, y))) {
+							__points += getCell(x - 1, y)->getValue();
 							Cell * c = getCell(x, y);
 							cells_.erase(x + y * 4);
 							c->move(x - 1, y);
@@ -258,7 +284,7 @@ void Board::moveRight() {
 
 	while (check) {
 		check = false;
-		for (int x = 0; x < 3; x++) {
+		for (int x = 2; x > -1; x--) {
 			for (int y = 0; y < 4; y++) {
 				if (getCell(x, y)) {
 					if (!isBusy(x + 1, y)) {
@@ -268,6 +294,7 @@ void Board::moveRight() {
 						something = true;
 					} else {
 						if (getCell(x + 1, y)->sum(getCell(x, y))) {
+							__points += getCell(x + 1, y)->getValue();
 							Cell * c = getCell(x, y);
 							cells_.erase(x + y * 4);
 							c->move(x + 1, y);

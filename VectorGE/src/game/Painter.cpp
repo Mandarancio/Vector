@@ -89,7 +89,6 @@ void Painter::paintRoundedRect(Sint16 x, Sint16 y, Uint16 w, Uint16 h,
 	status.transformation->applySizeTransformation(w, h);
 	r *= status.transformation->getScale();
 
-
 }
 
 void Painter::paintRoundedRect(SDL_Rect rect, Uint16 r) {
@@ -129,8 +128,7 @@ void Painter::paintText(std::string text, int x, int y) {
 	if (text.length() == 0)
 		return;
 
-	SDL_Surface * surface = status.font->toSurface(text,
-			status.pen.getSDLColor());
+	SDL_Surface * surface = status.font->toSurface(text, status.pen);
 	SDL_Rect r = status.font->textBounds(text);
 	r.x = x;
 	r.y = y;
@@ -175,6 +173,11 @@ void Painter::paintTexture(SDL_Texture *texture, SDL_Rect bounds, Uint8 alpha) {
 	SDL_RenderCopy(renderer, texture, NULL, &bounds);
 }
 
+void Painter::paintSurface(SDL_Surface *surface, SDL_Rect r) {
+	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+	paintTexture(texture, r);
+}
+
 void Painter::paintBezierCourve(BezierCurve *bc) {
 	for (int i = 0; i < bc->getLines().size(); i++) {
 		paintLine(bc->getLines()[i]);
@@ -185,12 +188,16 @@ void Painter::paintBezierCourve(BezierCurve *bc) {
 	SDL_RenderFillRect(renderer, &r);
 	r = (SDL_Rect ) { bc->getPointB().x - 4, bc->getPointB().y - 4, 8, 8 };
 	SDL_RenderFillRect(renderer, &r);
-	r = (SDL_Rect ) { bc->getControlPointA().x - 4, bc->getControlPointA().y - 4, 8, 8 };
+	r = (SDL_Rect ) { bc->getControlPointA().x - 4, bc->getControlPointA().y
+					- 4, 8, 8 };
 	SDL_RenderFillRect(renderer, &r);
-	r = (SDL_Rect ) { bc->getControlPointB().x - 4, bc->getControlPointB().y - 4, 8, 8 };
+	r = (SDL_Rect ) { bc->getControlPointB().x - 4, bc->getControlPointB().y
+					- 4, 8, 8 };
 	SDL_RenderFillRect(renderer, &r);
-	SDL_RenderDrawLine(renderer,bc->getPointA().x,bc->getPointA().y,bc->getControlPointA().x ,bc->getControlPointA().y);
-	SDL_RenderDrawLine(renderer,bc->getPointB().x,bc->getPointB().y,bc->getControlPointB().x ,bc->getControlPointB().y);
+	SDL_RenderDrawLine(renderer, bc->getPointA().x, bc->getPointA().y,
+			bc->getControlPointA().x, bc->getControlPointA().y);
+	SDL_RenderDrawLine(renderer, bc->getPointB().x, bc->getPointB().y,
+			bc->getControlPointB().x, bc->getControlPointB().y);
 
 #endif
 }
@@ -471,4 +478,9 @@ void Painter::windowResized(SDL_WindowEvent *e) {
 	displaySize.height = e->data2;
 	displayCenter.x = e->data1 / 2;
 	displayCenter.y = e->data2 / 2;
+}
+
+SDL_Texture * Painter::textToTexture(std::string text){
+	SDL_Surface *surface=getFont()->toSurface(text,getPen());
+	return SDL_CreateTextureFromSurface(renderer, surface);
 }

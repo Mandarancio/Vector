@@ -25,16 +25,14 @@
 #include "primitives/geometry/Polygon.h"
 #include "primitives/geometry/BezierPath.h"
 
-
-
 #include "events/WindowListener.h"
 
 struct PainterStatus {
-	Color 				pen;
-	Color 				fill;
-	Font * 				font;
-	Transformation * 	transformation;
-	SDL_Rect 			clip;
+	Color pen;
+	Color fill;
+	Font * font;
+	Transformation * transformation;
+	SDL_Rect clip;
 };
 
 class Painter: public Entity, public WindowListener {
@@ -65,13 +63,14 @@ public:
 
 	void paintText(std::string text, int x, int y);
 
-	void paintImage(Image img, SDL_Rect bounds,Uint8 alpha=255);
-	void paintImage(Image img, SDL_Point pos, Uint8 alpha=255);
-	void paintImage(Image img, int x, int y,Uint8 alpha=255);
+	void paintImage(Image img, SDL_Rect bounds, Uint8 alpha = 255);
+	void paintImage(Image img, SDL_Point pos, Uint8 alpha = 255);
+	void paintImage(Image img, int x, int y, Uint8 alpha = 255);
 
-	void paintTexture(SDL_Texture *texture, SDL_Rect bounds,  Uint8 alpha=255);
+	void paintTexture(SDL_Texture *texture, SDL_Rect bounds, Uint8 alpha = 255);
+	void paintSurface(SDL_Surface *surface, SDL_Rect r);
 
-	void paintBezierCourve(BezierCurve *bezier );
+	void paintBezierCourve(BezierCurve *bezier);
 	void paintBezierPath(BezierPath *s);
 
 	void fillShape(Shape * shape);
@@ -99,12 +98,14 @@ public:
 
 	virtual void windowResized(SDL_WindowEvent *e);
 
+	SDL_Texture * textToTexture(std::string text);
+
 private:
-	std::vector<PainterStatus> 	history;
-	SDL_Renderer * 			   	renderer;
-	SDL_Size 				   	displaySize;
-	SDL_Point 					displayCenter;
-	PainterStatus 				status;
+	std::vector<PainterStatus> history;
+	SDL_Renderer * renderer;
+	SDL_Size displaySize;
+	SDL_Point displayCenter;
+	PainterStatus status;
 
 };
 

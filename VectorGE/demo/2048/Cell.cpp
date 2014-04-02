@@ -30,11 +30,17 @@ Cell::Cell(int cx, int cy, int size, int padding, int val) {
 	lock_ = false;
 	str_val = ss.str();
 	animation_ = new Animation(present_, future_, ATIME);
+
+	__text_texture = 0;
 }
 
 Cell::~Cell() {
-	if (animation_!=NULL){
+	if (animation_ != NULL) {
 		delete animation_;
+	}
+	if (__text_texture) {
+		SDL_DestroyTexture(__text_texture);
+		__text_texture = 0;
 	}
 }
 
@@ -47,22 +53,36 @@ void Cell::render(Painter * p) {
 	p->setPen(p->getFill());
 	p->paintRect(x, y, w, h);
 	p->setPen(getPen());
-	p->getFont()->scale(2.0 * scale_);
-	SDL_Rect tb = p->getFont()->textBounds(str_val);
-	if (tb.w > w - 8 * scale_) {
-		p->getFont()->scale(1.2 * scale_);
-		tb = p->getFont()->textBounds(str_val);
+	SDL_Rect tb;
+	if (__text_texture == 0) {
+		if (value_ > 1000) {
+			p->getFont()->scale(1.2);
+			__text_bounds = p->getFont()->textBounds(str_val);
+			__text_texture = p->textToTexture(str_val);
+		} else if (value_ > 100) {
+			p->getFont()->scale(1.5);
+			__text_bounds = p->getFont()->textBounds(str_val);
+			__text_texture = p->textToTexture(str_val);
+		} else {
+			p->getFont()->scale(2.0);
+			__text_bounds = p->getFont()->textBounds(str_val);
+			__text_texture = p->textToTexture(str_val);
+		}
 	}
+	tb = __text_bounds;
+
+	tb.w *= scale_;
+	tb.h *= scale_;
 	tb.x = x + (w - tb.w) / 2;
 	tb.y = y + (w - tb.h) / 2;
-	p->paintText(str_val, tb.x, tb.y);
+	p->paintTexture(__text_texture, tb);
 }
 
 void Cell::step(double dt) {
 	if (animation_ != NULL) {
 		setCurrentStatus(animation_->step(dt));
 		if (animation_->isEnded()) {
-			present_=getCurrentStatus();
+			present_ = getCurrentStatus();
 			delete animation_;
 			animation_ = NULL;
 		}
@@ -116,7 +136,7 @@ int Cell::getCellY() {
 }
 
 bool Cell::compatible(Cell * c) {
-	return c!=NULL && !isLocked() && !c->isLocked() && c->getValue() == value_;
+	return c != NULL && !isLocked() && !c->isLocked() && c->getValue() == value_;
 }
 
 bool Cell::sum(Cell * c) {
@@ -134,7 +154,10 @@ bool Cell::sum(Cell * c) {
 		present_.scale = 1.5;
 		setCurrentStatus(present_);
 		animation_ = new Animation(present_, future_, ATIME);
-
+		if (__text_texture) {
+			SDL_DestroyTexture(__text_texture);
+			__text_texture = 0;
+		}
 		return true;
 	}
 	return false;
@@ -168,4 +191,4 @@ bool Cell::isAnimating() {
 
 SDL_Point Cell::getCell() {
 	return (SDL_Point ) { cellX_, cellY_ } ;
-}
+		}

@@ -9,6 +9,7 @@
 #define FONT_H_
 
 #include "../../core/Entity.h"
+#include "Color.h"
 #include <SDL2/SDL_ttf.h>
 #include <string>
 
@@ -18,7 +19,7 @@ public:
 	Font(std::string font, int size);
 	virtual ~Font();
 
-	SDL_Surface * toSurface(std::string text,SDL_Color color);
+	SDL_Surface * toSurface(std::string text,Color color);
 	SDL_Rect textBounds(std::string text);
 
 	std::string getName();

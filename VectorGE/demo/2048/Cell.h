@@ -44,6 +44,9 @@ private:
 	EntityStatus present_;
 	EntityStatus future_;
 	Animation * animation_;
+
+	SDL_Texture * __text_texture;
+	SDL_Rect __text_bounds;
 };
 
 #endif /* CELL_H_ */

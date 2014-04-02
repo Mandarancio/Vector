@@ -38,8 +38,8 @@ Font::~Font() {
 	TTF_CloseFont(font_);
 }
 
-SDL_Surface * Font::toSurface(std::string text, SDL_Color color) {
-	SDL_Surface *surf = TTF_RenderText_Blended(font_, text.c_str(), color);
+SDL_Surface * Font::toSurface(std::string text, Color color) {
+	SDL_Surface *surf = TTF_RenderText_Blended(font_, text.c_str(), color.getSDLColor());
 	if (surf == 0) {
 		logSDLError(std::cout, "TTF_RenderText");
 		return 0;

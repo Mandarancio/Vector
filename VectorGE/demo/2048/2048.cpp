@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 	int padding = 15;
 	int wsize = cell_size * 4 + 5 * padding;
 
-	GameWindow *window = new GameWindow("2048", wsize, wsize, false);
+	GameWindow *window = new GameWindow("2048", wsize, wsize+40, false);
 	Camera *camera = new Camera(window->painter());
 	GameScene *scene = new GameScene(camera);
 

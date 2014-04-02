@@ -14,6 +14,7 @@
 
 #include "Cell.h"
 
+#include <sstream>
 #include <map>
 
 class Board: public GameEntity, public KeyListener {
@@ -49,6 +50,12 @@ private:
 	bool __gameOver;
 	bool __gameWin;
 	bool __active;
+
+	SDL_Texture * __point_texture;
+	SDL_Rect __point_bounds;
+
+	std::stringstream __ss;
+	unsigned int __points;
 };
 
 #endif /* BOARD_H_ */
