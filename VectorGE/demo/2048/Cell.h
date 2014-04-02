@@ -22,13 +22,17 @@ public:
 	int getCellX();
 	int getCellY();
 
-	bool compatible(Cell c);
-	bool sum(Cell c);
+	bool compatible(Cell * c);
+	bool sum(Cell * c);
+
+	void move(int x,int y);
 private:
 	Color getColor();
+	Color getPen();
 	int value_;
 	int cellX_,cellY_;
 	std::string str_val;
+	int padding_;
 };
 
 #endif /* CELL_H_ */
