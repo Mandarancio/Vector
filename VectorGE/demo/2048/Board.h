@@ -37,12 +37,7 @@ private:
 	void moveLeft();
 	void moveRight();
 
-	void move(int x,int y);
-
-
 	Cell * getCell(int x, int y);
-	int getDx(int dx,int x,int y);
-	int getDy(int dy,int x,int y);
 
 	void moveCell(int x0, int y0, int x1, int y1);
 
