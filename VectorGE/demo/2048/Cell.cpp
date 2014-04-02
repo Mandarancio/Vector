@@ -16,9 +16,10 @@ Cell::Cell(int cx, int cy, int size, int padding, int val) {
 	bounds_.h = size;
 	bounds_.x = cx * (padding + size) + padding;
 	bounds_.y = cy * (padding + size) + padding;
-	padding_=padding;
+	padding_ = padding;
 	std::stringstream ss;
 	ss << val;
+	lock_ = false;
 	str_val = ss.str();
 }
 
@@ -44,36 +45,38 @@ void Cell::render(Painter * p) {
 }
 
 Color Cell::getColor() {
-	if (value_==2){
+	if (value_ == 2) {
 		return Color(255, 255, 255);
-	}else if (value_==4)
-		return Color(255,213,213);
-	else if (value_==8)
-		return Color(255,170,170);
-	else if (value_==16)
-		return Color(255,128,128);
-	else if (value_==32)
-		return Color(255,42,42);
-	else if (value_==64)
+	} else if (value_ == 4)
+		return Color(255, 213, 213);
+	else if (value_ == 8)
+		return Color(255, 170, 170);
+	else if (value_ == 16)
+		return Color(255, 128, 128);
+	else if (value_ == 32)
+		return Color(255, 42, 42);
+	else if (value_ == 64)
 		return Color(255, 0, 0);
-	else if (value_==128)
-		return Color(255,238,170);
-	else if (value_==256)
-		return Color(255,230,128);
-	else if (value_==512)
-		return Color(255,221,85);
-	else if (value_==1024)
-		return Color(255,212,42);
-	else return Color(255,204,0);
+	else if (value_ == 128)
+		return Color(255, 238, 170);
+	else if (value_ == 256)
+		return Color(255, 230, 128);
+	else if (value_ == 512)
+		return Color(255, 221, 85);
+	else if (value_ == 1024)
+		return Color(255, 212, 42);
+	else
+		return Color(255, 204, 0);
 
 }
 
-Color Cell::getPen(){
-	if (value_<8)
-		return Color(150,150,150);
-	else if (value_<128)
-		return Color(255,255,255);
-	else return Color();
+Color Cell::getPen() {
+	if (value_ < 8)
+		return Color(150, 150, 150);
+	else if (value_ < 128)
+		return Color(255, 255, 255);
+	else
+		return Color();
 }
 int Cell::getValue() {
 	return value_;
@@ -88,27 +91,35 @@ int Cell::getCellY() {
 }
 
 bool Cell::compatible(Cell * c) {
-	return c->getValue() == value_;
+	return !isLocked() && !c->isLocked() && c->getValue() == value_;
 }
 
 bool Cell::sum(Cell * c) {
-	if (c!=NULL && c->getValue()==value_) {
+	if (c != NULL && compatible(c)) {
 		value_ *= 2;
 		std::stringstream ss;
 		ss << value_;
 		str_val = ss.str();
+		lock_ = true;
 		return true;
 	}
 	return false;
 }
 
-void Cell::move(int x, int y){
-	cellX_=x;
-	cellY_=y;
+bool Cell::isLocked() {
+	return lock_;
+}
+void Cell::unlock() {
+	lock_ = false;
+}
+
+void Cell::move(int x, int y) {
+	cellX_ = x;
+	cellY_ = y;
 	bounds_.x = x * (padding_ + bounds_.w) + padding_;
 	bounds_.y = y * (padding_ + bounds_.w) + padding_;
 }
 
 SDL_Point Cell::getCell() {
 	return (SDL_Point ) { cellX_, cellY_ } ;
-}
+		}

@@ -9,7 +9,11 @@
 #define ANIMATION_H_
 
 #include "../GameEntity.h"
+#include "../events/ActionListener.h"
+
 #include "AnimationFunction.h"
+
+#include <vector>
 #include <map>
 
 enum LoopMode{
@@ -30,15 +34,20 @@ public:
 	EntityStatus step(float dt);
 	bool isEnded();
 
+	void addListener(ActionListener * listener);
 private:
 	void _nextStep();
 	void _prevStep();
+
+	void _triggerListeners();
 
 	double duration_;
 	LoopMode loop_;
 
 	std::map<float,EntityStatus> steps_;
 	std::map<float,AnimationFunction*> functions_;
+
+	std::vector<ActionListener *>__listeners;
 
 	float __time;
 	EntityStatus __currentStatus;
@@ -47,6 +56,7 @@ private:
 	float __nextTime;
 
 	bool __reverseFlag;
+	bool __end;
 };
 
 #endif /* ANIMATION_H_ */

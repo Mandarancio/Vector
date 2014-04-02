@@ -86,6 +86,9 @@ void Board::generate() {
 			if (!isBusy(x, y)) {
 				freecell.push_back((SDL_Point ) { x, y });
 			}
+			else {
+				getCell(x,y)->unlock();
+			}
 		}
 	}
 	if (freecell.size() > 0) {
@@ -132,7 +135,7 @@ void Board::moveDown() {
 
 	while (check) {
 		check = false;
-		for (int y = 2; y >=0; y--) {
+		for (int y = 2; y >= 0; y--) {
 			for (int x = 0; x < 4; x++) {
 				if (getCell(x, y)) {
 					if (!isBusy(x, y + 1)) {
@@ -213,6 +216,82 @@ void Board::moveRight() {
 	}
 	if (something)
 		generate();
+}
+
+void Board::move(int dx, int dy) {
+	int fx;
+	int fy;
+	std::map<int, Cell*> future;
+	bool something=false;
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 4; x++) {
+			if (getCell(x, y)) {
+				fx = x+getDx(dx, x, y);
+				fy = y+getDy(dy, x, y);
+
+				future[fx+fy * 4] = getCell(x, y);
+				getCell(x, y)->move(fx, fy);
+				std::cout<<fx<<","<<fy<<"\n";
+				something=true;
+			}
+		}
+	}
+	cells_ = future;
+	future.clear();
+	for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 4; x++) {
+				fx=x+dx;
+				fy=y+dy;
+				if (fx>=0 && fx<4 && fy>=0 && fy<4){
+					if (isBusy(x,y) && isBusy(fx,fy) && getCell(x,y)->compatible(getCell(fx,fy))){
+						future[fx+fy*4]=getCell(fx,fy);
+						getCell(fx,fy)->sum(getCell(x,y));
+						delete getCell(x,y);
+						cells_.erase(x+y*4);
+					}
+				}
+			}
+	}
+	if (something)
+		generate();
+}
+
+int Board::getDx(int dx, int x, int y) {
+	if (dx < 0 && x > 0) {
+		int d = 0;
+		for (int i = x - 1; i >= 0; i--) {
+			if (!isBusy(i, y))
+				d--;
+		}
+		return d;
+	} else if (dx > 0 && x < 3) {
+		int d = 0;
+		for (int i = x + 1; i < 4; i++) {
+			if (!isBusy(i, y))
+				d++;
+		}
+		return d;
+	}
+	return 0;
+}
+
+int Board::getDy(int dy, int x, int y) {
+	if (dy < 0 && y > 0) {
+		int d = 0;
+		for (int i = y - 1; i >= 0; i--) {
+			if (!isBusy(x, i))
+				d--;
+		}
+		return d;
+	} else if (dy > 0 && y < 3) {
+		int d = 0;
+		for (int i = y + 1; i < 4; i++) {
+			if (!isBusy(x, i))
+				d++;
+		}
+		return d;
+	}
+	return 0;
 }
 
 Cell * Board::getCell(int x, int y) {

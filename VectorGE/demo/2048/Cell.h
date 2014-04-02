@@ -25,6 +25,9 @@ public:
 	bool compatible(Cell * c);
 	bool sum(Cell * c);
 
+	bool isLocked();
+	void unlock();
+
 	void move(int x,int y);
 private:
 	Color getColor();
@@ -33,6 +36,7 @@ private:
 	int cellX_,cellY_;
 	std::string str_val;
 	int padding_;
+	bool lock_;
 };
 
 #endif /* CELL_H_ */
