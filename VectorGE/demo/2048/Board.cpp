@@ -22,19 +22,41 @@ Board::~Board() {
 }
 
 void Board::render(Painter * p) {
-	p->getFont()->scale(2);
+	for (int i = 0; i < toDelete_.size(); i++) {
+		toDelete_[i]->render(p);
+	}
 	for (std::map<int, Cell*>::iterator i = cells_.begin(); i != cells_.end();
 			++i) {
 		if (i->second != NULL)
 			i->second->render(p);
 	}
+
 	p->paintImage(*bg, 0, 0);
 
 }
 
 void Board::step(double dt) {
 	GameEntity::step(dt);
-	//do something
+	for (std::map<int, Cell*>::iterator i = cells_.begin(); i != cells_.end();
+			++i) {
+		if (i->second != NULL)
+			i->second->step(dt);
+	}
+	if (toDelete_.size() > 0) {
+		bool finish = true;
+		for (int i = 0; i < toDelete_.size(); i++) {
+			if (toDelete_[i]->isAnimating()) {
+				toDelete_[i]->step(dt);
+				finish = false;
+			}
+		}
+		if (finish) {
+			for (int i = 0; i < toDelete_.size(); i++) {
+				delete toDelete_[i];
+			}
+			toDelete_.clear();
+		}
+	}
 }
 
 void Board::keyDown(SDL_KeyboardEvent * e) {
@@ -85,9 +107,8 @@ void Board::generate() {
 		for (int y = 0; y < 4; y++) {
 			if (!isBusy(x, y)) {
 				freecell.push_back((SDL_Point ) { x, y });
-			}
-			else {
-				getCell(x,y)->unlock();
+			} else {
+				getCell(x, y)->unlock();
 			}
 		}
 	}
@@ -116,7 +137,8 @@ void Board::moveUp() {
 						if (getCell(x, y - 1)->sum(getCell(x, y))) {
 							Cell * c = getCell(x, y);
 							cells_.erase(x + y * 4);
-							delete c;
+							c->move(x, y - 1);
+							toDelete_.push_back(c);
 							something = true;
 
 						}
@@ -147,7 +169,8 @@ void Board::moveDown() {
 						if (getCell(x, y + 1)->sum(getCell(x, y))) {
 							Cell * c = getCell(x, y);
 							cells_.erase(x + y * 4);
-							delete c;
+							c->move(x, y + 1);
+							toDelete_.push_back(c);
 							something = true;
 						}
 					}
@@ -177,7 +200,8 @@ void Board::moveLeft() {
 						if (getCell(x - 1, y)->sum(getCell(x, y))) {
 							Cell * c = getCell(x, y);
 							cells_.erase(x + y * 4);
-							delete c;
+							c->move(x - 1, y);
+							toDelete_.push_back(c);
 							something = true;
 						}
 					}
@@ -206,7 +230,8 @@ void Board::moveRight() {
 						if (getCell(x + 1, y)->sum(getCell(x, y))) {
 							Cell * c = getCell(x, y);
 							cells_.erase(x + y * 4);
-							delete c;
+							c->move(x + 1, y);
+							toDelete_.push_back(c);
 							something = true;
 						}
 					}
@@ -217,7 +242,6 @@ void Board::moveRight() {
 	if (something)
 		generate();
 }
-
 
 Cell * Board::getCell(int x, int y) {
 	return cells_[x + y * 4];

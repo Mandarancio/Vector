@@ -48,6 +48,7 @@ private:
 	Image * bg;
 
 	std::map<int, Cell*> cells_;
+	std::vector<Cell * > toDelete_;
 
 	bool __active;
 };

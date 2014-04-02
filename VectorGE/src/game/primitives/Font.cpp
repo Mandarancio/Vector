@@ -6,8 +6,10 @@
  */
 
 #include "Font.h"
-#include "../../support/Logging.h"
 #include "Color.h"
+
+#include "../../support/Logging.h"
+
 #include <iostream>
 
 Font::Font() {

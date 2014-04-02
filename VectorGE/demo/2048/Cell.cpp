@@ -8,6 +8,8 @@
 #include "Cell.h"
 #include <sstream>
 
+#define ATIME 200
+
 Cell::Cell(int cx, int cy, int size, int padding, int val) {
 	cellX_ = cx;
 	cellY_ = cy;
@@ -16,11 +18,17 @@ Cell::Cell(int cx, int cy, int size, int padding, int val) {
 	bounds_.h = size;
 	bounds_.x = cx * (padding + size) + padding;
 	bounds_.y = cy * (padding + size) + padding;
+	scale_=0.0;
 	padding_ = padding;
 	std::stringstream ss;
 	ss << val;
+	present_=getCurrentStatus();
+	future_=present_;
+	future_.scale=1.0;
+
 	lock_ = false;
 	str_val = ss.str();
+	animation_ =new Animation(present_,future_,ATIME);
 }
 
 Cell::~Cell() {
@@ -28,20 +36,33 @@ Cell::~Cell() {
 }
 
 void Cell::render(Painter * p) {
-
+	int w=bounds_.w*scale_;
+	int h=bounds_.h*scale_;
+	int x=bounds_.x+(bounds_.w-w)/2;
+	int y=bounds_.y+(bounds_.h-h)/2;
 	p->setFill(getColor());
 	p->setPen(p->getFill());
-	p->paintRect(bounds_);
+	p->paintRect(x,y,w,h);
 	p->setPen(getPen());
-	p->getFont()->scale(2.0);
+	p->getFont()->scale(2.0*scale_);
 	SDL_Rect tb = p->getFont()->textBounds(str_val);
-	if (tb.w > bounds_.w - 8) {
-		p->getFont()->scale(1.2);
+	if (tb.w > w - 8*scale_) {
+		p->getFont()->scale(1.2*scale_);
 		tb = p->getFont()->textBounds(str_val);
 	}
-	tb.x = bounds_.x + (bounds_.w - tb.w) / 2;
-	tb.y = bounds_.y + (bounds_.h - tb.h) / 2;
+	tb.x = x + (w - tb.w) / 2;
+	tb.y = y + (w - tb.h) / 2;
 	p->paintText(str_val, tb.x, tb.y);
+}
+
+void Cell::step(double dt) {
+	if (animation_ != NULL) {
+		setCurrentStatus(animation_->step(dt));
+		if (animation_->isEnded()) {
+			delete animation_;
+			animation_ = NULL;
+		}
+	}
 }
 
 Color Cell::getColor() {
@@ -114,10 +135,23 @@ void Cell::unlock() {
 }
 
 void Cell::move(int x, int y) {
+
+	present_ = getCurrentStatus();
+	present_.scale=1.0;
 	cellX_ = x;
 	cellY_ = y;
-	bounds_.x = x * (padding_ + bounds_.w) + padding_;
-	bounds_.y = y * (padding_ + bounds_.w) + padding_;
+	future_ = present_;
+	future_.bounds.x = x * (padding_ + bounds_.w) + padding_;
+	future_.bounds.y = y * (padding_ + bounds_.w) + padding_;
+	if (animation_) {
+		delete animation_;
+		animation_ = NULL;
+	}
+	animation_=new Animation(present_,future_,ATIME);
+}
+
+bool Cell::isAnimating(){
+	return animation_!=NULL && !animation_->isEnded();
 }
 
 SDL_Point Cell::getCell() {
