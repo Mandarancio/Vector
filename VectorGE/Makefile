@@ -24,8 +24,10 @@ SRCVECTOR_EXTRA = ./src/support/*.cpp
 SRCDEMO_2048 = ./demo/2048/*.cpp
 
 SRCDEMO_GUI = ./demo/gui/*.cpp
+
+SRCDEMO_TESTGAME = ./demo/testGame/*.cpp
  	  
-all: vector demo.2048 demo.gui
+all: vector demo.2048 demo.gui demo.testGame
  	  
 vector:  $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA)
 
@@ -36,6 +38,8 @@ demo.2048: $(SRCDEMO_2048)
 demo.gui : $(SRCDEMO_GUI)
 	$(CXX) -o $(BIN)/demo_gui $(SRCDEMO_GUI) $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS)  $(LIBS)
 
+demo.testGame : $(SRCDEMO_TESTGAME)
+	$(CXX) -o $(BIN)/testGame $(SRCDEMO_TESTGAME) $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS)  $(LIBS)
 
 clean: 
 	rm -rf $(BIN)/*
