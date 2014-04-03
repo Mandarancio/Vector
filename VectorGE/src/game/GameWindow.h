@@ -20,6 +20,7 @@ public:
 	GameWindow(std::string title="title",Uint32 w=800,Uint32 h=600,bool resizable=false);
 	virtual ~GameWindow();
 	SDL_Size getSize();
+	SDL_Rect getBounds();
 	Painter * painter();
 private:
 

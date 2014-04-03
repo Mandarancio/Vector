@@ -25,6 +25,15 @@ rapidxml::xml_node<> * StateMachine::getXMLNode(){
 void StateMachine::run(){
 	run(state_);
 }
+
+void  StateMachine::ended(int id){
+	state_=state_->next();
+}
+
+State * StateMachine::currentState(){
+	return state_;
+}
+
 void StateMachine::run(State * state){
 	if (state->transitionStart()!=0)
 		state->transitionStart()->run();

@@ -9,11 +9,23 @@
 #define INTROANIMATION_H_
 
 #include "../../src/game/GameEntity.h"
+#include "../../src/game/primitives/Image.h"
+#include "../../src/game/animation/Animation.h"
 
-class IntroAnimation: public GameEntity {
+#include "../../src/core/stateMachine/State.h"
+
+
+class IntroAnimation: public GameEntity, public State {
 public:
-	IntroAnimation();
+	IntroAnimation(StateListener * listener,SDL_Rect display);
 	virtual ~IntroAnimation();
+	virtual void render(Painter * p);
+	virtual void step(double dt);
+
+private:
+	Image * image;
+	Animation * animation;
+
 };
 
 #endif /* INTROANIMATION_H_ */

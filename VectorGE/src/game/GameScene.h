@@ -50,6 +50,8 @@ public:
 	void removeWindowListener(WindowListener *l);
 	void removeWindowListener(int ind);
 
+	SDL_Rect getDisplayBounds();
+
 private:
 	void triggerMouseListener(SDL_Event e);
 	void triggerKeyListener(SDL_Event e);

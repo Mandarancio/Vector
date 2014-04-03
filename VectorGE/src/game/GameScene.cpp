@@ -217,6 +217,10 @@ void GameScene::removeWindowListener(int ind) {
 	windowListeners.erase(windowListeners.begin() + ind);
 }
 
+SDL_Rect GameScene::getDisplayBounds(){
+	return camera->getDisplayBounds();
+}
+
 void GameScene::triggerMouseListener(SDL_Event e) {
 
 	for (int i = 0; i < mouseListeners.size(); i++) {

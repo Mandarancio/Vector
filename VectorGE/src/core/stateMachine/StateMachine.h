@@ -9,13 +9,16 @@
 #define STATEMACHINE_H_
 #include "State.h"
 
-class StateMachine: public Entity {
+class StateMachine: public Entity, public StateListener {
 public:
-	StateMachine(State * state);
+	StateMachine(State * state=0);
 	virtual ~StateMachine();
 	rapidxml::xml_node<> * getXMLNode();
 	void run();
-private:
+	State *currentState();
+	virtual void  ended(int id);
+
+protected:
 	State * state_;
 	void run(State * state);
 

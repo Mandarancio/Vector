@@ -21,3 +21,9 @@ Painter * Camera::getPainter(){
 void Camera::translate(int x,int y){
 	painter->translate(x,y);
 }
+SDL_Rect Camera::getDisplayBounds(){
+	SDL_Rect r;
+	r.w= painter->getDisplaySize().width;
+	r.h= painter->getDisplaySize().height;
+	return r;
+}

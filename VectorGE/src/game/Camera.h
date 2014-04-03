@@ -10,14 +10,15 @@
 #include "../core/Entity.h"
 #include "Painter.h"
 
-class Camera : public Entity {
+class Camera: public Entity {
 public:
 	Camera(Painter *p);
 	virtual ~Camera();
 	Painter * getPainter();
-	void translate(int x,int y);
+	void translate(int x, int y);
+	SDL_Rect getDisplayBounds();
 private:
 	Painter * painter;
-	};
+};
 
 #endif /* CAMERA_H_ */

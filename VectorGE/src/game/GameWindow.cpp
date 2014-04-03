@@ -58,6 +58,13 @@ SDL_Size GameWindow::getSize() {
 	return size_;
 }
 
+SDL_Rect GameWindow::getBounds(){
+	SDL_Rect r;
+	r.w=size_.width;
+	r.h=size_.height;
+	return r;
+}
+
 Painter * GameWindow::painter() {
 	return painter_;
 }
