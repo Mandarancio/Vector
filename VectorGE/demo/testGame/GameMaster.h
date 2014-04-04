@@ -25,6 +25,8 @@ public:
 	virtual void actionPerfoormed(Action* a);
 
 private:
+	void __initMenu();
+	void __initGame();
 	GameScene *scene_;
 	GameEntity * current_;
 };

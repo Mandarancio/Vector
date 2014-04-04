@@ -19,7 +19,7 @@ GameScene::GameScene(Camera * camera) :
 	this->world = 0;
 	positionIterations = 8;
 	velocityIterations = 10;
-	__quit=false;
+	__quit = false;
 
 	this->addWindowListener(camera->getPainter());
 }
@@ -30,7 +30,7 @@ GameScene::GameScene(Camera * camera, b2World *world) :
 	this->world = world;
 	positionIterations = 8;
 	velocityIterations = 10;
-	__quit=false;
+	__quit = false;
 
 	this->addWindowListener(camera->getPainter());
 
@@ -42,7 +42,7 @@ GameScene::GameScene(Camera * camera, float gx, float gy) :
 	this->world = new b2World(b2Vec2(gx, gy));
 	positionIterations = 8;
 	velocityIterations = 10;
-	__quit=false;
+	__quit = false;
 
 	this->addWindowListener(camera->getPainter());
 }
@@ -116,7 +116,7 @@ void GameScene::gameLoop(Uint16 dt) {
 		}
 
 		for (unsigned int i = 0; i < gameEntities.size(); i++) {
-			GameEntity * ge=gameEntities[i];
+			GameEntity * ge = gameEntities[i];
 			if (ge != 0) {
 				ge->step(delta);
 				if (ge)
@@ -169,15 +169,14 @@ void GameScene::removeEntity(GameEntity *ge) {
 	__toRemove.push_back(ge);
 }
 
-
-void GameScene::__removeEntities(){
-	for (unsigned int i=0;i<__toRemove.size();i++){
+void GameScene::__removeEntities() {
+	for (unsigned int i = 0; i < __toRemove.size(); i++) {
 		__removeEntity(__toRemove[i]);
 	}
 	__toRemove.clear();
 }
 
-void GameScene::__removeEntity(GameEntity *ge){
+void GameScene::__removeEntity(GameEntity *ge) {
 	std::vector<GameEntity*>::iterator it = std::find(gameEntities.begin(),
 			gameEntities.end(), ge);
 	if (it != gameEntities.end()) {
@@ -247,9 +246,16 @@ void GameScene::removeWindowListener(int ind) {
 	windowListeners.erase(windowListeners.begin() + ind);
 }
 
+void GameScene::quit() {
+	__quit = true;
+}
 
-void GameScene::quit(){
-	__quit=true;
+void GameScene::clear() {
+	for (unsigned int i = 0; i < gameEntities.size(); i++) {
+		__toRemove.push_back(gameEntities[i]);
+	}
+	keyListeners.clear();
+	mouseListeners.clear();
 }
 
 SDL_Rect GameScene::getDisplayBounds() {

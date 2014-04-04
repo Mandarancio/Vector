@@ -54,6 +54,7 @@ public:
 	void removeWindowListener(int ind);
 
 	void quit();
+	void clear();
 
 	SDL_Rect getDisplayBounds();
 
