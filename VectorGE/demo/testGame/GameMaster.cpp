@@ -11,6 +11,10 @@
 
 #include "GameMenu.h"
 
+#define START "Start game"
+#define EXIT "Exit"
+#define SETTINGS "Settings"
+
 GameMaster::GameMaster(GameScene * scene) :
 		StateMachine(NULL) {
 	scene_ = scene;
@@ -31,12 +35,12 @@ void GameMaster::ended(int id) {
 	if (id == 0) {
 		std::cout << "go to main menu\n";
 		GameMenu * menu = new GameMenu(this);
-
 		menu->setBounds(scene_->getDisplayBounds());
-		menu->addMenuItem("Start game", this);
-		menu->addMenuItem("Settings", this);
 
-		menu->addMenuItem("Exit", this);
+		menu->addMenuItem(START, this);
+		menu->addMenuItem(SETTINGS, this);
+		menu->addMenuItem(EXIT, this);
+
 		scene_->addKeyListener(menu);
 		current_ = menu;
 		state_ = menu;
@@ -49,9 +53,18 @@ void GameMaster::actionPerfoormed(Action* a) {
 	std::size_t found = cmd.find("menu:");
 	if (found!=std::string::npos){
 		cmd=cmd.substr(5,cmd.size()-5);
-		if (cmd.compare("Exit")==0){
+		if (cmd.compare(EXIT)==0){
 			std::cout<<"Exit from game!\n";
 			scene_->quit();
+		}
+		else if (cmd.compare(START)==0){
+			std::cout<<"Start a game\n";
+			scene_->removeEntity(current_);
+			scene_->removeKeyListener(0);
+//			__initGame();
+		}
+		else if (cmd.compare(SETTINGS)==0){
+			std::cout<<"Settings\n";
 		}
 
 	}
