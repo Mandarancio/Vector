@@ -9,10 +9,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../../src/game/GameWindow.h"
-#include "../../src/game/Camera.h"
-#include "../../src/game/BackgroundLayer.h"
-#include "../../src/game/GameScene.h"
+#include <game/GameWindow.h>
+#include <game/Camera.h>
+#include <game/BackgroundLayer.h>
+#include <game/GameScene.h>
 
 #include "Board.h"
 

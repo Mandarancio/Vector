@@ -8,8 +8,8 @@
 #ifndef CELL_H_
 #define CELL_H_
 
-#include "../../src/game/GameEntity.h"
-#include "../../src/game/animation/Animation.h"
+#include <game/GameEntity.h>
+#include <game/animation/Animation.h>
 #include <string>
 
 class Cell: public GameEntity {

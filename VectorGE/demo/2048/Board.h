@@ -8,9 +8,9 @@
 #ifndef BOARD_H_
 #define BOARD_H_
 
-#include "../../src/game/GameEntity.h"
-#include "../../src/game/events/KeyListener.h"
-#include "../../src/game/primitives/Image.h"
+#include <game/GameEntity.h>
+#include <game/events/KeyListener.h>
+#include <game/primitives/Image.h>
 
 #include "Cell.h"
 

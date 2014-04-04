@@ -7,6 +7,9 @@ LIBS = -lSDL2 -lSDL2_ttf -lSDL2_image -lBox2D
 
 TARGET =  $(BIN)/2048
 
+INCLUDE = -I./src/
+
+DEMO_LIBS= -lVector
 
 SRCVECTOR_CORE = ./src/core/Entity.cpp\
 				./src/core/stateMachine/*.cpp
@@ -31,15 +34,15 @@ all: vector demo.2048 demo.gui demo.testGame
  	  
 vector:  $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA)
 
-	$(CXX) -shared -fPIC -o $(BIN)/libVector.so $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS)  $(LIBS)
+	$(CXX) -shared -fPIC -o $(BIN)/libVector.so $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS) $(LIBS)
 demo.2048: $(SRCDEMO_2048)
-	$(CXX) -o $(BIN)/2048 $(SRCDEMO_2048) $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS)  $(LIBS)
+	$(CXX) -o $(BIN)/2048 $(SRCDEMO_2048) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE)
 
 demo.gui : $(SRCDEMO_GUI)
-	$(CXX) -o $(BIN)/demo_gui $(SRCDEMO_GUI) $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS)  $(LIBS)
+	$(CXX) -o $(BIN)/demo_gui $(SRCDEMO_GUI) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE)
 
 demo.testGame : $(SRCDEMO_TESTGAME)
-	$(CXX) -o $(BIN)/testGame $(SRCDEMO_TESTGAME) $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS)  $(LIBS)
+	$(CXX) -o $(BIN)/testGame $(SRCDEMO_TESTGAME) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE)
 
 clean: 
 	rm -rf $(BIN)/*

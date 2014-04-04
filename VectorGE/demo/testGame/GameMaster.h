@@ -8,8 +8,8 @@
 #ifndef GAMEMASTER_H_
 #define GAMEMASTER_H_
 
-#include "../../src/game/GameScene.h"
-#include "../../src/core/stateMachine/StateMachine.h"
+#include <game/GameScene.h>
+#include <core/stateMachine/StateMachine.h>
 
 #include "IntroAnimation.h"
 

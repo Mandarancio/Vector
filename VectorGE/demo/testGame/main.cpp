@@ -5,9 +5,9 @@
  *      Author: martino
  */
 
-#include "../../src/game/GameWindow.h"
-#include "../../src/game/Camera.h"
-#include "../../src/game/GameScene.h"
+#include <game/GameWindow.h>
+#include <game/Camera.h>
+#include <game/GameScene.h>
 
 #include "GameMaster.h"
 

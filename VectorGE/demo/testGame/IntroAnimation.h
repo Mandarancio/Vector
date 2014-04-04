@@ -8,11 +8,11 @@
 #ifndef INTROANIMATION_H_
 #define INTROANIMATION_H_
 
-#include "../../src/game/GameEntity.h"
-#include "../../src/game/primitives/Image.h"
-#include "../../src/game/animation/Animation.h"
+#include <game/GameEntity.h>
+#include <game/primitives/Image.h>
+#include <game/animation/Animation.h>
 
-#include "../../src/core/stateMachine/State.h"
+#include <core/stateMachine/State.h>
 
 
 class IntroAnimation: public GameEntity, public State {
