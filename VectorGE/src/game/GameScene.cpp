@@ -19,6 +19,7 @@ GameScene::GameScene(Camera * camera) :
 	this->world = 0;
 	positionIterations = 8;
 	velocityIterations = 10;
+	__quit=false;
 
 	this->addWindowListener(camera->getPainter());
 }
@@ -29,6 +30,7 @@ GameScene::GameScene(Camera * camera, b2World *world) :
 	this->world = world;
 	positionIterations = 8;
 	velocityIterations = 10;
+	__quit=false;
 
 	this->addWindowListener(camera->getPainter());
 
@@ -40,6 +42,7 @@ GameScene::GameScene(Camera * camera, float gx, float gy) :
 	this->world = new b2World(b2Vec2(gx, gy));
 	positionIterations = 8;
 	velocityIterations = 10;
+	__quit=false;
 
 	this->addWindowListener(camera->getPainter());
 }
@@ -58,7 +61,6 @@ GameScene::~GameScene() {
 }
 
 void GameScene::gameLoop(Uint16 dt) {
-	bool quit = false;
 	SDL_Event event;
 	struct timeval past, present;
 
@@ -74,7 +76,7 @@ void GameScene::gameLoop(Uint16 dt) {
 	std::stringstream ss;
 	Painter * p = camera->getPainter();
 
-	while (!quit) {
+	while (!__quit) {
 		past.tv_usec = present.tv_usec;
 		gettimeofday(&present, NULL);
 		delta = (present.tv_usec - past.tv_usec) / 1000.0;
@@ -88,7 +90,7 @@ void GameScene::gameLoop(Uint16 dt) {
 		SDL_PollEvent(&event);
 		switch (event.type) {
 		case SDL_QUIT:
-			quit = true;
+			__quit = true;
 			break;
 		case SDL_MOUSEMOTION:
 			triggerMouseListener(event);
@@ -243,6 +245,11 @@ void GameScene::removeWindowListener(WindowListener *l) {
 
 void GameScene::removeWindowListener(int ind) {
 	windowListeners.erase(windowListeners.begin() + ind);
+}
+
+
+void GameScene::quit(){
+	__quit=true;
 }
 
 SDL_Rect GameScene::getDisplayBounds() {

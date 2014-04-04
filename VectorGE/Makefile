@@ -31,6 +31,8 @@ SRCDEMO_GUI = ./demo/gui/*.cpp
 SRCDEMO_TESTGAME = ./demo/testGame/*.cpp
  	  
 all: vector demo.2048 demo.gui demo.testGame
+
+demos: demo.2048 demo.gui demo.testGame
  	  
 vector:  $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA)
 

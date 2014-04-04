@@ -33,6 +33,7 @@ private:
 	void __paintItem(Painter * p,std::string item, int index);
 	void __move(int dir);
 
+
 	std::vector<std::string> menuItems_;
 	std::vector<ActionListener*> menuListeners_;
 

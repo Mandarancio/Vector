@@ -7,6 +7,7 @@
 
 #include "GameMaster.h"
 #include <iostream>
+#include <string>
 
 #include "GameMenu.h"
 
@@ -44,5 +45,14 @@ void GameMaster::ended(int id) {
 }
 
 void GameMaster::actionPerfoormed(Action* a) {
+	std::string cmd = a->getCommand();
+	std::size_t found = cmd.find("menu:");
+	if (found!=std::string::npos){
+		cmd=cmd.substr(5,cmd.size()-5);
+		if (cmd.compare("Exit")==0){
+			std::cout<<"Exit from game!\n";
+			scene_->quit();
+		}
 
+	}
 }

@@ -41,6 +41,13 @@ void GameMenu::keyDown(SDL_KeyboardEvent * e) {
 		case (SDLK_DOWN):
 			__move(1);
 			break;
+		case (SDLK_RETURN):
+			if (menuListeners_[__selected_item]!=0){
+				std::string action="menu:";
+				action.append(menuItems_[__selected_item]);
+				menuListeners_[__selected_item]->actionPerfoormed(new Action(action));
+			}
+			break;
 		}
 	}
 	KeyListener::keyDown(e);
@@ -65,7 +72,6 @@ void GameMenu::__paintItem(Painter * p, std::string item, int index) {
 	tb.x = (bounds_.w - tb.w) / 2;
 	tb.y = (index + 1) * (bounds_.h / (this->menuItems_.size() + 2));
 
-
 	p->setPen(Color(255, 255, 255));
 	p->paintText(item, tb.x, tb.y);
 }
@@ -83,9 +89,9 @@ void GameMenu::__init() {
 
 void GameMenu::__move(int dir) {
 	if (__selected_item + dir >= 0
-			&& (unsigned int)( __selected_item + dir )< menuItems_.size()) {
+			&& (unsigned int) (__selected_item + dir) < menuItems_.size()) {
 		__selected_item += dir;
-		EntityStatus presStatus,nextStatus;
+		EntityStatus presStatus, nextStatus;
 		presStatus.bounds = __selectBound;
 
 		__font->scale(2);
@@ -94,11 +100,12 @@ void GameMenu::__move(int dir) {
 		next.w += 20;
 		next.h += 20;
 		next.x = (bounds_.w - next.w) / 2;
-		next.y = (__selected_item + 1) * (bounds_.h / (menuItems_.size() + 2)) - 10;
-		nextStatus.bounds=next;
-		if (__selectAnimation){
+		next.y = (__selected_item + 1) * (bounds_.h / (menuItems_.size() + 2))
+				- 10;
+		nextStatus.bounds = next;
+		if (__selectAnimation) {
 			delete __selectAnimation;
 		}
-		__selectAnimation=new Animation(presStatus,nextStatus,100);
+		__selectAnimation = new Animation(presStatus, nextStatus, 100);
 	}
 }

@@ -7,7 +7,7 @@
 /**
  * TEST MAIN TO DELETE
  */
-/*
+
 #include <iostream>
 
 #include "../src/game/GameWindow.h"
@@ -77,27 +77,27 @@ int main(int argc, char **argv) {
 //	scene->addGUIMainComponent(mc);
 
 	scene->addEntity(new BackgroundLayer());
-	TestAnimation *ta=new TestAnimation(gw->getSize());
+	TestAnimation *ta = new TestAnimation(gw->getSize());
 	scene->addEntity(ta);
 //	scene->addMouseListener(ta);
 	SDL_Point p;
-	p.x=200;
-	p.y=240;
+	p.x = 200;
+	p.y = 240;
 
-	ArmaturePoint * a=new ArmaturePoint(p);
+	ArmaturePoint * a = new ArmaturePoint(p);
 
-	p.x+=100;
-	ArmaturePoint * c_a=new ArmaturePoint(p);
+	p.x += 100;
+	ArmaturePoint * c_a = new ArmaturePoint(p);
 
-	p.x+=50;
-	p.y+=100;
-	ArmaturePoint * c_b=new ArmaturePoint(p);
+	p.x += 50;
+	p.y += 100;
+	ArmaturePoint * c_b = new ArmaturePoint(p);
 
-	p.x+=100;
-	ArmaturePoint *b=new ArmaturePoint(p);
+	p.x += 100;
+	ArmaturePoint *b = new ArmaturePoint(p);
 //	a->addLinkedEntity(a1);
 
-	ArmatureLine *line=new ArmatureLine(a,c_a,c_b,b);
+	ArmatureLine *line = new ArmatureLine(a, c_a, c_b, b);
 
 	scene->addEntity(line);
 	scene->addEntity(a);
@@ -115,5 +115,5 @@ int main(int argc, char **argv) {
 	delete c;
 	delete gw;
 	return 0;
-}*/
+}
 

@@ -53,6 +53,8 @@ public:
 	void removeWindowListener(WindowListener *l);
 	void removeWindowListener(int ind);
 
+	void quit();
+
 	SDL_Rect getDisplayBounds();
 
 private:
@@ -76,6 +78,7 @@ private:
 	int velocityIterations;
 
 	std::vector<GameEntity *> __toRemove;
+	int __quit;
 };
 
 #endif /* GAMESCENE_H_ */
