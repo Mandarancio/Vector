@@ -20,6 +20,8 @@ GameMenu::~GameMenu() {
 void GameMenu::render(Painter * p) {
 	p->setColors(Color(69, 70, 64));
 	p->paintRect(0, 0, p->getDisplaySize().width, p->getDisplaySize().height);
+	p->setColors(Color(0, 0, 0, 180));
+	p->paintRect(__selectBound);
 	for (unsigned int i = 0; i < menuItems_.size(); i++) {
 		__paintItem(p, menuItems_[i], i);
 	}
@@ -62,10 +64,8 @@ void GameMenu::__paintItem(Painter * p, std::string item, int index) {
 	SDL_Rect tb = p->getFont()->textBounds(item);
 	tb.x = (bounds_.w - tb.w) / 2;
 	tb.y = (index + 1) * (bounds_.h / (this->menuItems_.size() + 2));
-	if (__selected_item == index) {
-		p->setColors(Color(0, 0, 0, 180));
-		p->paintRect(__selectBound);
-	}
+
+
 	p->setPen(Color(255, 255, 255));
 	p->paintText(item, tb.x, tb.y);
 }
@@ -99,6 +99,6 @@ void GameMenu::__move(int dir) {
 		if (__selectAnimation){
 			delete __selectAnimation;
 		}
-		__selectAnimation=new Animation(presStatus,nextStatus,200);
+		__selectAnimation=new Animation(presStatus,nextStatus,100);
 	}
 }
