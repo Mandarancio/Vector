@@ -10,28 +10,39 @@
 
 #include "GameMenu.h"
 
-GameMaster::GameMaster(GameScene * scene) : StateMachine(NULL){
-	scene_=scene;
-	IntroAnimation * ia=new IntroAnimation(this,scene->getDisplayBounds());
-	current_=ia;
-	state_=ia;
+GameMaster::GameMaster(GameScene * scene) :
+		StateMachine(NULL) {
+	scene_ = scene;
+	IntroAnimation * ia = new IntroAnimation(this, scene->getDisplayBounds());
+	current_ = ia;
+	state_ = ia;
 	scene->addEntity(current_);
 }
 
 GameMaster::~GameMaster() {
 }
 
+void GameMaster::ended(int id) {
 
-void GameMaster::ended(int id){
-
-	std::cout<<"ended "<<id<<"\n";
+	std::cout << "ended " << id << "\n";
 	scene_->removeEntity(current_);
-	std::cout<<"removed current element\n";
-	if (id==0){
-		std::cout<<"go to main menu\n";
-		GameMenu * menu=new GameMenu(this);
-		current_=menu;
-		state_=menu;
+	std::cout << "removed current element\n";
+	if (id == 0) {
+		std::cout << "go to main menu\n";
+		GameMenu * menu = new GameMenu(this);
+
+		menu->setBounds(scene_->getDisplayBounds());
+		menu->addMenuItem("Start game", this);
+		menu->addMenuItem("Settings", this);
+
+		menu->addMenuItem("Exit", this);
+		scene_->addKeyListener(menu);
+		current_ = menu;
+		state_ = menu;
 		scene_->addEntity(menu);
 	}
+}
+
+void GameMaster::actionPerfoormed(Action* a) {
+
 }
