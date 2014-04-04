@@ -39,8 +39,12 @@ class Painter: public Entity, public WindowListener {
 public:
 	Painter(SDL_Renderer * rend, SDL_Size size);
 	virtual ~Painter();
+
 	void setPen(Color c);
 	void setFill(Color c);
+	void setColors(Color pen, Color fill);
+	void setColors(Color c);
+
 
 	void setFont(Font * f);
 	Font * getFont();

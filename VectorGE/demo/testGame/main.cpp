@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
 	Camera *camera = new Camera(window->painter());
 	GameScene *scene = new GameScene(camera);
 
-	GameMaster * gm=new GameMaster(scene);
+	new GameMaster(scene);
 
 	scene->gameLoop(1);
 	return 0;

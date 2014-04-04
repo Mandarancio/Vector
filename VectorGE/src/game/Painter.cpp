@@ -43,6 +43,16 @@ void Painter::setFill(Color c) {
 	status.fill = c;
 }
 
+
+void Painter::setColors(Color pen, Color fill){
+	status.pen=pen;
+	status.fill=fill;
+}
+void Painter:: setColors(Color c){
+	status.pen = c;
+	status.fill = c;
+}
+
 void Painter::setFont(Font *f) {
 	delete status.font;
 	status.font = new Font(f->getName(),
