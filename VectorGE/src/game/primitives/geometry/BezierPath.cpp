@@ -37,7 +37,7 @@ bool BezierCurve::contains(SDL_Point p) {
 }
 
 bool BezierCurve::contains(int x, int y) {
-	for (int i = 0; i < __lines.size(); i++) {
+	for (unsigned int i = 0; i < __lines.size(); i++) {
 		if (__lines[i].contains(x, y))
 			return true;
 	}
@@ -87,7 +87,7 @@ std::vector<Line> BezierCurve::getLines() {
 void BezierCurve::__computeBBox() {
 	SDL_Rect bb = __lines[0].getBoundingBox();
 	SDL_Rect bbi;
-	for (int i = 1; i < __lines.size(); i++) {
+	for (unsigned int i = 1; i < __lines.size(); i++) {
 
 		bbi = __lines[i].getBoundingBox();
 		if (bb.x > bbi.x) {
@@ -262,7 +262,7 @@ BezierPath::BezierPath(SDL_Point center, int r){
 }
 
 BezierPath::~BezierPath() {
-	for (int i = 0; i < __curves.size(); i++) {
+	for (unsigned int i = 0; i < __curves.size(); i++) {
 		delete __curves[i];
 	}
 	__curves.clear();
@@ -276,9 +276,8 @@ bool BezierPath::contains(int x, int y) {
 	int nvert = vertexCount();
 	Sint16 * vertx = vx();
 	Sint16 * verty = vy();
-	int i, j, c = 0;
-#pragma omp parallel for
-	for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+	int i=0, j=nvert - 1, c = 0;
+	for (; i < nvert; j = i++) {
 		if (((verty[i] > y) != (verty[j] > y))
 				&& (x
 						< (vertx[j] - vertx[i]) * (y - verty[i])
@@ -305,7 +304,7 @@ BezierPath * BezierPath::transformBezierPath(Transformation t) {
 	t.applyTransformation(b);
 	BezierPath *bp = new BezierPath(a, c_a, c_b, b);
 
-	for (int i = 1; i < __curves.size(); i++) {
+	for (unsigned int i = 1; i < __curves.size(); i++) {
 		c_a = __curves[i]->getControlPointA();
 		c_b = __curves[i]->getControlPointB();
 		b = __curves[i]->getPointB();
@@ -372,8 +371,8 @@ std::vector<SDL_Point> BezierPath::vertex() {
 
 std::vector<Line> BezierPath::getLines() {
 	std::vector<Line> lines;
-	for (int i = 0; i < __curves.size(); i++) {
-		for (int j = 0; j < __curves[i]->getLines().size(); j++) {
+	for (unsigned int i = 0; i < __curves.size(); i++) {
+		for (unsigned int j = 0; j < __curves[i]->getLines().size(); j++) {
 			lines.push_back(__curves[i]->getLines()[j]);
 		}
 	}
@@ -395,7 +394,7 @@ int BezierPath::vertexCount() {
 void BezierPath::__computeBBox() {
 	SDL_Rect bb = __curves[0]->getBoundingBox();
 	SDL_Rect bbi;
-	for (int i = 1; i < __curves.size(); i++) {
+	for (unsigned int i = 1; i < __curves.size(); i++) {
 		bbi = __curves[i]->getBoundingBox();
 		if (bb.x > bbi.x) {
 			bb.w += bb.x - bbi.x;
@@ -419,14 +418,14 @@ void BezierPath::__computeBBox() {
 void BezierPath::__initVertex() {
 
 	__vertexCount = 0;
-	for (int i = 0; i < __curves.size(); i++) {
+	for (unsigned int i = 0; i < __curves.size(); i++) {
 		__vertexCount += __curves[i]->vertex().size();
 	}
 	__vx = new Sint16[__vertexCount];
 	__vy = new Sint16[__vertexCount];
 	int c = 0;
-	for (int i = 0; i < __curves.size(); i++) {
-		for (int j = 0; j < __curves[i]->vertex().size(); j++) {
+	for (unsigned int i = 0; i < __curves.size(); i++) {
+		for (unsigned int j = 0; j < __curves[i]->vertex().size(); j++) {
 			__vy[c] = __curves[i]->vertex()[j].y;
 			__vx[c] = __curves[i]->vertex()[j].x;
 			c++;

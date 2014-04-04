@@ -33,7 +33,10 @@ public:
 
 	virtual ~GameScene();
 	void gameLoop(Uint16 dt=0);
+
 	void addEntity(GameEntity *ge);
+	void removeEntity(GameEntity *ge);
+
 	void addGUIMainComponent(MainContainer * mc);
 
 	b2World * getWorld();
@@ -57,6 +60,9 @@ private:
 	void triggerKeyListener(SDL_Event e);
 	void triggerWindowListener(SDL_Event e);
 
+	void __removeEntities();
+	void __removeEntity(GameEntity *ge);
+
 	std::string sceneName;
 	std::vector<GameEntity*> gameEntities;
 	std::vector<MouseListener*> mouseListeners;
@@ -68,6 +74,8 @@ private:
 
 	int positionIterations;
 	int velocityIterations;
+
+	std::vector<GameEntity *> __toRemove;
 };
 
 #endif /* GAMESCENE_H_ */

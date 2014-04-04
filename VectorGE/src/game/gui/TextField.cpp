@@ -84,7 +84,7 @@ void TextField::paintCursor(Painter *p) {
 
 int TextField::_convertCursorPosToX(int cp) {
 	int x = 4;
-	if (cp > 0 && text_.length() >= cp) {
+	if (cp > 0 && text_.length() >= (unsigned int)cp) {
 		std::string sub = text_.substr(0, cp);
 		x += getFont()->textBounds(sub).w;
 	}

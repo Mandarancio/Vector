@@ -174,7 +174,7 @@ void Animation::_prevStep() {
 
 void Animation::_triggerListeners(){
 	Action *a=new Action("animation_end");
-	for (int i=0;__listeners.size();i++){
+	for (unsigned int i=0;__listeners.size();i++){
 		__listeners[i]->actionPerfoormed(a);
 	}
 }

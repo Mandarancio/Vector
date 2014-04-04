@@ -18,6 +18,8 @@ public:
 	GameMaster(GameScene * scene);
 	virtual ~GameMaster();
 
+	virtual void ended(int id);
+
 private:
 	GameScene *scene_;
 	GameEntity * current_;

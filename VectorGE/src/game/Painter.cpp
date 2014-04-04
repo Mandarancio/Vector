@@ -179,7 +179,7 @@ void Painter::paintSurface(SDL_Surface *surface, SDL_Rect r) {
 }
 
 void Painter::paintBezierCourve(BezierCurve *bc) {
-	for (int i = 0; i < bc->getLines().size(); i++) {
+	for (unsigned int i = 0; i < bc->getLines().size(); i++) {
 		paintLine(bc->getLines()[i]);
 	}
 #if BEZ_DEBUG
@@ -227,7 +227,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 				if (s->contains(x0, y)) {
 					inters.push_back(x0);
 				}
-				for (int i = 0; i < lines.size(); i++) {
+				for (unsigned int i = 0; i < lines.size(); i++) {
 					if (lines[i].intersectLine(l, p)) {
 						if (std::find(inters.begin(), inters.end(), p.x)
 								== inters.end()) {
@@ -237,8 +237,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 				}
 				if (inters.size() > 0) {
 					std::sort(inters.begin(), inters.end());
-#pragma omp for
-					for (int i = 0; i < inters.size() - 1; i += 2) {
+					for (unsigned int i = 0; i < inters.size() - 1; i += 2) {
 						SDL_RenderDrawLine(renderer, inters[i], y,
 								inters[i + 1], y);
 					}
@@ -255,8 +254,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 				if (s->contains(x, y0)) {
 					inters.push_back(y0);
 				}
-#pragma omp for
-				for (int i = 0; i < lines.size(); i++) {
+				for (unsigned int i = 0; i < lines.size(); i++) {
 					if (lines[i].intersectLine(l, p)) {
 						if (std::find(inters.begin(), inters.end(), p.y)
 								== inters.end()) {
@@ -266,7 +264,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 				}
 				if (inters.size() > 0) {
 					std::sort(inters.begin(), inters.end());
-					for (int i = 0; i < inters.size() - 1; i += 2) {
+					for (unsigned int i = 0; i < inters.size() - 1; i += 2) {
 						SDL_RenderDrawLine(renderer, x, inters[i], x,
 								inters[i + 1]);
 					}
@@ -279,7 +277,7 @@ void Painter::paintBezierPath(BezierPath *s) {
 		}
 	}
 #pragma omp for
-	for (int i = 0; i < s->getCurves().size(); i++) {
+	for (unsigned int i = 0; i < s->getCurves().size(); i++) {
 		paintBezierCourve(s->getCurves()[i]);
 	}
 }
@@ -331,8 +329,7 @@ void Painter::paintPolygon(Polygon pol) {
 				if (s->contains(x0, y)) {
 					inters.push_back(x0);
 				}
-#pragma omp for
-				for (int i = 0; i < lines.size(); i++) {
+				for (unsigned int i = 0; i < lines.size(); i++) {
 					if (lines[i].intersectLine(l, p)) {
 						if (std::find(inters.begin(), inters.end(), p.x)
 								== inters.end()) {
@@ -342,8 +339,7 @@ void Painter::paintPolygon(Polygon pol) {
 				}
 				if (inters.size() > 0) {
 					std::sort(inters.begin(), inters.end());
-#pragma omp for
-					for (int i = 0; i < inters.size() - 1; i += 2) {
+					for (unsigned int i = 0; i < inters.size() - 1; i += 2) {
 						SDL_RenderDrawLine(renderer, inters[i], y,
 								inters[i + 1], y);
 					}
@@ -360,8 +356,7 @@ void Painter::paintPolygon(Polygon pol) {
 				if (s->contains(x, y0)) {
 					inters.push_back(y0);
 				}
-#pragma omp for
-				for (int i = 0; i < lines.size(); i++) {
+				for (unsigned int i = 0; i < lines.size(); i++) {
 					if (lines[i].intersectLine(l, p)) {
 						if (std::find(inters.begin(), inters.end(), p.y)
 								== inters.end()) {
@@ -371,8 +366,7 @@ void Painter::paintPolygon(Polygon pol) {
 				}
 				if (inters.size() > 0) {
 					std::sort(inters.begin(), inters.end());
-#pragma omp for
-					for (int i = 0; i < inters.size() - 1; i += 2) {
+					for (unsigned int i = 0; i < inters.size() - 1; i += 2) {
 						SDL_RenderDrawLine(renderer, x, inters[i], x,
 								inters[i + 1]);
 					}
@@ -384,7 +378,7 @@ void Painter::paintPolygon(Polygon pol) {
 		}
 	}
 #pragma omp for
-	for (int i = 0; i < pol.lines().size(); i++) {
+	for (unsigned int i = 0; i < pol.lines().size(); i++) {
 		paintLine(pol.lines()[i]);
 	}
 }
@@ -480,7 +474,7 @@ void Painter::windowResized(SDL_WindowEvent *e) {
 	displayCenter.y = e->data2 / 2;
 }
 
-SDL_Texture * Painter::textToTexture(std::string text){
-	SDL_Surface *surface=getFont()->toSurface(text,getPen());
+SDL_Texture * Painter::textToTexture(std::string text) {
+	SDL_Surface *surface = getFont()->toSurface(text, getPen());
 	return SDL_CreateTextureFromSurface(renderer, surface);
 }

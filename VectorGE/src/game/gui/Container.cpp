@@ -18,7 +18,7 @@ Container::~Container() {
 }
 
 void Container::step(double dt){
-	for (int i=0;i<components_.size();i++){
+	for (unsigned int i=0;i<components_.size();i++){
 		components_[i]->step(dt);
 	}
 }
@@ -51,7 +51,7 @@ void Container::setSize(int w, int h) {
 	}
 }
 void Container::mouseMotion(SDL_MouseMotionEvent * e) {
-	for (int i = 0; i < components_.size(); i++) {
+	for (unsigned int i = 0; i < components_.size(); i++) {
 		if (components_[i]->isEnabled() && components_[i]->isVisible()
 				&& rectContains(components_[i]->getBounds(), e->x, e->y)) {
 			if (!components_[i]->isMouseIn())
@@ -63,10 +63,10 @@ void Container::mouseMotion(SDL_MouseMotionEvent * e) {
 }
 
 void Container::mouseButtonDown(SDL_MouseButtonEvent * e) {
-	for (int i = 0; i < components_.size(); i++) {
+	for (unsigned int i = 0; i < components_.size(); i++) {
 		if (components_[i]->isMouseIn()) {
 			if (!components_[i]->hasFocus()) {
-				for (int j = 0; j < components_.size(); j++) {
+				for (unsigned int j = 0; j < components_.size(); j++) {
 					if (components_[j]->hasFocus())
 						components_[j]->lostFocus();
 				}
@@ -81,7 +81,7 @@ void Container::mouseButtonDown(SDL_MouseButtonEvent * e) {
 }
 
 void Container::mouseButtonUp(SDL_MouseButtonEvent * e) {
-	for (int i = 0; i < components_.size(); i++) {
+	for (unsigned int i = 0; i < components_.size(); i++) {
 		if (components_[i]->hasFocus()) {
 			components_[i]->mouseButtonUp(e);
 		}
@@ -90,7 +90,7 @@ void Container::mouseButtonUp(SDL_MouseButtonEvent * e) {
 
 void Container::lostFocus() {
 	Component::lostFocus();
-	for (int i = 0; i < components_.size(); i++) {
+	for (unsigned int i = 0; i < components_.size(); i++) {
 		if (components_[i]->hasFocus())
 			components_[i]->lostFocus();
 	}
@@ -104,7 +104,7 @@ void Container::paintComponent(Painter * p) {
 }
 
 void Container::paintSubComponents(Painter *p) {
-	for (int i = 0; i < components_.size(); i++) {
+	for (unsigned int i = 0; i < components_.size(); i++) {
 		if (components_[i]->isVisible())
 			components_[i]->render(p);
 	}

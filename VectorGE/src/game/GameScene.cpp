@@ -45,7 +45,7 @@ GameScene::GameScene(Camera * camera, float gx, float gy) :
 }
 
 GameScene::~GameScene() {
-	for (int i = 0; i < gameEntities.size(); i++) {
+	for (unsigned int i = 0; i < gameEntities.size(); i++) {
 		delete gameEntities[i];
 	}
 	gameEntities.clear();
@@ -113,10 +113,16 @@ void GameScene::gameLoop(Uint16 dt) {
 			break;
 		}
 
-		for (int i = 0; i < gameEntities.size(); i++) {
-			gameEntities[i]->step(delta);
-			gameEntities[i]->render(p);
+		for (unsigned int i = 0; i < gameEntities.size(); i++) {
+			GameEntity * ge=gameEntities[i];
+			if (ge != 0) {
+				ge->step(delta);
+				if (ge)
+					ge->render(p);
+			}
 		}
+
+		__removeEntities();
 
 #if FPS_DEBUG
 		fps = abs(1000.0 / delta);
@@ -156,6 +162,28 @@ void GameScene::gameLoop(Uint16 dt) {
 void GameScene::addEntity(GameEntity *ge) {
 	gameEntities.push_back(ge);
 }
+
+void GameScene::removeEntity(GameEntity *ge) {
+	__toRemove.push_back(ge);
+}
+
+
+void GameScene::__removeEntities(){
+	for (unsigned int i=0;i<__toRemove.size();i++){
+		__removeEntity(__toRemove[i]);
+	}
+	__toRemove.clear();
+}
+
+void GameScene::__removeEntity(GameEntity *ge){
+	std::vector<GameEntity*>::iterator it = std::find(gameEntities.begin(),
+			gameEntities.end(), ge);
+	if (it != gameEntities.end()) {
+		gameEntities.erase(it);
+		delete ge;
+	}
+}
+
 void GameScene::addGUIMainComponent(MainContainer * mc) {
 	addEntity(mc);
 	addMouseListener(mc);
@@ -171,7 +199,7 @@ void GameScene::addMouseListener(MouseListener * ml) {
 	mouseListeners.push_back(ml);
 }
 void GameScene::removeMouseListener(MouseListener *ml) {
-	for (int i = 0; i < mouseListeners.size(); i++) {
+	for (unsigned int i = 0; i < mouseListeners.size(); i++) {
 		if (ml == mouseListeners[i]) {
 			removeMouseListener(i);
 			break;
@@ -188,7 +216,7 @@ void GameScene::addKeyListener(KeyListener *kl) {
 }
 
 void GameScene::removeKeyListener(KeyListener *kl) {
-	for (int i = 0; i < keyListeners.size(); i++) {
+	for (unsigned int i = 0; i < keyListeners.size(); i++) {
 		if (kl == keyListeners[i]) {
 			removeKeyListener(i);
 			break;
@@ -205,7 +233,7 @@ void GameScene::addWindowListener(WindowListener *l) {
 }
 
 void GameScene::removeWindowListener(WindowListener *l) {
-	for (int i = 0; i < windowListeners.size(); i++) {
+	for (unsigned int i = 0; i < windowListeners.size(); i++) {
 		if (windowListeners[i] == l) {
 			removeWindowListener(i);
 			break;
@@ -217,25 +245,25 @@ void GameScene::removeWindowListener(int ind) {
 	windowListeners.erase(windowListeners.begin() + ind);
 }
 
-SDL_Rect GameScene::getDisplayBounds(){
+SDL_Rect GameScene::getDisplayBounds() {
 	return camera->getDisplayBounds();
 }
 
 void GameScene::triggerMouseListener(SDL_Event e) {
 
-	for (int i = 0; i < mouseListeners.size(); i++) {
+	for (unsigned int i = 0; i < mouseListeners.size(); i++) {
 		mouseListeners[i]->triggerEvent(&e);
 	}
 }
 
 void GameScene::triggerKeyListener(SDL_Event e) {
-	for (int i = 0; i < keyListeners.size(); i++) {
+	for (unsigned int i = 0; i < keyListeners.size(); i++) {
 		keyListeners[i]->triggerEvent(&e);
 	}
 }
 
 void GameScene::triggerWindowListener(SDL_Event e) {
-	for (int i = 0; i < windowListeners.size(); i++) {
+	for (unsigned int i = 0; i < windowListeners.size(); i++) {
 		windowListeners[i]->triggerEvent(&e);
 	}
 }

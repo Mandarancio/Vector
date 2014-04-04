@@ -63,7 +63,7 @@ void ArmaturePoint::addLinkedEntity(GameEntity * ge) {
 
 
 void ArmaturePoint::_updateLinkedEntities(int dx, int dy) {
-	for (int i = 0; i < linkedEntities_.size(); i++) {
+	for (unsigned int i = 0; i < linkedEntities_.size(); i++) {
 		linkedEntities_[i]->setLocation(linkedEntities_[i]->getX() + dx,
 				linkedEntities_[i]->getY() + dy);
 	}

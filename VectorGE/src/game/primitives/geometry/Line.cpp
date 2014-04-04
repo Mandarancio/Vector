@@ -121,7 +121,7 @@ SDL_Point Line::intersectPoint(Line l) {
 				float x = (a * x34 - b * x12) / c;
 				float y = (a * y34 - b * y12) / c;
 
-				return (SDL_Point ) { round(x), round(y) } ;
+				return (SDL_Point ) { (int)round(x), (int)round(y) } ;
 					}
 
 				}

@@ -1,4 +1,4 @@
-CXXFLAGS = -O2 -g -Wall -fmessage-length=0 -fopenmp
+CXXFLAGS = -O2 -g -Wall -fmessage-length=0 -fopenmp -ggdb 
 
 
 BIN = ./Debug
@@ -34,15 +34,15 @@ all: vector demo.2048 demo.gui demo.testGame
  	  
 vector:  $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA)
 
-	$(CXX) -shared -fPIC -o $(BIN)/libVector.so $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS) $(LIBS)
+	$(CXX) -shared -fPIC -o $(BIN)/libVector.so $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS) $(LIBS) $(CXXFLAGS)
 demo.2048: $(SRCDEMO_2048)
-	$(CXX) -o $(BIN)/2048 $(SRCDEMO_2048) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE)
+	$(CXX) -o $(BIN)/2048 $(SRCDEMO_2048) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)
 
 demo.gui : $(SRCDEMO_GUI)
-	$(CXX) -o $(BIN)/demo_gui $(SRCDEMO_GUI) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE)
+	$(CXX) -o $(BIN)/demo_gui $(SRCDEMO_GUI) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)
 
 demo.testGame : $(SRCDEMO_TESTGAME)
-	$(CXX) -o $(BIN)/testGame $(SRCDEMO_TESTGAME) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE)
+	$(CXX) -o $(BIN)/testGame $(SRCDEMO_TESTGAME) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)
 
 clean: 
 	rm -rf $(BIN)/*

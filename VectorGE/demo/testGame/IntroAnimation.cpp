@@ -7,6 +7,8 @@
 
 #include "IntroAnimation.h"
 
+#include <iostream>
+
 IntroAnimation::IntroAnimation(StateListener * listener, SDL_Rect display) :
 		State(listener)
 {
@@ -47,6 +49,7 @@ void IntroAnimation::render(Painter * p) {
 void IntroAnimation::step(double dt) {
 	setCurrentStatus(animation->step(dt));
 	if (animation->isEnded() && listener_!=0){
+		std::cout<<"animation ended!\n";
 		listener_->ended(0);
 	}
 }

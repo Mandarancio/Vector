@@ -97,7 +97,7 @@ void Button::addActionListener(ActionListener * l) {
 }
 
 void Button::removeActionListener(ActionListener * l) {
-	for (int i = 0; i < actionListeners_.size(); i++) {
+	for (unsigned int i = 0; i < actionListeners_.size(); i++) {
 		if (actionListeners_[i] == l) {
 			actionListeners_.erase(actionListeners_.begin() + i);
 			return;
@@ -107,7 +107,7 @@ void Button::removeActionListener(ActionListener * l) {
 
 void Button::triggerActionListeners() {
 	Action * action = new Action(cmdString_);
-	for (int i = 0; i < actionListeners_.size(); i++) {
+	for (unsigned int i = 0; i < actionListeners_.size(); i++) {
 		actionListeners_[i]->actionPerfoormed(action);
 	}
 }

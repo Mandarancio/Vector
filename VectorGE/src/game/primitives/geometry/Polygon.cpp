@@ -25,7 +25,7 @@ Polygon::Polygon(SDL_Point * vertex, int n) {
 }
 
 Polygon::Polygon(std::vector<SDL_Point> vertex) {
-	for (int i = 0; i < vertex.size(); i++)
+	for (unsigned int i = 0; i < vertex.size(); i++)
 		addVertex(vertex[i]);
 }
 
@@ -60,7 +60,7 @@ void Polygon::computeBox() {
 		return;
 	SDL_Rect bb = lines_[0].getBoundingBox();
 	SDL_Rect bbi;
-	for (int i = 1; i < lines_.size(); i++) {
+	for (unsigned int i = 1; i < lines_.size(); i++) {
 
 		bbi = lines_[i].getBoundingBox();
 		if (bb.x > bbi.x) {
@@ -105,7 +105,7 @@ Shape * Polygon::transform(Transformation t) {
 
 Polygon *Polygon::transformPolygon(Transformation t) {
 	Polygon *p = new Polygon();
-	for (int i = 0; i < vertex_.size(); i++) {
+	for (unsigned int i = 0; i < vertex_.size(); i++) {
 		p->addVertex(t.transform(vertex_[i]));
 	}
 
@@ -121,7 +121,7 @@ std::vector<SDL_Point> Polygon::vertex() {
 
 Sint16 * Polygon::vx() {
 	Sint16 * vx = new Sint16[vertex_.size()];
-	for (int i = 0; i < vertex_.size(); i++) {
+	for (unsigned int i = 0; i < vertex_.size(); i++) {
 		vx[i] = vertex_[i].x;
 	}
 	return vx;
@@ -129,7 +129,7 @@ Sint16 * Polygon::vx() {
 
 Sint16 * Polygon::vy() {
 	Sint16 *vy = new Sint16[vertex_.size()];
-	for (int i = 0; i < vertex_.size(); i++) {
+	for (unsigned int i = 0; i < vertex_.size(); i++) {
 		vy[i] = vertex_[i].y;
 	}
 	return vy;
