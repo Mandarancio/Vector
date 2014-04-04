@@ -220,7 +220,6 @@ void Painter::paintBezierPath(BezierPath *s) {
 				status.fill.blue(), status.fill.alpha());
 		std::vector<int> inters;
 		if (w0 > h0) {
-#pragma omp for
 			for (int y = y0; y < y0 + h0; y++) {
 				inters.clear();
 				l = Line(x0, y, x0 + w0, y);
@@ -247,7 +246,6 @@ void Painter::paintBezierPath(BezierPath *s) {
 				}
 			}
 		} else {
-#pragma omp for
 			for (int x = x0; x < x0 + w0; x++) {
 				l = Line(x, y0, x, y0 + h0);
 				inters.clear();
@@ -276,7 +274,6 @@ void Painter::paintBezierPath(BezierPath *s) {
 			}
 		}
 	}
-#pragma omp for
 	for (unsigned int i = 0; i < s->getCurves().size(); i++) {
 		paintBezierCourve(s->getCurves()[i]);
 	}
@@ -322,7 +319,6 @@ void Painter::paintPolygon(Polygon pol) {
 		SDL_SetRenderDrawColor(renderer, status.fill.red(), status.fill.green(),
 				status.fill.blue(), status.fill.alpha());
 		if (w0 > h0) {
-#pragma omp for
 			for (int y = y0; y < y0 + h0; y++) {
 				inters.clear();
 				l = Line(x0, y, x0 + w0, y);
@@ -349,7 +345,6 @@ void Painter::paintPolygon(Polygon pol) {
 				}
 			}
 		} else {
-#pragma omp for
 			for (int x = x0; x < x0 + w0; x++) {
 				inters.clear();
 				l = Line(x, y0, x, y0 + h0);
@@ -377,7 +372,6 @@ void Painter::paintPolygon(Polygon pol) {
 			}
 		}
 	}
-#pragma omp for
 	for (unsigned int i = 0; i < pol.lines().size(); i++) {
 		paintLine(pol.lines()[i]);
 	}

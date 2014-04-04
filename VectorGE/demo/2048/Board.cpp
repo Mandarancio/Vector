@@ -31,7 +31,7 @@ Board::~Board() {
 		if (i->second != NULL)
 			delete i->second;
 	}
-	for (int i = 0; i < toDelete_.size(); i++) {
+	for (unsigned int i = 0; i < toDelete_.size(); i++) {
 		delete toDelete_[i];
 	}
 	if (__point_texture!=0){
@@ -42,7 +42,7 @@ Board::~Board() {
 }
 
 void Board::render(Painter * p) {
-	for (int i = 0; i < toDelete_.size(); i++) {
+	for (unsigned int i = 0; i < toDelete_.size(); i++) {
 		toDelete_[i]->render(p);
 	}
 	for (std::map<int, Cell*>::iterator i = cells_.begin(); i != cells_.end();
@@ -89,14 +89,14 @@ void Board::step(double dt) {
 	}
 	if (toDelete_.size() > 0) {
 		bool finish = true;
-		for (int i = 0; i < toDelete_.size(); i++) {
+		for (unsigned int i = 0; i < toDelete_.size(); i++) {
 			if (toDelete_[i]->isAnimating()) {
 				toDelete_[i]->step(dt);
 				finish = false;
 			}
 		}
 		if (finish) {
-			for (int i = 0; i < toDelete_.size(); i++) {
+			for (unsigned int i = 0; i < toDelete_.size(); i++) {
 				delete toDelete_[i];
 			}
 			toDelete_.clear();
