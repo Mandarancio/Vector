@@ -14,7 +14,7 @@
 int main(int argc, char **argv) {
 	GameWindow *window = new GameWindow("Vector test game", 800, 600, false);
 	Camera *camera = new Camera(window->painter());
-	GameScene *scene = new GameScene(camera);
+	GameScene *scene = new GameScene(camera,0,9.8/2.0);
 
 	new GameMaster(scene);
 

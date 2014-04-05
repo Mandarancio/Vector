@@ -28,9 +28,10 @@ SRCDEMO_2048 = ./demo/2048/*.cpp
 
 SRCDEMO_GUI = ./demo/gui/*.cpp
 
-SRCDEMO_TESTGAME = ./demo/testGame/*.cpp
+SRCDEMO_TESTGAME = ./demo/testGame/*.cpp \
+				   ./demo/testGame/game/*.cpp
  	  
-all: vector demo.2048 demo.gui demo.testGame
+all: vector demos
 
 demos: demo.2048 demo.gui demo.testGame
  	  

@@ -10,6 +10,9 @@
 #include <string>
 
 #include "GameMenu.h"
+#include "game/Character.h"
+
+#include <game/BackgroundLayer.h>
 
 #define START "Start game"
 #define EXIT "Exit"
@@ -72,5 +75,7 @@ void GameMaster::__initMenu() {
 }
 
 void GameMaster::__initGame(){
-
+	scene_->addEntity(new BackgroundLayer(Color(255,255,255)));
+	Character* c=new Character(scene_->getWorld());
+	scene_->addEntity(c);
 }
