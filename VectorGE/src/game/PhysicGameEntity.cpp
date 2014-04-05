@@ -7,12 +7,10 @@
 
 #include "PhysicGameEntity.h"
 
-PhysicGameEntity::PhysicGameEntity() {
-	// TODO Auto-generated constructor stub
+PhysicGameEntity::PhysicGameEntity(World * w) {
 
 }
 
 PhysicGameEntity::~PhysicGameEntity() {
-	// TODO Auto-generated destructor stub
 }
 
