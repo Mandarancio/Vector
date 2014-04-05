@@ -1,5 +1,8 @@
-CXXFLAGS = -O2 -g -Wall -fmessage-length=0 -fopenmp -ggdb 
+CXXFLAGS = -O3 -Wall -fmessage-length=0 
 
+DEBUGFLAGS = -g -ggdb 
+
+VECTORFLAGS = -fopenmp
 
 BIN = ./Debug
 
