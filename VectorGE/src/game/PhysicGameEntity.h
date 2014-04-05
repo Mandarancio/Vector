@@ -11,6 +11,9 @@
 #include "GameEntity.h"
 
 #include "physics/World.h"
+#include "primitives/geometry/Shape.h"
+
+#include <Box2D/Box2D.h>
 
 class PhysicGameEntity: public GameEntity {
 public:
