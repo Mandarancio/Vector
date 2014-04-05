@@ -9,11 +9,12 @@
 #define CHARACTER_H_
 
 #include <game/GameEntity.h>
+#include <game/physics/World.h>
 #include <Box2D/Box2D.h>
 
 class Character: public GameEntity {
 public:
-	Character(b2World * world);
+	Character(World * world);
 	virtual ~Character();
 	virtual void render(Painter * p);
 	virtual void step(double dt);

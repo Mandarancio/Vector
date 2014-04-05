@@ -20,7 +20,8 @@ SRCVECTOR_GAME = ./src/game/*.cpp \
 				./src/game/gui/*.cpp  \
 				./src/game/events/*.cpp \
 				./src/game/armature/*.cpp \
-				./src/game/animation/*.cpp
+				./src/game/animation/*.cpp \
+				./src/game/physics/*.cpp
 				
 SRCVECTOR_EXTRA = ./src/support/*.cpp
 

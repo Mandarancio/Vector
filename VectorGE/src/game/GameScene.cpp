@@ -17,19 +17,15 @@ GameScene::GameScene(Camera * camera) :
 		Entity() {
 	this->camera = camera;
 	this->world = 0;
-	positionIterations = 8;
-	velocityIterations = 10;
 	__quit = false;
 
 	this->addWindowListener(camera->getPainter());
 }
 
-GameScene::GameScene(Camera * camera, b2World *world) :
+GameScene::GameScene(Camera * camera, World *world) :
 		Entity() {
 	this->camera = camera;
 	this->world = world;
-	positionIterations = 8;
-	velocityIterations = 10;
 	__quit = false;
 
 	this->addWindowListener(camera->getPainter());
@@ -39,9 +35,8 @@ GameScene::GameScene(Camera * camera, b2World *world) :
 GameScene::GameScene(Camera * camera, float gx, float gy) :
 		Entity() {
 	this->camera = camera;
-	this->world = new b2World(b2Vec2(gx, gy));
-	positionIterations = 8;
-	velocityIterations = 10;
+	this->world = new World(gx, gy);
+
 	__quit = false;
 
 	this->addWindowListener(camera->getPainter());
@@ -84,7 +79,7 @@ void GameScene::gameLoop(Uint16 dt) {
 
 		if (world != 0) {
 			float dt = delta / 1000.0;
-			world->Step(dt, velocityIterations, positionIterations);
+			world->step(dt);
 		}
 
 		SDL_PollEvent(&event);
@@ -192,7 +187,7 @@ void GameScene::addGUIMainComponent(MainContainer * mc) {
 	addKeyListener(mc);
 }
 
-b2World * GameScene::getWorld() {
+World * GameScene::getWorld() {
 	return world;
 }
 

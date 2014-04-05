@@ -16,6 +16,7 @@
 #include "events/KeyListener.h"
 #include "events/WindowListener.h"
 
+#include "physics/World.h"
 
 #include "gui/MainContainer.h"
 
@@ -23,12 +24,10 @@
 #include <string>
 
 
-#include <Box2D/Box2D.h>
-
 class GameScene: public Entity {
 public:
 	explicit GameScene(Camera * camera);
-	explicit GameScene(Camera * camera, b2World *world);
+	explicit GameScene(Camera * camera, World *world);
 	explicit GameScene(Camera * camera, float gx,float gy);
 
 	virtual ~GameScene();
@@ -39,7 +38,7 @@ public:
 
 	void addGUIMainComponent(MainContainer * mc);
 
-	b2World * getWorld();
+	World * getWorld();
 
 	void addMouseListener(MouseListener * ml);
 	void removeMouseListener(MouseListener *ml);
@@ -73,10 +72,9 @@ private:
 	std::vector<WindowListener*> windowListeners;
 
 	Camera * camera;
-	b2World * world;
+	World * world;
 
-	int positionIterations;
-	int velocityIterations;
+
 
 	std::vector<GameEntity *> __toRemove;
 	int __quit;

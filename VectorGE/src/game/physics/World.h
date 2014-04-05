@@ -9,6 +9,7 @@
 #define WORLD_H_
 
 #include <Box2D/Box2D.h>
+#include <SDL2/SDL_rect.h>
 
 class World {
 public:
@@ -16,6 +17,8 @@ public:
 	virtual ~World();
 
 	void step(float dt);
+
+	b2Body * createDBody(SDL_Rect rect);
 
 private:
 	b2World* world_ ;
