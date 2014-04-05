@@ -13,16 +13,19 @@
 
 class World {
 public:
-	World(float gx,float gy);
+	World(float gx, float gy);
 	virtual ~World();
 
 	void step(float dt);
 
 	b2Body * createDBody(SDL_Rect rect);
+	b2Body * createSBody(SDL_Rect rect);
+
+	b2Body * createBody(SDL_Rect rect, b2BodyType type);
 
 private:
-	b2World* world_ ;
-	int positionIterations_;// = 8;
+	b2World* world_;
+	int positionIterations_; // = 8;
 	int velocityIterations_; //= 10;
 	float conversion_; //=100
 };
