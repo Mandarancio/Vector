@@ -10,6 +10,8 @@
 
 #include "GameEntity.h"
 
+#include "physics/World.h"
+
 class PhysicGameEntity: public GameEntity {
 public:
 	PhysicGameEntity(World * w);
