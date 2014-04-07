@@ -19,8 +19,9 @@ class PhysicGameEntity: public GameEntity {
 public:
 	PhysicGameEntity(World * w);
 	virtual ~PhysicGameEntity();
+	virtual void step(double dt);
 private:
-	b2Body * body_;
+	Body * body_;
 	Shape * shape_;
 };
 

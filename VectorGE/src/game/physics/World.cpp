@@ -22,16 +22,16 @@ void World::step(float dt) {
 	world_->Step(dt, velocityIterations_, positionIterations_);
 }
 
-b2Body * World::createDBody(SDL_Rect rect) {
+Body * World::createDBody(SDL_Rect rect) {
 
 	return createBody(rect,b2_dynamicBody);
 }
 
-b2Body * World::createSBody(SDL_Rect rect) {
+Body * World::createSBody(SDL_Rect rect) {
 	return createBody(rect,b2_staticBody);
 }
 
-b2Body * World::createBody(SDL_Rect rect, b2BodyType type) {
+Body * World::createBody(SDL_Rect rect, b2BodyType type) {
 	b2BodyDef bDef;
 
 	bDef.position.x = rect.x / conversion_;
@@ -47,5 +47,5 @@ b2Body * World::createBody(SDL_Rect rect, b2BodyType type) {
 
 	b2Body *body = world_->CreateBody(&bDef);
 	body->CreateFixture(&fDef);
-	return body;
+	return new Body(body,world_);
 }

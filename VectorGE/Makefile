@@ -41,15 +41,15 @@ demos: demo.2048 demo.gui demo.testGame
  	  
 vector:  $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA)
 
-	$(CXX) -shared -fPIC -o $(BIN)/libVector.so $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS) $(LIBS) $(CXXFLAGS)
+	$(CXX) -shared -fPIC -o $(BIN)/libVector.so $(SRCVECTOR_CORE) $(SRCVECTOR_GAME) $(SRCVECTOR_EXTRA) $(OBJS) $(LIBS) $(CXXFLAGS) $(DEBUGFLAGS)
 demo.2048: $(SRCDEMO_2048)
-	$(CXX) -o $(BIN)/2048 $(SRCDEMO_2048) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)
+	$(CXX) -o $(BIN)/2048 $(SRCDEMO_2048) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)  $(DEBUGFLAGS)
 
 demo.gui : $(SRCDEMO_GUI)
-	$(CXX) -o $(BIN)/demo_gui $(SRCDEMO_GUI) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)
+	$(CXX) -o $(BIN)/demo_gui $(SRCDEMO_GUI) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)  $(DEBUGFLAGS)
 
 demo.testGame : $(SRCDEMO_TESTGAME)
-	$(CXX) -o $(BIN)/testGame $(SRCDEMO_TESTGAME) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)
+	$(CXX) -o $(BIN)/testGame $(SRCDEMO_TESTGAME) $(OBJS) -L$(BIN) $(LIBS) $(DEMO_LIBS) $(INCLUDE) $(CXXFLAGS)  $(DEBUGFLAGS)
 
 clean: 
 	rm -rf $(BIN)/*

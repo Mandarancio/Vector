@@ -28,7 +28,7 @@ void Character::render(Painter * p) {
 }
 
 void Character::step(double dt) {
-	bounds_.x = body->GetPosition().x * 100;
-	bounds_.y= body->GetPosition().y * 100;
+	bounds_.x = body->getX();
+	bounds_.y= body->getY();
 
 }

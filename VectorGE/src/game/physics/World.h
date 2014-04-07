@@ -11,6 +11,8 @@
 #include <Box2D/Box2D.h>
 #include <SDL2/SDL_rect.h>
 
+#include "Body.h"
+
 class World {
 public:
 	World(float gx, float gy);
@@ -18,10 +20,10 @@ public:
 
 	void step(float dt);
 
-	b2Body * createDBody(SDL_Rect rect);
-	b2Body * createSBody(SDL_Rect rect);
+	Body * createDBody(SDL_Rect rect);
+	Body * createSBody(SDL_Rect rect);
 
-	b2Body * createBody(SDL_Rect rect, b2BodyType type);
+	Body * createBody(SDL_Rect rect, b2BodyType type);
 
 private:
 	b2World* world_;
