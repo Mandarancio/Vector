@@ -27,7 +27,7 @@ b2Body * Body::getBody() {
 SDL_Point Body::getPosition() {
 	SDL_Point p;
 	p.x = round(conversion_ * body_->GetPosition().x);
-	p.y = round(conversion_ * body_->GetPosition().y);
+	p.y = -round(conversion_ * body_->GetPosition().y);
 	return p;
 }
 
@@ -36,5 +36,5 @@ int Body::getX() {
 }
 
 int Body::getY() {
-	return round(conversion_ * body_->GetPosition().y);
+	return -round(conversion_ * body_->GetPosition().y);
 }

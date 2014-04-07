@@ -35,7 +35,7 @@ Body * World::createBody(SDL_Rect rect, b2BodyType type) {
 	b2BodyDef bDef;
 
 	bDef.position.x = rect.x / conversion_;
-	bDef.position.y = rect.y / conversion_;
+	bDef.position.y = -rect.y / conversion_-rect.h / conversion_;
 	bDef.type = type;
 	b2FixtureDef fDef;
 	fDef.density = 1.0;

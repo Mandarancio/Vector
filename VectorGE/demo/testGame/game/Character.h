@@ -8,20 +8,16 @@
 #ifndef CHARACTER_H_
 #define CHARACTER_H_
 
-#include <game/GameEntity.h>
+#include <game/PhysicGameEntity.h>
 #include <game/physics/World.h>
-#include <game/physics/Body.h>
 
-#include <Box2D/Box2D.h>
 
-class Character: public GameEntity {
+class Character: public PhysicGameEntity {
 public:
 	Character(World * world);
 	virtual ~Character();
 	virtual void render(Painter * p);
-	virtual void step(double dt);
-private:
-	Body *body;
+
 
 
 };

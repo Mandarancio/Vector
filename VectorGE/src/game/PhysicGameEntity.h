@@ -17,10 +17,10 @@
 
 class PhysicGameEntity: public GameEntity {
 public:
-	PhysicGameEntity(World * w);
+	PhysicGameEntity();
 	virtual ~PhysicGameEntity();
 	virtual void step(double dt);
-private:
+protected:
 	Body * body_;
 	Shape * shape_;
 };

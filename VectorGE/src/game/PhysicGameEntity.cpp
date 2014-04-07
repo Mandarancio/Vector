@@ -7,7 +7,7 @@
 
 #include "PhysicGameEntity.h"
 
-PhysicGameEntity::PhysicGameEntity(World * w) {
+PhysicGameEntity::PhysicGameEntity() {
 	shape_=0;
 	body_=0;
 }
@@ -22,6 +22,6 @@ PhysicGameEntity::~PhysicGameEntity() {
 void PhysicGameEntity::step(double dt){
 	if (body_){
 		bounds_.x=body_->getX();
-		bounds_.y=body_->getY();
+		bounds_.y=body_->getY()+shape_->getBoundingBox().h;
 	}
 }

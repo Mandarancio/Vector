@@ -6,29 +6,22 @@
  */
 
 #include "Character.h"
+#include <game/primitives/geometry/Rectangle.h>
 
 Character::Character(World * world) {
-	// TODO Auto-generated constructor stub
 	bounds_.x = 10;
 	bounds_.y = 300;
 	bounds_.w = 30;
 	bounds_.h = 65;
 
-
-	body = world->createDBody(bounds_);
+	shape_=new Rectangle(bounds_);
+	body_ = world->createDBody(bounds_);
 }
 
 Character::~Character() {
-	// TODO Auto-generated destructor stub
 }
 
 void Character::render(Painter * p) {
 	p->setColors(Color());
 	p->paintRect(bounds_);
-}
-
-void Character::step(double dt) {
-	bounds_.x = body->getX();
-	bounds_.y= body->getY();
-
 }

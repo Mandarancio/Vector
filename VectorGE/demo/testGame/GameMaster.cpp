@@ -11,6 +11,7 @@
 
 #include "GameMenu.h"
 #include "game/Character.h"
+#include "game/Barier.h"
 
 #include <game/BackgroundLayer.h>
 
@@ -78,4 +79,5 @@ void GameMaster::__initGame(){
 	scene_->addEntity(new BackgroundLayer(Color(255,255,255)));
 	Character* c=new Character(scene_->getWorld());
 	scene_->addEntity(c);
+	scene_->addEntity(new Barier(scene_->getWorld()));
 }
